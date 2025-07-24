@@ -1,56 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Petit+Formal+Script&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Yellowtail&display=swap');
 
 * {
-  font-family: "Titillium Web";
-  margin: 0;
-  padding: 0;
+    font-family: "Titillium Web";
+    margin: 0;
+    padding: 0;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 body {
-   zoom: 100%; 
+    zoom: 100%;
+    background: linear-gradient(#3a30cc), rgba(#d4fdd7); /*,url("../images/info_Technology.jpg");*/  
 }
 
 
 /* section start ---------------------------------------------------------------------------------------------------*/
 .start {
-  background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .3)); /*,url("../images/info_Technology.jpg");*/
-  background-size: cover;
-  background-position: center center;
-  color: #fff;
+    /*background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)); /*,url("../images/info_Technology.jpg");*/
+    background-size: cover;
+    background-position: center center;
+    color: #000;
+
 }
 
 .start {
-  animation-duration: 2s;
-  animation-name: slide-in;
-  animation-iteration-count: 1;
-  animation-direction: initial;
+    animation-duration: 2s;
+    animation-name: slide-in;
+    animation-iteration-count: 1;
+    animation-direction: initial;
 }
-
+/*
 @keyframes slide-in {
   from {
     margin-left: 100%;
     width: 300%;
   }
-
   to {
     margin-left: 0%;
     width: 100%;
   }
 }
-
+*/
 .start .section-container {
-  max-width: 20000px;
-  margin: auto;
-  text-align: center;
-  padding: 0px 10px;
+    max-width: 1920px;
+    margin: auto;
+    text-align: left;
+    padding: 0px 10px;
 }
 
 .start .section-container header {
-  padding: 15px;
+    padding: 2% 25% 0% 25%;
 }
 
 
