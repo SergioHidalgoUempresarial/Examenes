@@ -7,7 +7,7 @@
     <meta name="theme-color" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/style1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,6 +21,10 @@
         <div class="section-container">
             <header>
                 <h1 id="exam-title" class="exam-title"></h1>
+                <div id="begin-timer" style="display: none" class="timer" >
+                    <span id="dateDisplay"><strong></strong></span>
+                    <span id="timer"><Strong>Tiempo restante: 00:00</Strong></span>
+                </div>
 
                 <div id="instruction-section" class="instructions">
                     <h2>Instrucciones generales</h2>
@@ -84,14 +88,17 @@
 
                 <div id="exam-section" style="display: none;">
                     <div class="header">
-                        <span id="studentDisplay">Estudiante: <input type="text" id="studentName"
-                                placeholder="Nombre completo" /></span>
-                        <span id="idDisplay">Cédula: <input type="text" id="studentID"
-                                placeholder="Cédula o identificación" /></span>
-                        <span id="dateDisplay"></span>
-                        <span id="timer">Tiempo restante: 00:00</span>
+
+                        <div class="nameStudent">
+                            <span id="studentDisplay">Estudiante: <input type="text" id="studentName"
+                                    placeholder="Nombre completo" /></span>
+                            <span id="idDisplay">Cédula: <input type="text" id="studentID"
+                                    placeholder="Cédula o identificación" /></span>
+
+                            <span id="Header-picture"> <img src="images/Encabezado.png"
+                                    alt="encabezadoUEmpresarial"></span>
+                        </div>
                     </div>
-                </div>
             </header>
         </div>
     </section>
@@ -111,18 +118,16 @@
             <h3>Subir archivo descargado</h3>
             <input type="file" id="pdfUpload" accept="application/pdf" />
         </div>
-
         <br>
         <button onclick="finishExam()">Finalizar examen</button>
     </div>
-
-
     <script src="js/Descarga.js"></script>
     <script src="js/IniciarCuentaRegresiva.js"></script>
     <script src="js/MostrarFechaActual.js"></script>
     <script src="js/Preguntas.js"></script>
     <script src="js/ValidarAcceso.js"></script>
     <script src="js/VariablesConfigurables.js"></script>
+    <script src="js/SiRecarganLaPagina.js"></script>
 </body>
 
 </html>
