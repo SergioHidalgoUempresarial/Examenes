@@ -22,7 +22,6 @@
             <header>
                 <div class="nav-bar" id="nav-bar" style="display: none;" onclick="showHideMenu()"></div>
                 <nav id="nav" class="nav">
-                    <a href="#start">Start</a>
                     <a href="#exam-title">Título del examen</a>
                     <a href="#StudentData">Datos del Estudiante</a>
                     <a href="#uniqueSelection">Selección única</a>
@@ -131,25 +130,19 @@
     </section>
 
     <section id="uniqueSelection" class="uniqueSelection" style="display: none;">
-        <div id="uniqueSelection-container">
-            <h2>Parte 1: Marque con X (Selección única)</h2>
-            <div>
-                <p><strong>1.</strong> ¿Cuál es la capital de Francia?</p>
-                <label><input type="radio" name="q1" value="A"> A) Madrid</label>
+        <div class="section-container">
+            <!-- PANEL DE PROGRESO LATERAL -->
+            <aside id="question-progress">
+                <h3>Preguntas (<span id="totalQuestions">0</span>)</h3>
+                <div id="progressList"></div>
+            </aside>
+
+            <!-- CONTENEDOR DE PREGUNTA ACTUAL -->
+            <div id="question-container">
+                <h2>Parte 1: Marque con X (Selección única)</h2>
                 <br>
-                <label><input type="radio" name="q1" value="B"> B) Berlín</label>
-                <br>
-                <label><input type="radio" name="q1" value="C"> C) París</label>
-            </div>
-            <br>
-            <br>
-            <div>
-                <p><strong>2.</strong> ¿Cuál es el resultado de 5 + 3?</p>
-                <label><input type="radio" name="q2" value="A"> A) 6</label>
-                <br>
-                <label><input type="radio" name="q2" value="B"> B) 8</label>
-                <br>
-                <label><input type="radio" name="q2" value="C"> C) 10</label>
+                <div id="question-content"></div>
+                <button onclick="nextQuestion()" id="nextBtn">Siguiente</button>
             </div>
         </div>
     </section>
@@ -178,8 +171,6 @@
             <button onclick="finishExam()">Finalizar examen</button>
         </div>
     </section>
-
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/Descarga.js"></script>
     <script src="js/IniciarCuentaRegresiva.js"></script>
@@ -187,7 +178,7 @@
     <script src="js/Preguntas.js"></script>
     <script src="js/ValidarAcceso.js"></script>
     <script src="js/VariablesConfigurables.js"></script>
-    <script src="js/CuandoIngresen.js"></script>
+    <!-- <script src="js/CuandoIngresen.js"></script> -->
     <script src="js/MenuHamburguesa.js"></script>
     <script src="js/VerInstrucciones.js"></script>
 </body>
