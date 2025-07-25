@@ -1,3 +1,5 @@
+
+
 let timerInterval;
 function startTimer() {
     const endTime = Date.now() + EXAM_DURATION_MINUTES * 60 * 1000;
