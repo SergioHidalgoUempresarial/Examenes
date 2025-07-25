@@ -230,7 +230,7 @@ body {
     background-color: #004080;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 10px 10px;
     border-radius: 8px;
     font-size: clamp(0.5rem, 1vw, 1rem);
     display: flex;
@@ -347,8 +347,8 @@ body {
 
 #name-section .section-container .names-student input {
     width: 90%;
-    padding: 2px;
-    font-size: 0.7em;
+    padding: 10px;
+    font-size: 1em;
     border-radius: 5px;
     border: 1px solid #ccc;
 }
@@ -372,11 +372,92 @@ body {
     border-radius: 10px;
 }
 
+
+
+/* Panel de preguntas de selección única----------------------------------------------------------------------------------------------- */
+
+#uniqueSelection .section-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* LATERAL IZQUIERDO */
+#question-progress {
+  width: 220px;
+  background-color: #f7f9fb;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+#question-progress h3 {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+#progressList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+
+
+/* CONTENIDO DE LA PREGUNTA */
+#question-container {
+  flex: 1;
+  background-color: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+#question-container h2 {
+  font-size: 1.4em;
+  margin-bottom: 20px;
+  color: #004080;
+}
+
+#question-content {
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+#nextBtn {
+  padding: 10px 20px;
+  background-color: #004080;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+}
+
+#nextBtn:hover {
+  background-color: #0066cc;
+}
+
+
+
+
 /* ----------------------------------------------------------------------------------------------- */
 
-#exam {
-    margin-top: 40px;
-}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+
 
 .practice-upload {
     background: #fff;
