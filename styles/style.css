@@ -279,7 +279,7 @@ body {
     align-items: center;
     text-align: center;
     max-width: 600px;
-    z-index: 12;
+    z-index: 10;
 }
 
 #access-section h2 {
