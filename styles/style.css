@@ -1,119 +1,459 @@
 @import url('https://fonts.googleapis.com/css2?family=Petit+Formal+Script&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Yellowtail&display=swap');
 
 * {
-    font-family: "Titillium Web";
     margin: 0;
     padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
     zoom: 100%;
-    background: linear-gradient(#3a30cc), rgba(#d4fdd7); /*,url("../images/info_Technology.jpg");*/  
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f7f9fb;
+    margin: 0;
+    padding: 0;
+}
+
+/* Swall-Small --------------------------------------------------------------------------------------------*/
+
+.swal-wide-low {
+  max-width: 700px !important;  /* Más ancho */
+  padding: 20px !important;
+  font-size: 0.95rem;
+}
+
+.swal-wide-low .swal2-title {
+  font-size: 1.5rem !important;
+  margin-bottom: 10px;
+}
+
+.swal-wide-low .swal2-html-container {
+  font-size: 1rem;
+  text-align: left;
+  padding: 0 10px;
+  line-height: 1.4;
+  max-height: 300px; /* Controla el alto máximo visible */
+  overflow-y: auto;
+}
+
+.swal-wide-low .swal2-image {
+  max-width: 120px;
+  margin-bottom: 10px;
+}
+
+/* Estilo adicional si usás las clases del contenido */
+.alert-content ul {
+  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.alert-content .biblical-text {
+  font-size: 0.9rem;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+.alert-content ul {
+  list-style-type: disc !important; /* Fuerza los bullets tipo círculo */
+  padding-left: 20px !important;    /* Sangría para que se vean bien */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.alert-content li {
+  margin-bottom: 5px;
 }
 
 
-/* section start ---------------------------------------------------------------------------------------------------*/
-.start {
-    /*background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)); /*,url("../images/info_Technology.jpg");*/
-    background-size: cover;
-    background-position: center center;
-    color: #000;
 
+/* --------------------------------------------------------------------------------------------------------*/
+
+
+/* Menu ---------------------------------------------------------------------------------------------------*/
+#start .section-container {
+    width: 20vw;
+    min-width: 200px;
+    max-width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    padding: 1em;
 }
 
-.start {
-    animation-duration: 2s;
-    animation-name: slide-in;
-    animation-iteration-count: 1;
-    animation-direction: initial;
+#start header {
+    color: black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
-/*
-@keyframes slide-in {
-  from {
-    margin-left: 100%;
-    width: 300%;
-  }
-  to {
-    margin-left: 0%;
+
+.start .section-container header nav {
     width: 100%;
-  }
-}
-*/
-.start .section-container {
-    max-width: 1920px;
-    margin: auto;
+    margin-left: 2.1em;
+    background-color: #19A06E;
+    padding: 10px;
+    border-radius: 10px;
     text-align: left;
-    padding: 0px 10px;
+    z-index: 11;
+    display: none;
 }
 
-.start .section-container header {
-    padding: 2% 25% 0% 25%;
+.start .section-container header nav a {
+    display: block;
+    color: #fff;
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-weight: bold;
+    transition: .3s;
+    padding-left: 20px;
 }
 
+.start .section-container header nav a:hover {
+    display: block;
+    color: rgb(150, 150, 152);
+    font-size: 21px;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.start .section-container header .nav-bar {
+    position: fixed;
+    background-color: #F8C21A;
+    background-image: url(../icons/MenuHamburguesa.png);
+    background-repeat: no-repeat;
+    background-size: 15px;
+    background-position: center;
+    top: 10px;
+    left: 20px;
+    width: 2em;
+    height: 2em;
+    border-radius: 40%;
+    line-height: 50px;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 15px;
+}
+
+.start .section-container header .nav-bar:hover {
+    box-shadow: 0 0 7px #fff;
+    width: 2.5em;
+    height: 2.5em;
+    background-size: 20px;
+}
+
+.start .section-container header .nav-bar:active {
+    box-shadow: 0 0 15px #fff,
+        inset 0 0 5px #fff;
+    width: 2.6em;
+    height: 2.6em;
+}
+
+/* ---------------------------------------------------------------------------------------------------*/
+
+#exam-title {
+    position: relative;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+}
+
+#exam-title .section-container {
+    width: 100%;
+    height: 130px; /* o usa 15vh si prefieres */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #072D4E;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#exam-title .title {
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  color: white;
+  margin: 0;
+  text-align: center;
+}
+
+#exam-title .timer {
+  font-size: clamp(0.9rem, 1.2vw, 1.5rem);
+  color: white;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------------------------------------- */
 
 
+/* Instrucciones antes de empezar ---------------------------------------------------------------------------------------------- */
+.instructions {
+    background: #ffffff;
+    border-left: 6px solid #004080;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    border: 2px green solid;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
+.instructions h2 {
+    color: #004080;
+    margin-bottom: 10px;
+}
 
+.instructions ul {
+    list-style: disc;
+    padding-left: 20px;
+}
 
+.instructions ul ul {
+    list-style: circle;
+    margin-left: 20px;
+}
 
+#toggleInstructionsBtn {
+    width: 13em;
+    height: 2em;
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 10;
+    background-color: #004080;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: clamp(0.5rem, 1vw, 1rem);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    transition: background-color 0.3s;
+}
 
+#toggleInstructionsBtn:hover {
+    background-color: #0066cc;
+}
 
+#instruction {
+    position: fixed;
+    top: 25px; /* debajo del botón */
+    right: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    width: 40%;
+    background-color: white;
+    z-index: 11;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    border: 2px solid green;
+    border-radius: 10px;
+    padding: 15px;
+}
 
+/* -------------------------------------------------------------------------------------------------- */
 
-
-
-.seccion {
-    margin-bottom: 30px;
-    background: #fff;
+/* Codigo de acceso----------------------------------------------------------------------------------- */
+#access-section {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #eaf1f8;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px #ccc;
+    border: 2px green solid;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 600px;
+    z-index: 10;
 }
 
-.exam-title {
-    font-display: center;
+#access-section h2 {
+    margin-bottom: 10px;
 }
 
-h2 {
-    color: #004080;
-}
-
-label {
-    display: block;
-    margin: 5px 0;
-}
-
-textarea {
+#access-section input,
+#access-section button {
+    padding: 10px;
+    margin-top: 10px;
     width: 100%;
-    height: 100px;
-    margin-top: 10px;
+    max-width: 400px;
+    display: block;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-input[type="file"] {
-    margin-top: 10px;
+#access-section button {
+    background: #004080;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#access-section button:hover {
+    background: #003366;
+}
+
+/* ---------------------------------------------------------------------------------- */
+
+/* Datos del estudiante-------------------------------------------------------------- */
+#name-section {
+    max-width: 60%;
+    min-width: 60%;
+    margin: 80px auto 20px auto; /* este valor debe ser igual a o mayor que la altura del header */
+    padding: 15px;
+    background: #fff;
+    border-radius: 15px;
+    border: 2px green solid;
+    z-index: 8;
+    position: relative;
+}
+
+#name-section .section-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+}
+
+#name-section .section-container .names-student {
+    flex: 1 1 60%;
+
+}
+
+#name-section .section-container .names-student span {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1em;
+
+}
+
+#name-section .section-container .names-student input {
+    width: 90%;
+    padding: 2px;
+    font-size: 0.7em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#name-section .section-container .header-picture {
+    flex: 1 1 35%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#name-section .section-container .header-picture span {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+#name-section .section-container .header-picture img {
+    width: 80%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+#exam {
+    margin-top: 40px;
+}
+
+.practice-upload {
+    background: #fff;
+    padding: 15px;
+    border-left: 5px solid #004080;
+    border-radius: 10px;
 }
 
 button {
     padding: 10px 20px;
-    background: #004080;
+    background: #0066cc;
     color: white;
     border: none;
     border-radius: 5px;
+    font-size: 1em;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-.hidden {
-    display: none;
+button:hover {
+    background: #004d99;
 }
 
-.correcta {
-    background: #d4f4d4;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+@media screen and (max-width:950px) {
+    .start .section-container header nav {
+        position: fixed;
+        margin-left: 15%;
+        background-color: #940253d5;
+        padding: 7%;
+        border-radius: 10px;
+        text-align: left;
+        z-index: 99;
+        display: none;
+        opacity: 90%;
+    }
+
+
 }
 
-.incorrecta {
-    background: #f8d4d4;
-}
+*/
