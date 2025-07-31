@@ -8,19 +8,19 @@ function validateAccess() {
         Swal.fire({
             title: '🚨 ¡Recuerde!',
             html: `
-      <p>Le doy mis mejores deseos en la evaluación.</p>
-      <br>
-      <ul style="text-align:left;">
-        <li>No recargue la página</li>
-        <li>No cambie de pestaña o ventana</li>
-        <li>Evite cerrar el navegador</li>
-        <br>
-        <br>
-        <li>El examen podría anularse</li>
-      </ul>
-      <br>
-      <b>¡"Porque Jehová da la sabiduría, y de su boca viene el conocimiento y la inteligencia."Proverbios 2:6!</b>
-    `,
+                <p>Le doy mis mejores deseos en la evaluación.</p>
+                <br>
+                <ul style="text-align:left;">
+                    <li>No recargue la página</li>
+                    <li>No cambie de pestaña o ventana</li>
+                    <li>Evite cerrar el navegador</li>
+                    <br>
+                    <br>
+                    <li>El examen podría anularse</li>
+                </ul>
+                <br>
+                <b>¡"Porque Jehová da la sabiduría, y de su boca viene el conocimiento y la inteligencia."Proverbios 2:6!</b>
+                `,
             imageUrl: 'images/BestWishes.png',
             confirmButtonText: 'Sí estoy de acuerdo',
             confirmButtonColor: '#0a691aff',

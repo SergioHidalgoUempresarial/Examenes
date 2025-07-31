@@ -15,38 +15,11 @@
 </head>
 
 <body>
-    <button id="toggleInstructionsBtn">📘 Ver Instrucciones</button>
-    <!-- menu -->
-    <section class="start" id="start">
-        <div class="section-container">
-            <header>
-                <div class="nav-bar" id="nav-bar" style="display: none;" onclick="showHideMenu()"></div>
-                <nav id="nav" class="nav">
-                    <a href="#exam-title">Título del examen</a>
-                    <a href="#StudentData">Datos del Estudiante</a>
-                    <a href="#uniqueSelection">Selección única</a>
-                    <a href="#essay">Desarrollo</a>
-                    <a href="#practice">Práctica</a>
-                </nav>
-                <br>
-                <br>
-            </header>
-        </div>
-    </section>
 
-    <!-- Titulo y cronometro -->
-    <section class="exam-title" id="exam-title">
-        <div class="section-container">
-            <h1 id="title" class="title"></h1>
-            <div id="begin-timer" style="display: none" class="timer">
-                <span id="dateDisplay"><strong></strong></span>
-                <span id="timer"><Strong>Tiempo restante: 00:00</Strong></span>
-            </div>
-        </div>
-    </section>
+    <button id="toggleInstructionsBtn">📘 Ver Instrucciones</button>
 
     <!-- Instrucciones de clausulas para el examen -->
-    <section id="instructions-section " class="instructions">
+    <section id="instructions-section" class="instructions">
         <div id="instruction" class="instructions">
             <h2>Instrucciones generales</h2>
             <ul>
@@ -66,11 +39,8 @@
                 <li>El examen se llevará a cabo de 18:00 a 21:00 (6 pm a 9 pm) horas. Administre su tiempo de
                     manera
                     eficiente para completar todas las secciones.</li>
-                <li>Durante el examen, está estrictamente prohibido el uso de cualquier material o dispositivo
-                    que
-                    pueda
-                    brindar ayuda externa, incluyendo:
-                    <ul>
+                <li>Durante el examen, está estrictamente prohibido el uso de cualquier material o dispositivo que pueda
+                    brindar ayuda externa, incluyendo: <ul>
                         <li>Lápices o cualquier material de escritura no autorizado.</li>
                         <li>Dispositivos electrónicos como:
                             <ul>
@@ -82,21 +52,24 @@
                             </ul>
                         </li>
                         <li>Notas, apuntes o cualquier material de referencia.</li>
-                        <li>Todos los dispositivos electrónicos deben permanecer en silencio y sin
+                        <li>
+                            Todos los dispositivos electrónicos deben permanecer en silencio y sin
                             vibraciones(estar
-                            apagados).</li>
+                            apagados).
+                        </li>
                     </ul>
                 </li>
                 <li>Al finalizar por favor subir la 3ra parte del examen al campus en el espacio destinado.</li>
                 <li>No se aceptan entregas fuera de tiempo ni lugar.</li>
-                <li>Cualquier intento de incumplir esta norma será considerado una falta grave y tendrá
-                    consecuencias
-                    correspondientes.</li>
-                <li>Este examen, al igual que cualquier otra evaluación, se realiza de acuerdo con la normativa
-                    de
-                    la
-                    Universidad Empresarial.</li>
+                <li>Cualquier intento de incumplir esta norma será considerado una falta grave y tendrá consecuencias
+                    correspondientes. </li>
+                <li>Este examen, al igual que cualquier otra evaluación, se realiza de acuerdo con la normativa de la
+                    Universidad Empresarial. </li>
             </ul>
+            <div class="checkIntructions">
+                <input type="checkbox" id="agreeCheck" />
+                <label for="agreeCheck"><strong>He leído y acepto todas las instrucciones del examen.</strong></label>
+            </div>
         </div>
     </section>
 
@@ -108,6 +81,36 @@
             <input type="password" id="accessInput" placeholder="Código de acceso" />
             <button onclick="validateAccess()">Ingresar</button>
             <p id="accessError" style="color:red; display:none;">Código incorrecto. Intente de nuevo.</p>
+            <button onclick="resetAccess()" style="display:none;" id="adminResetBtn">Reset Access</button>
+        </div>
+    </section>
+
+    <!-- Titulo y cronometro -->
+    <section class="exam-title" id="exam-title">
+        <div class="section-container">
+            <h1 id="title" class="title"></h1>
+            <div id="begin-timer" style="display: none" class="timer">
+                <span id="dateDisplay"><strong></strong></span>
+                <span id="timer"><Strong>Tiempo restante: 00:00</Strong></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- menu -->
+    <section class="start" id="start">
+        <div class="section-container">
+            <header>
+                <div class="nav-bar" id="nav-bar" style="display: none;" onclick="showHideMenu()"></div>
+                <nav id="nav" class="nav">
+                    <a href="#exam-title">Título del examen</a>
+                    <a href="#StudentData">Datos del Estudiante</a>
+                    <a href="#uniqueSelection">Selección única</a>
+                    <a href="#essay">Desarrollo</a>
+                    <a href="#practice">Práctica</a>
+                </nav>
+                <br>
+                <br>
+            </header>
         </div>
     </section>
 
@@ -172,15 +175,15 @@
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/Descarga.js"></script>
+    <script src="js/VariablesConfigurables.js"></script>
+    <script src="js/ValidarAcceso.js"></script>
+    <script src="js/VerInstrucciones.js"></script>
     <script src="js/IniciarCuentaRegresiva.js"></script>
     <script src="js/MostrarFechaActual.js"></script>
     <script src="js/Preguntas.js"></script>
-    <script src="js/ValidarAcceso.js"></script>
-    <script src="js/VariablesConfigurables.js"></script>
     <!-- <script src="js/CuandoIngresen.js"></script> -->
     <script src="js/MenuHamburguesa.js"></script>
-    <script src="js/VerInstrucciones.js"></script>
+    <script src="js/Descarga.js"></script>
 </body>
 
 </html>
