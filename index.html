@@ -76,7 +76,8 @@
     <!-- Código de acceso para realizarlo-->
     <section id="access" class="access">
         <div id="access-section">
-            <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un botón azul, deben aceptarlas!</h2>
+            <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
+                botón azul, deben aceptarlas!</h2>
             <label for="accessInput">Ingrese el código de acceso generado por el docente:</label>
             <input type="password" id="accessInput" placeholder="Código de acceso" />
             <button onclick="validateAccess()">Ingresar</button>
@@ -92,6 +93,9 @@
             <div id="begin-timer" style="display: none" class="timer">
                 <span id="dateDisplay"><strong></strong></span>
                 <span id="timer"><Strong>Tiempo restante: 00:00</Strong></span>
+            </div>
+            <div id="intento-panel">
+                <p>🧠 Intentos restantes: <span id="intentos-restantes"></span></p>
             </div>
         </div>
     </section>

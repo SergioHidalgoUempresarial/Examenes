@@ -196,6 +196,18 @@ body {
   text-align: center;
 }
 
+#intento-panel {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#intento-panel span {
+    color: green;
+}
+
 /* ------------------------------------------------------------------------------------------------- */
 
 
@@ -306,24 +318,6 @@ label[for="agreeCheck"] {
   bottom: 0;
   width: fit-content;
 }
-
-/* #access-section {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #eaf1f8;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px green solid;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 800px;
-  z-index: 10;
-} */
 
 #access-section h2 {
   margin-bottom: 10px;
