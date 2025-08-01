@@ -58,7 +58,7 @@ function renderProgressBar() {
         box.style.border = "1px solid #ccc";
 
         // Colorea si ya respondió
-        box.style.background = studentAnswers[i] ? "#3fbf62" : "#f1f1f1";
+        box.style.background = studentAnswers[i] ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
 
         // Si es la pregunta actual, resaltarla
         if (i === currentQuestion) {
@@ -69,10 +69,13 @@ function renderProgressBar() {
         }
 
         // Al hacer clic, ir a esa pregunta
-        box.onclick = () => {
-            currentQuestion = i;
-            loadQuestion(i);
-        }
+        // box.onclick = () => {
+        //     if (i <= currentQuestion) return;
+        //     currentQuestion = i;
+        //     loadQuestion(i);
+        // }
+        // que solo salgan las preguntas y no se les pueda hacer clic
+        box.style.cursor = "default";
         container.appendChild(box);
     }
 }
