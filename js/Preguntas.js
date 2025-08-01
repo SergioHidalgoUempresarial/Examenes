@@ -69,11 +69,13 @@ function renderProgressBar() {
         }
 
         // Al hacer clic, ir a esa pregunta
-        box.onclick = () => {
-            if (i <= currentQuestion) return;
-            currentQuestion = i;
-            loadQuestion(i);
-        }
+        // box.onclick = () => {
+        //     if (i <= currentQuestion) return;
+        //     currentQuestion = i;
+        //     loadQuestion(i);
+        // }
+        // que solo salgan las preguntas y no se les pueda hacer clic
+        box.style.cursor = "default";
         container.appendChild(box);
     }
 }
