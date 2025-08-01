@@ -1,6 +1,11 @@
 let timerInterval;
 
 function startTimer() {
+
+    if (localStorage.getItem("examStarted") !== "true") {
+        return;
+    }
+
     // Verifica si ya existe endTime guardado
     let endTime = localStorage.getItem("examEndTime");
 
@@ -32,6 +37,7 @@ function startTimer() {
 
 function finishExam() {
     localStorage.removeItem("examEndTime");
+    localStorage.removeItem("examStarted");
     clearInterval(timerInterval);
     // Aquí continúa el proceso normal de cierre del examen
     Swal.fire({

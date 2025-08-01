@@ -1,10 +1,10 @@
 let currentQuestion = 0;
-const studentAnswers = [];
+let studentAnswers = [];
 
 function loadQuestion(index) {
     const q = uniqueQuestions[index];
     const container = document.getElementById("question-content");
-    
+
     container.innerHTML = `
         <p style="font-size: 1.1em; font-weight: bold; color: #004080; margin-bottom: 15px;">
             <strong>${index + 1}.</strong> ${q.question}
@@ -12,20 +12,42 @@ function loadQuestion(index) {
         <div style="display: flex; flex-direction: column; gap: 10px;">
             ${q.options.map(opt => `
                 <label style="background: #f5f9ff; border: 1px solid #cce0f5; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
-                    <input type="radio" name="q${index}" value="${opt}" onchange="saveAnswer(${index}, this.value)" style="margin-right: 8px;">
-                    ${opt}
-                </label>
+                <input type="radio" name="q${index}" value="${opt}" 
+                    onchange="saveAnswer(${index}, this.value)" 
+                    ${studentAnswers[index] === opt ? "checked" : ""}
+                    style="margin-right: 8px;">
+                ${opt}
+            </label>
             `).join('')}
         </div>
     `;
 
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (studentAnswers[index]) {
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = 1;
+        nextBtn.style.cursor = "pointer";
+    } else {
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = 0.6;
+        nextBtn.style.cursor = "not-allowed";
+    }
+
     updateProgress();
-    document.getElementById("nextBtn").innerText = (index === uniqueQuestions.length - 1) ? "Finalizar" : "Siguiente";
+    nextBtn.innerText = (index === uniqueQuestions.length - 1) ? "Finalizar" : "Siguiente";
 }
 
 function saveAnswer(index, value) {
     studentAnswers[index] = value;
+    localStorage.setItem("studentAnswers", JSON.stringify(studentAnswers));
+    localStorage.setItem("currentQuestionIndex", currentQuestion);  // Cambiado aquí
     updateProgress();
+
+    const nextBtn = document.getElementById("nextBtn");
+    nextBtn.disabled = false;
+    nextBtn.style.opacity = 1;
+    nextBtn.style.cursor = "pointer";
 }
 
 function nextQuestion() {
@@ -86,8 +108,20 @@ function updateProgress() {
 
 // Inicialización (puedes llamarla al mostrar esta sección)
 function initUniqueSelection() {
-    currentQuestion = 0;
-    studentAnswers.length = 0;
+    const savedAnswers = localStorage.getItem("studentAnswers");
+    if (savedAnswers) {
+        studentAnswers = JSON.parse(savedAnswers);
+    } else {
+        studentAnswers = [];
+    }
+
+    const savedIndex = localStorage.getItem("currentQuestionIndex");
+    if (savedIndex !== null) {
+        currentQuestion = parseInt(savedIndex, 10);
+    } else {
+        currentQuestion = 0;
+    }
+
     loadQuestion(currentQuestion);
 }
 
