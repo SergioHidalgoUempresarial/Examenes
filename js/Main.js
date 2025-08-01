@@ -1,7 +1,7 @@
 window.addEventListener("beforeunload", function (e) {
     // Mensaje personalizado (algunos navegadores ya no lo muestran, pero sí bloquean la salida)
     const confirmationMessage = "⚠️ Si recarga o sale de esta página, el examen se cerrará y perderá su intento.";
-    
+
     e.preventDefault(); // Necesario para algunos navegadores
     e.returnValue = confirmationMessage; // Chrome, Firefox, Edge
     return confirmationMessage;
@@ -21,7 +21,24 @@ document.addEventListener("visibilitychange", function () {
             confirmButtonText: 'Entendido'
         });
 
-        // OPCIONAL: puedes aquí restar un intento o finalizar el examen:
+        // OPCIONAL: se puede aquí restar un intento o finalizar el examen:
         // finalizarExamenPorTrampa();
     }
 });
+
+window.onload = function () {
+    const savedAnswers = JSON.parse(localStorage.getItem("studentAnswers"));
+    if (savedAnswers) {
+        studentAnswers = savedAnswers;
+    }
+
+    const savedIndex = localStorage.getItem("currentQuestionIndex");
+    if (savedIndex !== null) {
+        currentQuestion = parseInt(savedIndex, 10);
+    } else {
+        currentQuestion = 0;
+    }
+
+    loadQuestion(currentQuestion);
+    startTimer();
+}

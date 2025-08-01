@@ -47,6 +47,10 @@ function validateAccess() {
         }).then((result) => {
             if (result.isConfirmed) {
                 console.log("Usuario aceptó las instrucciones");
+
+                // Aquí se da la línea para marcar que el examen empezó anteriormente y no reinicie el temporizador
+                localStorage.setItem("examStarted", "true");
+
                 startTimer();
                 document.getElementById("nav-bar").style.display = "block";
                 document.getElementById("begin-timer").style.display = "block";
