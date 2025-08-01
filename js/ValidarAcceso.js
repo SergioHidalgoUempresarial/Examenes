@@ -1,5 +1,18 @@
 function validateAccess() {
     const inputCode = document.getElementById("accessInput").value.trim();
+    const checkbox = document.getElementById("agreeCheck");
+
+    if (!checkbox.checked || !checkbox.disabled) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Debe aceptar las instrucciones',
+            text: 'Por favor lea y acepte las instrucciones antes de comenzar el examen.',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#004080',
+        });
+        return; // Detiene la ejecución
+    }
+
     if (inputCode === ACCESS_CODE) {
         document.getElementById("access-section").style.display = "none";
 
