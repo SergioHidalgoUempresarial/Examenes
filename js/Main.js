@@ -1,4 +1,10 @@
 // ===============================
+// VARIABLES GLOBALES
+// ===============================
+let intentoYaRestado = false; // Para evitar que se reste más de una vez
+let devtoolsAbierto = false;
+
+// ===============================
 // GESTIÓN DE INTENTOS
 // ===============================
 function obtenerIntentosRestantes() {
@@ -7,9 +13,12 @@ function obtenerIntentosRestantes() {
 }
 
 function restarIntentoYGuardar() {
+    if (intentoYaRestado) return;
+
     let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || { intentosRestantes: MAX_ATTEMPTS };
     data.intentosRestantes = Math.max(0, (data.intentosRestantes ?? MAX_ATTEMPTS) - 1);
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
+    intentoYaRestado = true;
 }
 
 function verificarIntentos() {
@@ -19,7 +28,7 @@ function verificarIntentos() {
             icon: 'error',
             title: 'Examen bloqueado',
             text: 'Has agotado todos tus intentos.',
-        }).then(() => window.location.href = "bloqueado.html"); // redirigir si deseas
+        }).then(() => window.location.href = "bloqueado.html");
     }
 }
 
@@ -32,7 +41,6 @@ function mostrarIntentosRestantes() {
 
     span.textContent = restantes;
 
-    // Cambiar color según el número de intentos
     if (restantes === 2) {
         span.style.color = "orange";
     } else if (restantes === 1) {
@@ -51,14 +59,12 @@ function actualizarAccesoPorIntentos() {
     if (!accessSection) return;
 
     if (restantes <= 0) {
-        // Mostrar mensaje de intentos agotados
         accessSection.innerHTML = `
             <p style="color: red; font-weight: bold; font-size: 1.2em; margin-top: 1em;">
                 Sus intentos se acabaron, por favor póngase en contacto con su docente.
             </p>
         `;
     } else {
-        // Restaurar contenido original (por si se quiere recargar después con intentos disponibles)
         accessSection.innerHTML = `
             <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
                 botón azul, deben aceptarlas!</h2>
@@ -75,7 +81,7 @@ function controlarAccesoPorIntentos() {
     const restantes = obtenerIntentosRestantes();
     const inputCodigo = document.getElementById("accessInput");
     const instrucciones = document.getElementById("toggleInstructionsBtn");
-    const btnIngresar = inputCodigo?.nextElementSibling; // botón justo después del input
+    const btnIngresar = inputCodigo?.nextElementSibling;
 
     if (restantes <= 0) {
         if (inputCodigo) inputCodigo.disabled = true;
@@ -88,29 +94,24 @@ function controlarAccesoPorIntentos() {
     }
 }
 
-
-
-
 // ===============================
-// DETECCIÓN DE RECARGA Y CAMBIO DE PESTAÑA
+// CONTROL UNIFICADO DE SALIDA / TRAMPA
 // ===============================
-window.addEventListener("beforeunload", function (e) {
+function manejarSalidaExamen(tipo, evento = null) {
+    if (intentoYaRestado) return;
+
     restarIntentoYGuardar();
     mostrarIntentosRestantes();
     localStorage.setItem(EXAM_STATE_KEY, "perdido");
-    const msg = "⚠️ Si recarga o sale, perderá un intento.";
-    e.preventDefault();
-    e.returnValue = msg;
-    return msg;
-});
 
+    if (tipo === "recarga" && evento) {
+        const msg = "⚠️ Si recarga o sale, perderá un intento.";
+        evento.preventDefault();
+        evento.returnValue = msg;
+        return msg;
+    }
 
-document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-        restarIntentoYGuardar();
-        mostrarIntentosRestantes();
-        localStorage.setItem(EXAM_STATE_KEY, "perdido");
-
+    if (tipo === "cambioPestania") {
         Swal.fire({
             icon: 'warning',
             title: '⚠ Atención',
@@ -118,7 +119,45 @@ document.addEventListener("visibilitychange", function () {
             confirmButtonText: 'Entendido'
         }).then(() => location.reload());
     }
+
+    if (tipo === "devtools") {
+        Swal.fire({
+            icon: 'error',
+            title: '🚫 Acción no permitida',
+            text: 'Se detectó manipulación (DevTools). Has perdido un intento.',
+        }).then(() => location.reload());
+    }
+}
+
+window.addEventListener("beforeunload", function (e) {
+    manejarSalidaExamen("recarga", e);
 });
+
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        manejarSalidaExamen("cambioPestania");
+    }
+});
+
+// ===============================
+// DETECCIÓN CONFIABLE DE DEVTOOLS
+// ===============================
+
+function detectarDevtoolsConRendimiento() {
+    const threshold = 160; // milisegundos
+    let start = performance.now();
+
+    debugger; // Si DevTools está abierto, esto ralentiza la ejecución
+
+    let end = performance.now();
+    if (end - start > threshold && !devtoolsAbierto) {
+        devtoolsAbierto = true;
+        manejarSalidaExamen("devtools");
+    }
+}
+
+// Repite la detección cada 3 segundos
+setInterval(detectarDevtoolsConRendimiento, 3000);
 
 // ===============================
 // MOSTRAR/OCULTAR INSTRUCCIONES
@@ -255,161 +294,6 @@ window.addEventListener("DOMContentLoaded", () => {
 window.onload = function () {
     verificarIntentos();
     mostrarIntentosRestantes();
-    actualizarAccesoPorIntentos();  // <<--- Aquí la llamada para mostrar u ocultar acceso
+    actualizarAccesoPorIntentos();
     controlarAccesoPorIntentos();
 };
-
-
-
-
-
-
-
-
-
-
-
-/*
-window.addEventListener("beforeunload", function (e) {
-    // Mensaje personalizado (algunos navegadores ya no lo muestran, pero sí bloquean la salida)
-    const confirmationMessage = "⚠️ Si recarga o sale de esta página, el examen se cerrará y perderá su intento.";
-
-    e.preventDefault(); // Necesario para algunos navegadores
-    e.returnValue = confirmationMessage; // Chrome, Firefox, Edge
-    return confirmationMessage;
-});
-
-let cambioDeVentanaDetectado = false;
-
-document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-        // Se detectó que el usuario salió de la pestaña
-        cambioDeVentanaDetectado = true;
-
-        Swal.fire({
-            icon: 'warning',
-            title: '⚠ Atención',
-            text: 'Has salido del examen. Esto puede causar la pérdida del intento.',
-            confirmButtonText: 'Entendido'
-        });
-
-        // OPCIONAL: se puede aquí restar un intento o finalizar el examen:
-        // finalizarExamenPorTrampa();
-    }
-});
-
-window.onload = function () {
-    const savedAnswers = JSON.parse(localStorage.getItem("studentAnswers"));
-    if (savedAnswers) {
-        studentAnswers = savedAnswers;
-    }
-
-    const savedIndex = localStorage.getItem("currentQuestionIndex");
-    if (savedIndex !== null) {
-        currentQuestion = parseInt(savedIndex, 10);
-    } else {
-        currentQuestion = 0;
-    }
-
-    loadQuestion(currentQuestion);
-    startTimer();
-}
-
-//Para borrar datos del storage de la página cuando se cargue la página del examen
-window.addEventListener("DOMContentLoaded", () => {
-    const adminBtn = document.getElementById("admin-clear");
-
-    // Detectar combinación secreta: Ctrl + Alt + P
-    document.addEventListener("keydown", function (e) {
-        if (e.ctrlKey && e.altKey && e.code === "KeyP") {
-            const usedCount = parseInt(localStorage.getItem("clearButtonUses") || "0", 10);
-
-            if (usedCount < MAX_CLEAR_USES) {
-                const clearBtn = document.getElementById("admin-clear");
-                if (clearBtn) {
-                    clearBtn.style.display = "block";
-                }
-            } else {
-                Swal.fire({
-                    icon: "info",
-                    title: "🔒 Botón desactivado",
-                    text: "Ya se ha usado el botón el número máximo de veces permitido.",
-                    confirmButtonText: "Aceptar"
-                });
-            }
-        }
-    });
-
-    // Acción del botón
-    adminBtn.addEventListener("click", () => {
-        const lastClearDateStr = localStorage.getItem("lastClearDate");
-        const now = new Date();
-
-        if (lastClearDateStr) {
-            const lastClearDate = new Date(lastClearDateStr);
-            const diffTime = now - lastClearDate;
-            const diffDays = diffTime / (1000 * 60 * 60 * 24);
-
-            if (diffDays < 2) {
-                Swal.fire({
-                    icon: "info",
-                    title: "⏳ Espera requerida",
-                    text: `Este botón solo se puede usar cada 2 días. Por favor espera un poco más.`,
-                    confirmButtonText: "Aceptar"
-                });
-                return;
-            }
-        }
-
-        Swal.fire({
-            title: "🔐 Confirmación de identidad",
-            input: "password",
-            inputLabel: "Ingrese su clave de administrador",
-            inputPlaceholder: "Contraseña",
-            inputAttributes: {
-                maxlength: 30,
-                autocapitalize: "off",
-                autocorrect: "off"
-            },
-            showCancelButton: true,
-            confirmButtonText: "Borrar todo",
-            cancelButtonText: "Cancelar",
-            preConfirm: (password) => {
-                if (password !== ADMIN_PASSWORD) {
-                    Swal.showValidationMessage("❌ Contraseña incorrecta");
-                }
-                return password === ADMIN_PASSWORD;
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                localStorage.clear();
-                localStorage.setItem("lastClearDate", now.toISOString());
-                let usedCount = parseInt(localStorage.getItem("clearButtonUses") || "0", 10);
-                usedCount++;
-                localStorage.setItem("clearButtonUses", usedCount.toString());
-                adminBtn.style.display = "none";
-
-                Swal.fire({
-                    icon: "success",
-                    title: "✅ Datos borrados",
-                    text: "Todo el progreso del examen fue eliminado.",
-                    confirmButtonText: "Aceptar"
-                }).then(() => {
-                    location.reload();
-                });
-            }
-        });
-    });
-
-    const usedCount = parseInt(localStorage.getItem("clearButtonUses") || "0", 10);
-    if (usedCount >= MAX_CLEAR_USES) {
-        adminBtn.style.display = "none";
-    } else {
-        adminBtn.style.display = "none";
-    }  
-});
-
-
-
-
-*/
