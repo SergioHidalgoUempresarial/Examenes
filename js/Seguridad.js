@@ -5,7 +5,7 @@ let seguridadActiva = true;
 document.addEventListener("keydown", function (e) {
     if (!seguridadActiva) return;
 
-    const key = e.key.toLowerCase();
+    const key = (e.key || "").toLowerCase();
     const bloqueado =
         e.key === "F12" ||
         (e.ctrlKey && e.shiftKey && key === "i") ||   // DevTools

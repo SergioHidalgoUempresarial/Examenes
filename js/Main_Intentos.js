@@ -3,6 +3,7 @@
 // ===============================
 let intentoYaRestado = false; // Para evitar que se reste más de una vez
 let devtoolsAbierto = false;
+let devtoolsYaDetectado = false;
 
 // ===============================
 // GESTIÓN DE INTENTOS
@@ -139,25 +140,42 @@ document.addEventListener("visibilitychange", function () {
     }
 });
 
+
 // ===============================
 // DETECCIÓN CONFIABLE DE DEVTOOLS
 // ===============================
+function detectarDevtoolsConTiempo() {
+    const umbral = 100; // milisegundos
 
-function detectarDevtoolsConRendimiento() {
-    const threshold = 160; // milisegundos
-    let start = performance.now();
+    const antes = new Date();
+    Function('debugger')(); // Ejecuta sin mostrar nada
+    const despues = new Date();
 
-    debugger; // Si DevTools está abierto, esto ralentiza la ejecución
+    const diferencia = despues - antes;
 
-    let end = performance.now();
-    if (end - start > threshold && !devtoolsAbierto) {
-        devtoolsAbierto = true;
-        manejarSalidaExamen("devtools");
+    if (diferencia > umbral && !devtoolsYaDetectado) {
+        devtoolsYaDetectado = true;
+
+        Swal.fire({
+            icon: 'error',
+            title: '🚨 DevTools detectado',
+            html: `
+                <p>Has abierto las herramientas de desarrollo (DevTools).</p>
+                <p><strong>Se perderá un intento</strong> por esta acción.</p>
+            `,
+            confirmButtonText: 'Entendido',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(() => {
+            manejarSalidaExamen("devtools"); // restar intento
+            location.reload(); // recarga para bloquear el intento
+        });
     }
 }
 
-// Repite la detección cada 3 segundos
-setInterval(detectarDevtoolsConRendimiento, 3000);
+// Llamar la detección cada 1.5 segundos
+setInterval(detectarDevtoolsConTiempo, 1500);
+
 
 // ===============================
 // MOSTRAR/OCULTAR INSTRUCCIONES
@@ -194,9 +212,22 @@ document.addEventListener("click", function (e) {
 // CHECKBOX DE CONSENTIMIENTO
 // ===============================
 document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("studentName").addEventListener("input", guardarDatosEstudiante);
+    document.getElementById("studentID").addEventListener("input", guardarDatosEstudiante);
+
     const checkbox = document.getElementById("agreeCheck");
     if (!checkbox) return;
 
+    // --- Aquí agrego código para cargar el estado guardado ---
+    let estado = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+    if (estado.instruccionesAceptadas) {
+        checkbox.checked = true;
+        checkbox.disabled = true;
+        instructions.style.display = "none";
+        btn.innerText = "📘 Ver Instrucciones";
+    }
+
+    // Evento para guardar cuando el usuario acepte
     checkbox.addEventListener("change", function () {
         if (checkbox.checked) {
             Swal.fire({
@@ -212,6 +243,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkbox.disabled = true;
                     instructions.style.display = "none";
                     btn.innerText = "📘 Ver Instrucciones";
+
+                    // **Se añde esto para que se guarde en el localStorage**
+                    let estado = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+                    estado.instruccionesAceptadas = true;
+                    estado.fechaAceptacion = new Date().toISOString();
+                    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(estado));
                 } else {
                     checkbox.checked = false;
                 }
@@ -287,6 +324,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
 
 // ===============================
 // INICIALIZACIÓN

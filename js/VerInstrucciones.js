@@ -1,20 +1,30 @@
-const btn = document.getElementById("toggleInstructionsBtn");
-const instructions = document.getElementById("instruction");
+const btnAcceptInstructions = document.getElementById("toggleInstructionsBtn");
+const panelInstructions = document.getElementById("instruction");
+const agreeKey = "aceptoInstruccionesExamen"; // clave para localStorage
 
-instructions.style.display = "none";
+panelInstructions.style.display = "none";
 
-btn.addEventListener("click", () => {
-    if (instructions.style.display === "none") {
-        instructions.style.display = "block";
-        btn.innerText = "❌ Ocultar Instrucciones";
+btnAcceptInstructions.addEventListener("click", () => {
+    if (panelInstructions.style.display === "none") {
+        panelInstructions.style.display = "block";
+        btnAcceptInstructions.innerText = "❌ Ocultar Instrucciones";
     } else {
-        instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        panelInstructions.style.display = "none";
+        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
     }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
     const checkbox = document.getElementById("agreeCheck");
+
+    // Cargar estado previo del checkbox
+    const aceptadoPrevio = localStorage.getItem(agreeKey);
+    if (aceptadoPrevio === "true") {
+        checkbox.checked = true;
+        checkbox.disabled = true;
+        panelInstructions.style.display = "none";
+        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+    }
 
     // Al marcar el checkbox
     checkbox.addEventListener("change", function () {
@@ -30,8 +40,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then((result) => {
                 if (result.isConfirmed) {
                     checkbox.disabled = true;
-                    instructions.style.display = "none";
-                    btn.innerText = "📘 Ver Instrucciones";
+                    panelInstructions.style.display = "none";
+                    btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+
+                    // Guardar estado en localStorage
+                    localStorage.setItem(agreeKey, "true");
                 } else {
                     checkbox.checked = false;
                     Swal.fire({
@@ -57,13 +70,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const target = event.target;
 
         if (
-            instructions.style.display === "block" &&
-            !instructions.contains(target) &&
-            !btn.contains(target) &&
+            panelInstructions.style.display === "block" &&
+            !panelInstructions.contains(target) &&
+            !btnAcceptInstructions.contains(target) &&
             !checkbox.disabled // solo si NO está aceptado
         ) {
-            instructions.style.display = "none";
-            btn.innerText = "📘 Ver Instrucciones";
+            panelInstructions.style.display = "none";
+            btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
 
             Swal.fire({
                 icon: 'warning',
@@ -75,4 +88,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     });
+});
+
+// Lógica del botón toggle fuera de DOMContentLoaded para que funcione sin retraso
+btnAcceptInstructions.addEventListener("click", () => {
+    if (panelInstructions.style.display === "none") {
+        panelInstructions.style.display = "block";
+        btnAcceptInstructions.innerText = "❌ Ocultar Instrucciones";
+    } else {
+        panelInstructions.style.display = "none";
+        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+    }
 });
