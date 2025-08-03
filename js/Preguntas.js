@@ -38,10 +38,22 @@ function loadQuestion(index) {
     nextBtn.innerText = (index === uniqueQuestions.length - 1) ? "Finalizar" : "Siguiente";
 }
 
+function guardarDatosEstudiante() {
+    const nombre = document.getElementById("studentName").value.trim();
+    const cedula = document.getElementById("studentID").value.trim();
+
+    let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+
+    data.nombreEstudiante = nombre;
+    data.cedulaEstudiante = cedula;
+
+    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
+}
+
 function saveAnswer(index, value) {
     studentAnswers[index] = value;
     localStorage.setItem("studentAnswers", JSON.stringify(studentAnswers));
-    localStorage.setItem("currentQuestionIndex", currentQuestion);  // Cambiado aquí
+    localStorage.setItem("currentQuestionIndex", currentQuestion);
     updateProgress();
 
     const nextBtn = document.getElementById("nextBtn");
@@ -90,13 +102,6 @@ function renderProgressBar() {
             box.style.border = "2px solid #e8e19aff";
         }
 
-        // Al hacer clic, ir a esa pregunta
-        // box.onclick = () => {
-        //     if (i <= currentQuestion) return;
-        //     currentQuestion = i;
-        //     loadQuestion(i);
-        // }
-        // que solo salgan las preguntas y no se les pueda hacer clic
         box.style.cursor = "default";
         container.appendChild(box);
     }
