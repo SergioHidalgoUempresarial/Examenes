@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
         validarBtn.disabled = true;
         validarBtn.style.display = "none";
         document.getElementById("uniqueSelection").style.display = "block"; // Mostrar si ya estaba guardado
+
+        //Para mostrar u ocultar la parte de desarrollo
+        checkIfDevelopmentShouldShow();
+
         return;
     }
 
@@ -53,6 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
         validarBtn.style.display = "none";
         document.getElementById("uniqueSelection").style.display = "block";
 
+        checkIfDevelopmentShouldShow();
+
         Swal.fire({
             icon: "success",
             title: "Datos validados",
@@ -65,6 +71,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (partes.length < 3) return false;
         return partes.every(p => p.length >= 3);
     }
+
+    // Definición de la función que controla el mostrar desarrollo
+    function checkIfDevelopmentShouldShow() {
+        if (localStorage.getItem("parte1Finalizada") === "true") {
+            document.getElementById("essay").style.display = "block";
+            initDevelopmentPart(); // O la función que uses para iniciar desarrollo
+        } else {
+            document.getElementById("essay").style.display = "none";
+        }
+    }
+
 });
 
 // Mostrar los datos guardados en consola (desde EXAM_STORAGE_KEY)
