@@ -8,6 +8,6 @@ const MAX_ATTEMPTS = 4; //Cantidad de intentos si los estudiantes recargan o hac
 
 
 
-// const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
-// const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
-// const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
+const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
+const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
+const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
