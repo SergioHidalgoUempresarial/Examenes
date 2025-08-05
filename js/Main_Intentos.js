@@ -212,8 +212,8 @@ document.addEventListener("click", function (e) {
 // CHECKBOX DE CONSENTIMIENTO
 // ===============================
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("studentName").addEventListener("input", guardarDatosEstudiante);
-    document.getElementById("studentID").addEventListener("input", guardarDatosEstudiante);
+    //document.getElementById("studentName").addEventListener("input", guardarDatosEstudiante);
+    //document.getElementById("studentID").addEventListener("input", guardarDatosEstudiante);
 
     const checkbox = document.getElementById("agreeCheck");
     if (!checkbox) return;
@@ -330,8 +330,8 @@ window.addEventListener("DOMContentLoaded", () => {
 // INICIALIZACIÓN
 // ===============================
 window.onload = function () {
-    verificarIntentos();
-    mostrarIntentosRestantes();
-    actualizarAccesoPorIntentos();
-    controlarAccesoPorIntentos();
+    // verificarIntentos();
+    // mostrarIntentosRestantes();
+    // actualizarAccesoPorIntentos();
+    // controlarAccesoPorIntentos();
 };

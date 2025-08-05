@@ -39,12 +39,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 allowEscapeKey: true
             }).then((result) => {
                 if (result.isConfirmed) {
+                    checkbox.checked = true;
                     checkbox.disabled = true;
                     panelInstructions.style.display = "none";
                     btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
 
                     // Guardar estado en localStorage
                     localStorage.setItem(agreeKey, "true");
+                    let examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+                    examData.instruccionesAceptadas = true;
+                    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(examData));
                 } else {
                     checkbox.checked = false;
                     Swal.fire({

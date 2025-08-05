@@ -12,12 +12,12 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>UEmpresarial</title>
     <link rel="shortcut icon" href="images/Logo.png" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </head>
 
 <body>
-
     <button id="toggleInstructionsBtn">📘 Ver Instrucciones</button>
-
     <!-- Instrucciones de clausulas para el examen -->
     <section id="instructions-section" class="instructions">
         <div id="instruction" class="instructions">
@@ -111,6 +111,7 @@
                     <a href="#uniqueSelection">Selección única</a>
                     <a href="#essay">Desarrollo</a>
                     <a href="#practice">Práctica</a>
+                    <button id="btnGenerarPDF">Descargar resumen del examen</button>
                 </nav>
                 <br>
                 <br>
@@ -127,6 +128,7 @@
                             placeholder="Nombre completo" /></span>
                     <span id="idDisplay"><input type="text" id="studentID"
                             placeholder="Cédula o identificación" /></span>
+                    <button id="validarDatosBtn">Validar y Guardar</button>
                 </div>
                 <div class="header-picture">
                     <span class="img" id="Header-picture"><img src="images/Encabezado.png"
@@ -188,6 +190,7 @@
     <script src="js/Main_Intentos.js"></script>
     <script src="js/Seguridad.js"></script>
     <script src="js/ValidarAcceso.js"></script>
+    <script src="js/ValidarDatosDelEstudiante.js"></script>
     <script src="js/VerInstrucciones.js"></script>
     <script src="js/IniciarCuentaRegresiva.js"></script>
     <script src="js/MostrarFechaActual.js"></script>
@@ -195,6 +198,7 @@
     <!-- <script src="js/CuandoIngresen.js"></script> -->
     <script src="js/MenuHamburguesa.js"></script>
     <script src="js/ResumenRespuestas.js"></script>
+    <script src="js/GenerarPDF.js"></script>
 </body>
 
 </html>
