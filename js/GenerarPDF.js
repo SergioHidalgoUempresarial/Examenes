@@ -10,29 +10,39 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     const cedula = examData.cedula || "No registrada";
     const respuestasSeleccion = examData.respuestasSeleccionUnica || {};
     const respuestasDesarrollo = examData.respuestasDesarrollo || {};
-
-    // ✅ Instrucciones aceptadas
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-    if (examData.instruccionesAceptadas) {
-        doc.text("✅ El estudiante aceptó las instrucciones del examen.", 20, y);
-    } else {
-        doc.text("⚠️ El estudiante NO aceptó las instrucciones del examen.", 20, y);
-    }
-    y += 10;
-
-    // 🧑‍🎓 Información del estudiante
+    
+    //Título de PDF
     doc.setFontSize(16);
     doc.text("Resumen del Examen", 20, y);
     y += 10;
 
+    //Instrucciones aceptadas
+    doc.setFontSize(12);
+    if (examData.instruccionesAceptadas) {
+        doc.text("El estudiante aceptó las instrucciones del examen.", 20, y);
+    } else {
+        doc.text("El estudiante NO aceptó las instrucciones del examen.", 20, y);
+    }
+    y += 10;
+    
+    // Información del estudiante
     doc.setFontSize(12);
     doc.text(`Nombre del estudiante: ${nombre}`, 20, y);
     y += 10;
     doc.text(`Cédula: ${cedula}`, 20, y);
     y += 10;
 
-    // ✅ Selección única
+    // Agregar fecha y hora actual del examen
+    const fechaTexto = document.getElementById("dateDisplay")?.textContent || "Fecha no disponible";
+    doc.text(fechaTexto, 20, y);
+    y += 10;
+
+    // Agregar tiempo restante del examen
+    const tiempoTexto = document.getElementById("timer")?.textContent || "Tiempo no disponible";
+    doc.text(tiempoTexto, 20, y);
+    y += 10;
+
+    // Selección única
     const datosSeleccion = respuestasSeleccion.map((item, index) => [
         `${index + 1}. ${item.pregunta}`,
         item.respuesta
@@ -49,7 +59,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         y = doc.lastAutoTable.finalY + 10;
     }
 
-    // 📝 Desarrollo
+    // Desarrollo
     const datosDesarrollo = Object.entries(respuestasDesarrollo).map(([key, value], index) => [
         `Pregunta ${index + 1}`, value,
     ]);
@@ -65,6 +75,6 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         y = doc.lastAutoTable.finalY + 10;
     }
 
-    // 💾 Guardar el PDF
+    // Guardar el PDF
     doc.save("resumen_examen.pdf");
 });
