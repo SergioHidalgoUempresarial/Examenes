@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!nameInput || !idInput || !validarBtn) return;
 
     const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+    document.getElementById("uniqueSelection").style.display = "none"; // Oculta al cargar
 
     if (examData.nombre && examData.cedula) {
         nameInput.value = examData.nombre;
@@ -14,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         idInput.disabled = true;
         validarBtn.disabled = true;
         validarBtn.style.display = "none";
+        document.getElementById("uniqueSelection").style.display = "block"; // Mostrar si ya estaba guardado
         return;
     }
 
@@ -49,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         idInput.disabled = true;
         validarBtn.disabled = true;
         validarBtn.style.display = "none";
+        document.getElementById("uniqueSelection").style.display = "block";
 
         Swal.fire({
             icon: "success",
