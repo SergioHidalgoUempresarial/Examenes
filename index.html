@@ -142,7 +142,7 @@
         <div class="section-container">
             <!-- PANEL DE PROGRESO LATERAL -->
             <aside id="question-progress">
-                <h3>Preguntas (<span id="totalQuestions">0</span>)</h3>
+                <h3>Preguntas selección única.(<span id="totalQuestions">0</span>)</h3>
                 <div id="progressList"></div>
             </aside>
 
@@ -156,9 +156,21 @@
         </div>
     </section>
 
-    <section id="essay" class="essay">
-        <div id="essay-container">
+    <section id="essay" class="essay" style="display: none;">
+        <div class="section-container">
+            <!-- Panel lateral de preguntas de desarrollo -->
+            <div id="essay-progress" class="essay-progress">
+                <h3>Preguntas de desarrollo.</h3>
+                <div id="essayProgressList"></div>
+            </div>
 
+            <!-- Pregunta actual y navegación -->
+            <div id="essay-container">
+                <div id="contenedor-desarrollo"></div>
+                <div class="essay-navigation">
+                    <button onclick="nextQuestion()" id="nextBtnDesarrollo">Siguiente</button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -195,7 +207,8 @@
     <script src="js/IniciarCuentaRegresiva.js"></script>
     <script src="js/MostrarFechaActual.js"></script>
     <script src="js/PreguntasSeleccionUnica.js"></script>
-    <script src="js/CuandoIngresen.js"></script>
+    <script src="js/PreguntasDesarrollo.js"></script>
+    <!-- <script src="js/CuandoIngresen.js"></script> -->
     <script src="js/MenuHamburguesa.js"></script>
     <script src="js/ResumenRespuestas.js"></script>
     <script src="js/GenerarPDF.js"></script>
