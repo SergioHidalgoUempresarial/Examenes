@@ -480,17 +480,86 @@ label[for="agreeCheck"] {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
-
 }
 
 #nextBtn:hover {
   background-color: #0066cc;
 }
 
+/* ------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Parte de desarrollo */
+/* ------------------------------------------------------------------------------------------------------------------------------------------- */
+
+#essay .section-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Panel lateral de desarrollo */
+.essay-progress {
+  width: 220px;
+  background-color: #f7f9fb;
+  border: 1px solid #d0d7de;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.essay-progress h3 {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
+}
+
+#essayProgressList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.essay-question-button {
+  padding: 10px 20px;
+  background-color: #004080;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.essay-question-button.answered {
+  background-color: #4caf50;
+  color: white;
+}
+
+#contenedor-desarrollo label {
+  font-weight: bold;
+  font-size: 1em;
+}
+
+#contenedor-desarrollo textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
 
 
 
 
+/* ------------------------------------------------------------------------------------------------------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
@@ -515,12 +584,6 @@ button {
 button:hover {
   background: #004d99;
 }
-
-
-
-
-
-/* ------------------------------------------------------------------------------------------------------------------------------------------- */
 
 
 

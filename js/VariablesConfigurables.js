@@ -4,10 +4,10 @@ const ACCESS_CODE = ""; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 180; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
-
-
-
-const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
-const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
-const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
 const MAX_ATTEMPTS = 4; //Cantidad de intentos si los estudiantes recargan o hacen algo indebido
+
+
+
+// const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
+// const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
+// const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
