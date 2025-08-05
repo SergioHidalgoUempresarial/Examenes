@@ -55,8 +55,7 @@ function validateAccess() {
                 document.getElementById("nav-bar").style.display = "block";
                 document.getElementById("begin-timer").style.display = "block";
                 document.getElementById("name-section").style.display = "block";
-                document.getElementById("uniqueSelection").style.display = "block";
-                // Aquí puedes permitir continuar con el examen
+
             } else if (result.isDismissed) {
                 // El usuario presionó cancelar o cerró el cuadro
                 window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
