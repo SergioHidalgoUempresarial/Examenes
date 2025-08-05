@@ -330,8 +330,8 @@ window.addEventListener("DOMContentLoaded", () => {
 // INICIALIZACIÓN
 // ===============================
 window.onload = function () {
-    // verificarIntentos();
-    // mostrarIntentosRestantes();
-    // actualizarAccesoPorIntentos();
-    // controlarAccesoPorIntentos();
+    verificarIntentos();
+    mostrarIntentosRestantes();
+    actualizarAccesoPorIntentos();
+    controlarAccesoPorIntentos();
 };
