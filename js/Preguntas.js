@@ -1,188 +1,6 @@
 let currentQuestion = 0;
 let studentAnswers = [];
 
-function loadQuestion(index) {
-    const q = uniqueQuestions[index];
-    const container = document.getElementById("question-content");
-
-    container.innerHTML = `
-        <p style="font-size: 1.1em; font-weight: bold; color: #004080; margin-bottom: 15px;">
-            <strong>${index + 1}.</strong> ${q.question}
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            ${q.options.map(opt => `
-                <label style="background: #f5f9ff; border: 1px solid #cce0f5; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
-                <input type="radio" name="q${index}" value="${opt}" 
-                    onchange="saveAnswer(${index}, this.value)" 
-                    ${studentAnswers[index] === opt ? "checked" : ""}
-                    style="margin-right: 8px;">
-                ${opt}
-            </label>
-            `).join('')}
-        </div>
-    `;
-
-    const nextBtn = document.getElementById("nextBtn");
-
-    if (studentAnswers[index]) {
-        nextBtn.disabled = false;
-        nextBtn.style.opacity = 1;
-        nextBtn.style.cursor = "pointer";
-    } else {
-        nextBtn.disabled = true;
-        nextBtn.style.opacity = 0.6;
-        nextBtn.style.cursor = "not-allowed";
-    }
-
-    updateProgress();
-    nextBtn.innerText = (index === uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única" : "Siguiente";
-}
-
-function guardarDatosEstudiante() {
-    const nombre = document.getElementById("studentName").value.trim();
-    const cedula = document.getElementById("studentID").value.trim();
-
-    let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
-
-    data.nombreEstudiante = nombre;
-    data.cedulaEstudiante = cedula;
-
-    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
-}
-
-function saveAnswer(index, value) {
-    studentAnswers[index] = value;
-    localStorage.setItem("studentAnswers", JSON.stringify(studentAnswers));
-    localStorage.setItem("currentQuestionIndex", currentQuestion);
-    updateProgress();
-
-    let examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
-
-    const q = uniqueQuestions[index];
-    if (!examData.respuestasSeleccionUnica) {
-        examData.respuestasSeleccionUnica = [];
-    }
-    examData.respuestasSeleccionUnica[index] = {
-        pregunta: q.question,
-        respuesta: value
-    };
-
-    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(examData));
-
-    const nextBtn = document.getElementById("nextBtn");
-    nextBtn.disabled = false;
-    nextBtn.style.opacity = 1;
-    nextBtn.style.cursor = "pointer";
-}
-
-function nextQuestion() {
-    if (currentQuestion < uniqueQuestions.length - 1) {
-        currentQuestion++;
-        loadQuestion(currentQuestion);
-    } else {
-        // Mostrar resultados aquí o continuar al paso siguiente
-        //alert("Examen finalizado");
-        Swal.fire({
-            title: "¡Parte #1 finalizada!",
-            text: "Ahora continúa con la parte #2 de desarrollo.",
-            icon: "success",
-            confirmButtonText: "Continuar"
-        }).then(() => {
-            document.getElementById("uniqueSection").style.display = "none"; // Oculta selección única
-            document.getElementById("developmentSection").style.display = "block"; // Muestra desarrollo
-            initDevelopmentPart(); // Función que manejará preguntas abiertas
-        });
-        console.log("Respuestas del estudiante:", studentAnswers);
-    }
-}
-
-function renderProgressBar() {
-    const container = document.getElementById("progressList");
-    const total = uniqueQuestions.length;
-    document.getElementById("totalQuestions").textContent = total;
-    container.innerHTML = "";
-
-    for (let i = 0; i < total; i++) {
-        const box = document.createElement("div");
-        box.style.width = "3em"
-        box.textContent = i + 1;
-        box.style.padding = "10px";
-        box.style.backgroundColor = "#e6e6e6ff"
-        box.style.borderRadius = "4px";
-        box.style.textAlign = "center";
-        box.style.cursor = "pointer";
-        box.style.marginBottom = "8px";
-        box.style.border = "1px solid #ccc";
-
-        // Colorea si ya respondió
-        box.style.background = studentAnswers[i] ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
-
-        // Si es la pregunta actual, resaltarla
-        if (i === currentQuestion) {
-            box.classList.add("active-question");
-            box.style.backgroundColor = "#d6d092ff"
-            box.style.width = "3.5em"
-            box.style.border = "2px solid #e8e19aff";
-        }
-
-        box.style.cursor = "default";
-        container.appendChild(box);
-    }
-}
-
-function updateProgress() {
-    renderProgressBar();
-}
-
-//Para hacer las preguntas aleatoras
-function shuffleArray(inputArray) {
-    return inputArray
-        .map(q => ({
-            ...q,
-            options: q.options.sort(() => Math.random() - 0.5) // Opcional: también randomiza las opciones
-        }))
-        .map(value => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
-}
-
-// Inicialización (puedes llamarla al mostrar esta sección)
-function initUniqueSelection() {
-    const saved = localStorage.getItem("uniqueQuestionsRandomizadas");
-
-    if (saved) {
-        try {
-            const parsed = JSON.parse(saved);
-            if (Array.isArray(parsed)) {
-                window.uniqueQuestions = parsed;
-            } else {
-                throw new Error("No es un array");
-            }
-        } catch (e) {
-            const randomized = shuffleArray(uniqueQuestions);
-            window.uniqueQuestions = randomized;
-            localStorage.setItem("uniqueQuestionsRandomizadas", JSON.stringify(randomized));
-        }
-    } else {
-        const randomized = shuffleArray(uniqueQuestions);
-        window.uniqueQuestions = randomized;
-        localStorage.setItem("uniqueQuestionsRandomizadas", JSON.stringify(randomized));
-    }
-
-    const savedAnswers = localStorage.getItem("studentAnswers");
-    if (savedAnswers) {
-        studentAnswers = JSON.parse(savedAnswers);
-    } else {
-        studentAnswers = [];
-    }
-
-    const savedIndex = localStorage.getItem("currentQuestionIndex");
-    currentQuestion = savedIndex !== null ? parseInt(savedIndex, 10) : 0;
-
-    loadQuestion(currentQuestion);
-}
-
-
 const uniqueQuestions = [
     {
         question: "¿Qué es la ciberseguridad? (2 pts)",
@@ -455,5 +273,186 @@ const uniqueQuestions = [
     //     correct: "taskkill"
     // },
 ];
+
+function loadQuestion(index) {
+    const q = window.uniqueQuestions[index];
+    const container = document.getElementById("question-content");
+
+    container.innerHTML = `
+        <p style="font-size: 1.1em; font-weight: bold; color: #004080; margin-bottom: 15px;">
+            <strong>${index + 1}.</strong> ${q.question}
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            ${q.options.map(opt => `
+                <label style="background: #f5f9ff; border: 1px solid #cce0f5; border-radius: 8px; padding: 8px 12px; cursor: pointer;">
+                <input type="radio" name="q${index}" value="${opt}" 
+                    onchange="saveAnswer(${index}, this.value)" 
+                    ${studentAnswers[index] === opt ? "checked" : ""}
+                    style="margin-right: 8px;">
+                ${opt}
+            </label>
+            `).join('')}
+        </div>
+    `;
+
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (studentAnswers[index]) {
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = 1;
+        nextBtn.style.cursor = "pointer";
+    } else {
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = 0.6;
+        nextBtn.style.cursor = "not-allowed";
+    }
+
+    updateProgress();
+    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única" : "Siguiente";
+}
+
+function guardarDatosEstudiante() {
+    const nombre = document.getElementById("studentName").value.trim();
+    const cedula = document.getElementById("studentID").value.trim();
+
+    let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+
+    data.nombreEstudiante = nombre;
+    data.cedulaEstudiante = cedula;
+
+    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
+}
+
+function saveAnswer(index, value) {
+    studentAnswers[index] = value;
+    localStorage.setItem("studentAnswers", JSON.stringify(studentAnswers));
+    localStorage.setItem("currentQuestionIndex", currentQuestion);
+    updateProgress();
+
+    let examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+
+    const q = window.uniqueQuestions[index];
+    if (!examData.respuestasSeleccionUnica) {
+        examData.respuestasSeleccionUnica = [];
+    }
+    examData.respuestasSeleccionUnica[index] = {
+        pregunta: q.question,
+        respuesta: value
+    };
+
+    localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(examData));
+
+    const nextBtn = document.getElementById("nextBtn");
+    nextBtn.disabled = false;
+    nextBtn.style.opacity = 1;
+    nextBtn.style.cursor = "pointer";
+}
+
+function nextQuestion() {
+    if (currentQuestion < window.uniqueQuestions.length - 1) {
+        currentQuestion++;
+        loadQuestion(currentQuestion);
+    } else {
+        // Mostrar resultados aquí o continuar al paso siguiente
+        //alert("Examen finalizado");
+        Swal.fire({
+            title: "¡Parte #1 finalizada!",
+            text: "Ahora continúa con la parte #2 de desarrollo.",
+            icon: "success",
+            confirmButtonText: "Continuar"
+        }).then(() => {
+            document.getElementById("uniqueSection").style.display = "none"; // Oculta selección única
+            document.getElementById("developmentSection").style.display = "block"; // Muestra desarrollo
+            initDevelopmentPart(); // Función que manejará preguntas abiertas
+        });
+        console.log("Respuestas del estudiante:", studentAnswers);
+    }
+}
+
+function renderProgressBar() {
+    const container = document.getElementById("progressList");
+    const total = window.uniqueQuestions.length;
+    document.getElementById("totalQuestions").textContent = total;
+    container.innerHTML = "";
+
+    for (let i = 0; i < total; i++) {
+        const box = document.createElement("div");
+        box.style.width = "3em"
+        box.textContent = i + 1;
+        box.style.padding = "10px";
+        box.style.backgroundColor = "#e6e6e6ff"
+        box.style.borderRadius = "4px";
+        box.style.textAlign = "center";
+        box.style.cursor = "pointer";
+        box.style.marginBottom = "8px";
+        box.style.border = "1px solid #ccc";
+
+        // Colorea si ya respondió
+        box.style.background = studentAnswers[i] ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
+
+        // Si es la pregunta actual, resaltarla
+        if (i === currentQuestion) {
+            box.classList.add("active-question");
+            box.style.backgroundColor = "#d6d092ff"
+            box.style.width = "3.5em"
+            box.style.border = "2px solid #e8e19aff";
+        }
+
+        box.style.cursor = "default";
+        container.appendChild(box);
+    }
+}
+
+function updateProgress() {
+    renderProgressBar();
+}
+
+//Para hacer las preguntas aleatoras
+function shuffleArray(inputArray) {
+    return inputArray
+        .map(q => ({
+            ...q,
+            options: q.options.sort(() => Math.random() - 0.5) // Opcional: también randomiza las opciones
+        }))
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+}
+
+// Inicialización (puedes llamarla al mostrar esta sección)
+function initUniqueSelection() {
+    const saved = localStorage.getItem("uniqueQuestionsRandomizadas");
+
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+                window.uniqueQuestions = parsed;
+            } else {
+                throw new Error("No es un array");
+            }
+        } catch (e) {
+            const randomized = shuffleArray(uniqueQuestions);
+            window.uniqueQuestions = randomized;
+            localStorage.setItem("uniqueQuestionsRandomizadas", JSON.stringify(randomized));
+        }
+    } else {
+        const randomized = shuffleArray(uniqueQuestions);
+        window.uniqueQuestions = randomized;
+        localStorage.setItem("uniqueQuestionsRandomizadas", JSON.stringify(randomized));
+    }
+
+    const savedAnswers = localStorage.getItem("studentAnswers");
+    if (savedAnswers) {
+        studentAnswers = JSON.parse(savedAnswers);
+    } else {
+        studentAnswers = [];
+    }
+
+    const savedIndex = localStorage.getItem("currentQuestionIndex");
+    currentQuestion = savedIndex !== null ? parseInt(savedIndex, 10) : 0;
+
+    loadQuestion(currentQuestion);
+}
 
 initUniqueSelection();
