@@ -27,11 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }).then((result) => {
     if (result.isConfirmed) {
-      console.log("Usuario aceptó las instrucciones");
+      console.log("Usuario aceptó estas instrucciones");
       // Aquí puedes permitir continuar con el examen
     } else if (result.isDismissed) {
       // El usuario presionó cancelar o cerró el cuadro
-      window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
+      //window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
     }
   });
 });

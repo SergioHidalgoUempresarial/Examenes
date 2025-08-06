@@ -365,9 +365,6 @@ function nextQuestion() {
             document.getElementById("essay").style.display = "block";
             mostrarPreguntaDesarrollo(0);
             cargarPanelLateralDesarrollo();
-            // document.getElementById("uniqueSelection").style.display = "none"; // Oculta selección única
-            // document.getElementById("developmentSection").style.display = "block"; // Muestra desarrollo
-            // initDevelopmentPart(); // Inicializa preguntas de desarrollo
         });
         console.log("Respuestas del estudiante:", studentAnswers);
     }
