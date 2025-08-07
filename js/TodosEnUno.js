@@ -113,6 +113,8 @@ function actualizarAccesoPorIntentos() {
                 Sus intentos se acabaron, por favor póngase en contacto con su docente.
             </p>
         `;
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
     } else {
         accessSection.innerHTML = `
             <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
@@ -1221,7 +1223,7 @@ function loadQuestion(index) {
     }
 
     updateProgress();
-    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única" : "Siguiente";
+    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única y Pasar a Desarrollo" : "Siguiente";
 }
 
 function guardarDatosEstudiante() {
@@ -1275,7 +1277,8 @@ function nextQuestion() {
             confirmButtonText: "Continuar"
         }).then(() => {
             localStorage.setItem("parte1Finalizada", "true");  // <-- guardamos la bandera
-            document.getElementById("essay").style.display = "block";
+            document.getElementById("uniqueSelection").style.display = "none"; // Ocultar sección de selección única
+            document.getElementById("essay").style.display = "block"; // Mostrar sección de desarrollo
             mostrarPreguntaDesarrollo(0);
             cargarPanelLateralDesarrollo();
         });

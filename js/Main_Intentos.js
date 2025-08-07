@@ -61,6 +61,8 @@ function actualizarAccesoPorIntentos() {
                 Sus intentos se acabaron, por favor póngase en contacto con su docente.
             </p>
         `;
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
     } else {
         accessSection.innerHTML = `
             <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
