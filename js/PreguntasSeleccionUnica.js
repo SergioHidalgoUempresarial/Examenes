@@ -65,7 +65,7 @@ const uniqueQuestions = [
     // {
     //     question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
     //     options: [
-    //         "La RAM es volátil y la ROM no",
+    //         "La RAM es volátil y la ROM",
     //         "La ROM es más rápida que la RAM",
     //         "Ambas pueden ser modificadas libremente por el usuario",
     //         "La RAM solo se usa en servidores"
@@ -308,7 +308,7 @@ function loadQuestion(index) {
     }
 
     updateProgress();
-    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única, Continuar a Parte 2 Desarrollo" : "Siguiente";
+    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única y Pasar a Desarrollo" : "Siguiente";
 }
 
 function guardarDatosEstudiante() {

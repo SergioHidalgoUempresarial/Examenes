@@ -10,7 +10,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     const cedula = examData.cedula || "No registrada";
     const respuestasSeleccion = examData.respuestasSeleccionUnica || {};
     const respuestasDesarrollo = examData.respuestasDesarrollo || {};
-    
+
     //Título de PDF
     doc.setFontSize(16);
     doc.text("Resumen del Examen", 20, y);
@@ -24,7 +24,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         doc.text("El estudiante NO aceptó las instrucciones del examen.", 20, y);
     }
     y += 10;
-    
+
     // Información del estudiante
     doc.setFontSize(12);
     doc.text(`Nombre del estudiante: ${nombre}`, 20, y);

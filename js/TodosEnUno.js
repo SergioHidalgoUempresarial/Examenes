@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - Código de curso TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "123456"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 180; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -154,7 +154,7 @@ function manejarSalidaExamen(tipo, evento = null) {
     localStorage.setItem(EXAM_STATE_KEY, "perdido");
 
     if (tipo === "recarga" && evento) {
-        const msg = "⚠️ Si recarga o sale, perderá un intento.";
+        const msg = "Si recarga o sale, perderá un intento.";
         evento.preventDefault();
         evento.returnValue = msg;
         return msg;
@@ -163,7 +163,7 @@ function manejarSalidaExamen(tipo, evento = null) {
     if (tipo === "cambioPestania") {
         Swal.fire({
             icon: 'warning',
-            title: '⚠ Atención',
+            title: 'Atención',
             text: 'Has salido del examen. Perdiste un intento.',
             confirmButtonText: 'Entendido'
         }).then(() => location.reload());
@@ -172,7 +172,7 @@ function manejarSalidaExamen(tipo, evento = null) {
     if (tipo === "devtools") {
         Swal.fire({
             icon: 'error',
-            title: '🚫 Acción no permitida',
+            title: 'Acción no permitida',
             text: 'Se detectó manipulación (DevTools). Has perdido un intento.',
         }).then(() => location.reload());
     }
@@ -204,7 +204,7 @@ function detectarDevtoolsConTiempo() {
 
         Swal.fire({
             icon: 'error',
-            title: '🚨 DevTools detectado',
+            title: 'DevTools detectado',
             html: `
                 <p>Has abierto las herramientas de desarrollo (DevTools).</p>
                 <p><strong>Se perderá un intento</strong> por esta acción.</p>
@@ -231,10 +231,10 @@ instructions.style.display = "none";
 btn?.addEventListener("click", () => {
     if (instructions.style.display === "none") {
         instructions.style.display = "block";
-        btn.innerText = "❌ Ocultar Instrucciones";
+        btn.innerText = "Ocultar Instrucciones";
     } else {
         instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        btn.innerText = "Ver Instrucciones";
     }
 });
 
@@ -248,7 +248,7 @@ document.addEventListener("click", function (e) {
             confirmButtonText: 'Entendido'
         });
         instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        btn.innerText = "Ver Instrucciones";
     }
 });
 
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
         checkbox.checked = true;
         checkbox.disabled = true;
         instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        btn.innerText = "Ver Instrucciones";
     }
 
     // Evento para guardar cuando el usuario acepte
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (result.isConfirmed || result.dismiss) {
                     checkbox.disabled = true;
                     instructions.style.display = "none";
-                    btn.innerText = "📘 Ver Instrucciones";
+                    btn.innerText = "Ver Instrucciones";
 
                     // **Se añde esto para que se guarde en el localStorage**
                     let estado = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
@@ -324,7 +324,7 @@ window.addEventListener("DOMContentLoaded", () => {
             if (diffDays < 2) {
                 Swal.fire({
                     icon: "info",
-                    title: "⏳ Espera requerida",
+                    title: "Espera requerida",
                     text: "Este botón solo se puede usar cada 2 días.",
                 });
                 return;
@@ -332,7 +332,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         Swal.fire({
-            title: "🔐 Confirmación",
+            title: "Confirmación",
             input: "password",
             inputLabel: "Ingrese su clave de administrador",
             inputPlaceholder: "Contraseña",
@@ -355,7 +355,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 Swal.fire({
                     icon: "success",
-                    title: "✅ Datos borrados",
+                    title: "Datos borrados",
                     text: "Todo el progreso del examen fue eliminado.",
                 }).then(() => location.reload());
             }
@@ -371,6 +371,97 @@ window.onload = function () {
     actualizarAccesoPorIntentos();
     controlarAccesoPorIntentos();
 };
+
+//Para que no lo vuelva a pedir el código a menos que sea necesario
+window.addEventListener("DOMContentLoaded", function () {
+    const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+    const intentosRestantes = examData.intentosRestantes ?? MAX_ATTEMPTS;
+
+    if (localStorage.getItem("parte1Finalizada") === "true") {
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "block";
+
+        // Recupera el índice guardado o empieza en 0 si no existe
+        const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+        indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+
+        mostrarPreguntaDesarrollo(indiceDesarrollo);
+        cargarPanelLateralDesarrollo();
+    }
+
+    // Si no hay intentos, muestra solo el acceso bloqueado
+    if (intentosRestantes <= 0) {
+        document.getElementById("access-section").style.display = "block";
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+        return;
+    }
+
+    // Si ya validó datos y aceptó instrucciones, muestra la parte correspondiente
+    if (examData.nombre && examData.cedula && examData.instruccionesAceptadas) {
+        document.getElementById("access-section").style.display = "none";
+        document.getElementById("name-section").style.display = "block";
+
+        if (localStorage.getItem("parte1Finalizada") === "true") {
+            document.getElementById("uniqueSelection").style.display = "none";
+            document.getElementById("essay").style.display = "block";
+            const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+            indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+            mostrarPreguntaDesarrollo(indiceDesarrollo);
+            cargarPanelLateralDesarrollo();
+        } else {
+            document.getElementById("uniqueSelection").style.display = "block";
+            document.getElementById("essay").style.display = "none";
+            initUniqueSelection(); //Para que cargue
+            renderProgressBar();
+        }
+    } else {
+        // Si no ha validado datos, muestra el acceso
+        document.getElementById("access-section").style.display = "block";
+        document.getElementById("name-section").style.display = "none";
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////////////////////////
 
 
@@ -443,7 +534,7 @@ function validateAccess() {
         document.getElementById("upload").style.display = "none";
         document.getElementById("final").style.display = "none";
         Swal.fire({
-            title: '🚨 ¡Recuerde!',
+            title: '¡Recuerde!',
             html: `
                 <p>Le doy mis mejores deseos en la evaluación.</p>
                 <br>
@@ -510,10 +601,10 @@ panelInstructions.style.display = "none";
 btnAcceptInstructions.addEventListener("click", () => {
     if (panelInstructions.style.display === "none") {
         panelInstructions.style.display = "block";
-        btnAcceptInstructions.innerText = "❌ Ocultar Instrucciones";
+        btnAcceptInstructions.innerText = "Ocultar Instrucciones";
     } else {
         panelInstructions.style.display = "none";
-        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+        btnAcceptInstructions.innerText = "Ver Instrucciones";
     }
 });
 
@@ -526,7 +617,7 @@ document.addEventListener("DOMContentLoaded", function () {
         checkbox.checked = true;
         checkbox.disabled = true;
         panelInstructions.style.display = "none";
-        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+        btnAcceptInstructions.innerText = "Ver Instrucciones";
     }
 
     // Al marcar el checkbox
@@ -545,7 +636,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkbox.checked = true;
                     checkbox.disabled = true;
                     panelInstructions.style.display = "none";
-                    btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+                    btnAcceptInstructions.innerText = "Ver Instrucciones";
 
                     // Guardar estado en localStorage
                     localStorage.setItem(agreeKey, "true");
@@ -583,7 +674,7 @@ document.addEventListener("DOMContentLoaded", function () {
             !checkbox.disabled // solo si NO está aceptado
         ) {
             panelInstructions.style.display = "none";
-            btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+            btnAcceptInstructions.innerText = "Ver Instrucciones";
 
             Swal.fire({
                 icon: 'warning',
@@ -601,10 +692,10 @@ document.addEventListener("DOMContentLoaded", function () {
 btnAcceptInstructions.addEventListener("click", () => {
     if (panelInstructions.style.display === "none") {
         panelInstructions.style.display = "block";
-        btnAcceptInstructions.innerText = "❌ Ocultar Instrucciones";
+        btnAcceptInstructions.innerText = "Ocultar Instrucciones";
     } else {
         panelInstructions.style.display = "none";
-        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+        btnAcceptInstructions.innerText = "Ver Instrucciones";
     }
 });
 /////////////////////////////////
@@ -690,118 +781,117 @@ dateElement.textContent = `Fecha: ${formattedDate}`;
 //PreguntasDesarrollo.js
 /////////////////////////////////
 const preguntasDesarrollo = [
-  "Explique qué es una base de datos relacional.",
-  "Describa las ventajas del modelo cliente-servidor.",
-  "¿Qué es una tabla en SQL? Dé un ejemplo.",
-  "¿Por qué es importante normalizar una base de datos?",
-  "Explique la diferencia entre DELETE y TRUNCATE.",
-  "¿Qué es una transacción en bases de datos?",
-  "Describa el concepto de integridad referencial.",
-  "Mencione al menos tres comandos DDL y su función."
+    "Explique qué es una base de datos relacional.",
+    "Describa las ventajas del modelo cliente-servidor.",
+    "¿Qué es una tabla en SQL? Dé un ejemplo.",
+    "¿Por qué es importante normalizar una base de datos?",
+    "Explique la diferencia entre DELETE y TRUNCATE.",
+    "¿Qué es una transacción en bases de datos?",
+    "Describa el concepto de integridad referencial.",
+    "Mencione al menos tres comandos DDL y su función."
 ];
 
 let indiceDesarrollo = 0;
 
+
 function initDevelopmentPart() {
-  mostrarPreguntaDesarrollo(indiceDesarrollo);
+    const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+    indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+    mostrarPreguntaDesarrollo(indiceDesarrollo);
 
-  document.getElementById("btnAnteriorDesarrollo").addEventListener("click", () => {
-    if (indiceDesarrollo > 0) {
-      indiceDesarrollo--;
-      mostrarPreguntaDesarrollo(indiceDesarrollo);
-    }
-  });
-
-  document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
-    if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
-      indiceDesarrollo++;
-      mostrarPreguntaDesarrollo(indiceDesarrollo);
-    }
-  });
-
-  document.getElementById("btnFinalizarDesarrollo").addEventListener("click", () => {
-    Swal.fire({
-      title: "Parte de desarrollo finalizada",
-      text: "Has respondido todas las preguntas abiertas. Se generará el resumen.",
-      icon: "success",
-      confirmButtonText: "Generar resumen"
-    }).then(() => {
-      window.location.href = "resumen.html"; // Cambia esto si usas otra ruta
+    document.getElementById("btnFinalizarDesarrollo").addEventListener("click", () => {
+        Swal.fire({
+            title: "Parte de desarrollo finalizada",
+            text: "Has respondido todas las preguntas abiertas. Se generará el resumen.",
+            icon: "success",
+            confirmButtonText: "Generar resumen"
+        }).then(() => {
+            window.location.href = "resumen.html"; // Cambia esto si usas otra ruta
+        });
     });
-  });
 }
 
 function mostrarPreguntaDesarrollo(index) {
-  const contenedor = document.getElementById("essay-container");
-  const pregunta = preguntasDesarrollo[index];
+    const contenedor = document.getElementById("essay-container");
+    const pregunta = preguntasDesarrollo[index];
 
-  // Limpiar
-  contenedor.innerHTML = `
+    indiceDesarrollo = index; // Actualiza el índice global
+    localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el índice actual
+
+    // Limpiar
+    contenedor.innerHTML = `
     <div class="essay-question">
         <label for="respuesta-${index}"><strong>${index + 1}.</strong> ${pregunta}</label><br>
         <textarea id="respuesta-${index}" rows="5" cols="80" placeholder="Escribe tu respuesta aquí...">${obtenerRespuestaDesarrollo(index)}</textarea>
     </div>
     <div class="essay-navigation">
-        <button id="btnAnteriorDesarrollo">Anterior</button>
         <button id="btnSiguienteDesarrollo">Siguiente</button>
         <button id="btnFinalizarDesarrollo" style="display: none;">Finalizar Parte de Desarrollo</button>
     </div>
   `;
 
-  // Reasignar eventos
-  document.getElementById("btnAnteriorDesarrollo").addEventListener("click", () => {
-    if (indiceDesarrollo > 0) {
-      indiceDesarrollo--;
-      mostrarPreguntaDesarrollo(indiceDesarrollo);
+    document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
+        guardarRespuestaDesarrollo(indiceDesarrollo, document.getElementById(`respuesta-${indiceDesarrollo}`).value);
+
+        if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
+            indiceDesarrollo++;
+            localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el nuevo índice
+            mostrarPreguntaDesarrollo(indiceDesarrollo);
+            cargarPanelLateralDesarrollo(); // Actualiza el panel lateral
+        }
+    });
+
+    // Mostrar u ocultar el botón Finalizar
+    if (indiceDesarrollo === preguntasDesarrollo.length - 1) {
+        document.getElementById("btnFinalizarDesarrollo").style.display = "inline-block";
     }
-  });
 
-  document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
-    if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
-      indiceDesarrollo++;
-      mostrarPreguntaDesarrollo(indiceDesarrollo);
-    }
-  });
-
-  // Mostrar u ocultar el botón Finalizar
-  if (indiceDesarrollo === preguntasDesarrollo.length - 1) {
-    document.getElementById("btnFinalizarDesarrollo").style.display = "inline-block";
-  }
-
-  // Guardar cambios automáticamente
-  document.getElementById(`respuesta-${index}`).addEventListener("input", function () {
-    guardarRespuestaDesarrollo(index, this.value);
-  });
+    // Guardar cambios automáticamente
+    document.getElementById(`respuesta-${index}`).addEventListener("input", function () {
+        guardarRespuestaDesarrollo(index, this.value);
+    });
 }
 
 function guardarRespuestaDesarrollo(index, texto) {
-  const examData = JSON.parse(localStorage.getItem("examData")) || {};
-  examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
-  examData.respuestasDesarrollo[index] = texto;
-  localStorage.setItem("examData", JSON.stringify(examData));
+    const examData = JSON.parse(localStorage.getItem("examData")) || {};
+    examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
+    examData.respuestasDesarrollo[index] = texto;
+    localStorage.setItem("examData", JSON.stringify(examData));
+    cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
 }
 
 function obtenerRespuestaDesarrollo(index) {
-  const examData = JSON.parse(localStorage.getItem("examData")) || {};
-  return examData.respuestasDesarrollo?.[index] || "";
+    const examData = JSON.parse(localStorage.getItem("examData")) || {};
+    return examData.respuestasDesarrollo?.[index] || "";
 }
 
 function cargarPanelLateralDesarrollo() {
-  const panel = document.getElementById("essayProgressList");
-  panel.innerHTML = "";
-  preguntasDesarrollo.forEach((_, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = i + 1;
-    btn.className = "essay-question-button";
-    if (obtenerRespuestaDesarrollo(i)) {
-      btn.classList.add("answered");
-    }
-    btn.addEventListener("click", () => {
-      indiceDesarrollo = i;
-      mostrarPreguntaDesarrollo(i);
+    const panel = document.getElementById("essayProgressList");
+    panel.innerHTML = "";
+    preguntasDesarrollo.forEach((_, i) => {
+        const box = document.createElement("div");
+        box.style.width = "3em"
+        box.textContent = i + 1;
+        box.style.padding = "10px";
+        box.style.backgroundColor = "#e6e6e6ff"
+        box.style.borderRadius = "4px";
+        box.style.textAlign = "center";
+        box.style.cursor = "default";
+        box.style.marginBottom = "8px";
+        box.style.border = "1px solid #ccc";
+
+        // Colorea si ya respondió
+        box.style.background = obtenerRespuestaDesarrollo(i) ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
+
+        // Si es la pregunta actual, resaltarla
+        if (i === indiceDesarrollo) {
+            box.classList.add("active-question");
+            box.style.backgroundColor = "#d6d092ff";
+            box.style.width = "3.5em";
+            box.style.border = "2px solid #e8e19aff";
+        }
+        panel.appendChild(box);
     });
-    panel.appendChild(btn);
-  });
 }
 ////////////////////////////////////////
 
@@ -947,246 +1037,246 @@ const uniqueQuestions = [
         ],
         correct: "Monitor"
     },
-    {
-        question: "¿Qué componente se encarga de ejecutar las instrucciones en una computadora? (2 pts)",
-        options: [
-            "Memoria RAM",
-            "Tarjeta gráfica",
-            "Unidad central de proceso (CPU)",
-            "Disco duro"
-        ],
-        correct: "Unidad central de proceso (CPU)"
-    },
-    {
-        question: "¿Cuál es un ejemplo de memoria volátil? (2 pts)",
-        options: [
-            "ROM",
-            "HDD",
-            "RAM",
-            "SSD"
-        ],
-        correct: "RAM"
-    },
-    {
-        question: "¿Para qué se utiliza la memoria caché? (2 pts)",
-        options: [
-            "Para guardar archivos permanentemente",
-            "Para aumentar la velocidad de acceso a datos recurrentes",
-            "Para almacenar copias de seguridad del sistema",
-            "Para ejecutar gráficos de alta calidad"
-        ],
-        correct: "Para aumentar la velocidad de acceso a datos recurrentes"
-    },
-    {
-        question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
-        options: [
-            "La RAM es volátil y la ROM",
-            "La ROM es más rápida que la RAM",
-            "Ambas pueden ser modificadas libremente por el usuario",
-            "La RAM solo se usa en servidores"
-        ],
-        correct: "La RAM es volátil y la ROM"
-    },
-    {
-        question: "¿Qué memoria almacena los datos más utilizados por el procesador para acelerar el acceso? (2 pts)",
-        options: [
-            "RAM",
-            "Caché",
-            "ROM",
-            "Flash"
-        ],
-        correct: "Caché"
-    },
-    {
-        question: "¿Qué tipo de memoria se encuentra en las tarjetas gráficas y ayuda al procesamiento de imágenes? (2 pts)",
-        options: [
-            "VRAM",
-            "ROM",
-            "HDD",
-            "RAM"
-        ],
-        correct: "VRAM"
-    },
-    {
-        question: "¿Qué es la memoria virtual? (2 pts)",
-        options: [
-            "Un espacio en el disco duro utilizado como extensión de la RAM",
-            "Un tipo de memoria integrada en los procesadores",
-            "Un software que gestiona la memoria de la PC",
-            "Un almacenamiento físico externo"
-        ],
-        correct: "Un espacio en el disco duro utilizado como extensión de la RAM"
-    },
-    {
-        question: "¿Cuál es la función principal de la memoria ROM? (2 pts)",
-        options: [
-            "Almacenar programas temporalmente",
-            "Contener las instrucciones básicas para el arranque del sistema",
-            "Ejecutar videojuegos de alto rendimiento",
-            "Mejorar el rendimiento del procesador"
-        ],
-        correct: "Contener las instrucciones básicas para el arranque del sistema"
-    },
-    {
-        question: "¿Qué es un disco SSD? (2 pts)",
-        options: [
-            "Un disco duro mecánico",
-            "Un tipo de memoria RAM",
-            "Un almacenamiento basado en memoria flash",
-            "Una unidad de almacenamiento óptimo"
-        ],
-        correct: "Un almacenamiento basado en memoria flash"
-    },
-    {
-        question: "¿Cuál es la diferencia entre la memoria RAM DDR3 y DDR5? (2 pts)",
-        options: [
-            "la DDR5 es más rápida y eficiente",
-            "La DDR3 tiene mayor capacidad",
-            "La DDR5 es solo para servidores",
-            "No hay diferencias entre ellas"
-        ],
-        correct: "la DDR5 es más rápida y eficiente"
-    },
-    {
-        question: "¿Que significa M.2 en almacenamiento? (2 pts)",
-        options: [
-            "Un formato compacto para discos SSD",
-            "Un tipo de memoria ROM avanzada",
-            "Una categoría de procesadores",
-            "Un software de administración de archivos"
-        ],
-        correct: "Un formato compacto para discos SSD"
-    },
-    {
-        question: "¿Qué es una máquina virtual(VM)? (2 pts)",
-        options: [
-            "Un software que emula un sistema operativo dentro de otro",
-            "Un hardware físico adicional para aumentar el rendimiento",
-            "Un sistema que reemplaza a la memoria RAM",
-            "Una red de servidores conectados"
-        ],
-        correct: "Un software que emula un sistema operativo dentro de otro"
-    },
-    {
-        question: "¿Cuál es una de las principales ventajas de VirtualBox? (2 pts)",
-        options: [
-            "Es gratuito y permite ejecutar múltiples sistemas operativos",
-            "Solo funciona con Windows",
-            "No permite tomar instantáneas del sistema",
-            "Requiere una licencia de pago"
-        ],
-        correct: "Es gratuito y permite ejecutar múltiples sistemas operativos"
-    },
-    {
-        question: "¿Qué tipo de conexión de red permite que una VM se comunique con Internet y con la red local como si fuera otro dispositivo? (2 pts)",
-        options: [
-            "NAT",
-            "Bridge",
-            "DHCP",
-            "Loopback"
-        ],
-        correct: "Bridge"
-    },
-    {
-        question: "¿Cuál de los siguientes NO es un comando de Windows PowerShell? (2 pts)",
-        options: [
-            "Get-NetAdapter",
-            "ipconfig",
-            "mkdir",
-            "tasklist"
-        ],
-        correct: "mkdir"
-    },
-    {
-        question: "¿Qué atajo de teclado en el sistema operativo Windows abre el Administrador de Tareas directamente? (2 pts)",
-        options: [
-            "Ctrl + Alt + Supr",
-            "Ctrl + Shift + Esc",
-            "Win + R",
-            "Alt + F4"
-        ],
-        correct: "Ctrl + Shift + Esc"
-    },
-    {
-        question: "¿Qué comando en Linux se usa para instalar un programa en sistemas basados en Debian? (2 pts)",
-        options: [
-            "install package",
-            "sudo apt install <paquete>",
-            "run application",
-            "setup software"
-        ],
-        correct: "sudo apt install <paquete>"
-    },
-    {
-        question: "¿Cuál de los siguientes comandos en Linux se usa para listar archivos en un directorio? (2 pts)",
-        options: [
-            "ls",
-            "dir",
-            "showfiles",
-            "list-all"
-        ],
-        correct: "ls"
-    },
-    {
-        question: "¿Qué comando en Linux se usa para cambiar los permisos de un archivo? (2 pts)",
-        options: [
-            "chmod",
-            "ls -l",
-            "mkdir",
-            "rm"
-        ],
-        correct: "chmod"
-    },
-    {
-        question: "¿Qué significa CLI? (2 pts)",
-        options: [
-            "Command Line Interface",
-            "Computer Linux Interaction",
-            "Control Logic Integration",
-            "Cloud Linux Instance"
-        ],
-        correct: "Command Line Interface"
-    },
-    {
-        question: "¿Cuál de los siguientes comandos en Windows se usa para ver la configuración de red? (2 pts)",
-        options: [
-            "netconfig",
-            "ipconfig",
-            "list-network",
-            "configip"
-        ],
-        correct: "ipconfig"
-    },
-    {
-        question: "¿Qué comando en Linux permite ver la dirección IP de la computadora? (2 pts)",
-        options: [
-            "ls /ip",
-            "ip a",
-            "netstat -an",
-            "show-ip"
-        ],
-        correct: "ip a"
-    },
-    {
-        question: "¿Qué comando en Linux se usa para monitorear procesos en tiempo real? (2 pts)",
-        options: [
-            "top",
-            "tasklist",
-            "view-process",
-            "process-check"
-        ],
-        correct: "top"
-    },
-    {
-        question: "¿Cuál de los siguientes comandos de Windows permite cerrar un proceso específico? (2 pts)",
-        options: [
-            "taskkill",
-            "end-process",
-            "stop-app",
-            "shutdown -t 0"
-        ],
-        correct: "taskkill"
-    },
+    // {
+    //     question: "¿Qué componente se encarga de ejecutar las instrucciones en una computadora? (2 pts)",
+    //     options: [
+    //         "Memoria RAM",
+    //         "Tarjeta gráfica",
+    //         "Unidad central de proceso (CPU)",
+    //         "Disco duro"
+    //     ],
+    //     correct: "Unidad central de proceso (CPU)"
+    // },
+    // {
+    //     question: "¿Cuál es un ejemplo de memoria volátil? (2 pts)",
+    //     options: [
+    //         "ROM",
+    //         "HDD",
+    //         "RAM",
+    //         "SSD"
+    //     ],
+    //     correct: "RAM"
+    // },
+    // {
+    //     question: "¿Para qué se utiliza la memoria caché? (2 pts)",
+    //     options: [
+    //         "Para guardar archivos permanentemente",
+    //         "Para aumentar la velocidad de acceso a datos recurrentes",
+    //         "Para almacenar copias de seguridad del sistema",
+    //         "Para ejecutar gráficos de alta calidad"
+    //     ],
+    //     correct: "Para aumentar la velocidad de acceso a datos recurrentes"
+    // },
+    // {
+    //     question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
+    //     options: [
+    //         "La RAM es volátil y la ROM",
+    //         "La ROM es más rápida que la RAM",
+    //         "Ambas pueden ser modificadas libremente por el usuario",
+    //         "La RAM solo se usa en servidores"
+    //     ],
+    //     correct: "La RAM es volátil y la ROM"
+    // },
+    // {
+    //     question: "¿Qué memoria almacena los datos más utilizados por el procesador para acelerar el acceso? (2 pts)",
+    //     options: [
+    //         "RAM",
+    //         "Caché",
+    //         "ROM",
+    //         "Flash"
+    //     ],
+    //     correct: "Caché"
+    // },
+    // {
+    //     question: "¿Qué tipo de memoria se encuentra en las tarjetas gráficas y ayuda al procesamiento de imágenes? (2 pts)",
+    //     options: [
+    //         "VRAM",
+    //         "ROM",
+    //         "HDD",
+    //         "RAM"
+    //     ],
+    //     correct: "VRAM"
+    // },
+    // {
+    //     question: "¿Qué es la memoria virtual? (2 pts)",
+    //     options: [
+    //         "Un espacio en el disco duro utilizado como extensión de la RAM",
+    //         "Un tipo de memoria integrada en los procesadores",
+    //         "Un software que gestiona la memoria de la PC",
+    //         "Un almacenamiento físico externo"
+    //     ],
+    //     correct: "Un espacio en el disco duro utilizado como extensión de la RAM"
+    // },
+    // {
+    //     question: "¿Cuál es la función principal de la memoria ROM? (2 pts)",
+    //     options: [
+    //         "Almacenar programas temporalmente",
+    //         "Contener las instrucciones básicas para el arranque del sistema",
+    //         "Ejecutar videojuegos de alto rendimiento",
+    //         "Mejorar el rendimiento del procesador"
+    //     ],
+    //     correct: "Contener las instrucciones básicas para el arranque del sistema"
+    // },
+    // {
+    //     question: "¿Qué es un disco SSD? (2 pts)",
+    //     options: [
+    //         "Un disco duro mecánico",
+    //         "Un tipo de memoria RAM",
+    //         "Un almacenamiento basado en memoria flash",
+    //         "Una unidad de almacenamiento óptimo"
+    //     ],
+    //     correct: "Un almacenamiento basado en memoria flash"
+    // },
+    // {
+    //     question: "¿Cuál es la diferencia entre la memoria RAM DDR3 y DDR5? (2 pts)",
+    //     options: [
+    //         "la DDR5 es más rápida y eficiente",
+    //         "La DDR3 tiene mayor capacidad",
+    //         "La DDR5 es solo para servidores",
+    //         "No hay diferencias entre ellas"
+    //     ],
+    //     correct: "la DDR5 es más rápida y eficiente"
+    // },
+    // {
+    //     question: "¿Que significa M.2 en almacenamiento? (2 pts)",
+    //     options: [
+    //         "Un formato compacto para discos SSD",
+    //         "Un tipo de memoria ROM avanzada",
+    //         "Una categoría de procesadores",
+    //         "Un software de administración de archivos"
+    //     ],
+    //     correct: "Un formato compacto para discos SSD"
+    // },
+    // {
+    //     question: "¿Qué es una máquina virtual(VM)? (2 pts)",
+    //     options: [
+    //         "Un software que emula un sistema operativo dentro de otro",
+    //         "Un hardware físico adicional para aumentar el rendimiento",
+    //         "Un sistema que reemplaza a la memoria RAM",
+    //         "Una red de servidores conectados"
+    //     ],
+    //     correct: "Un software que emula un sistema operativo dentro de otro"
+    // },
+    // {
+    //     question: "¿Cuál es una de las principales ventajas de VirtualBox? (2 pts)",
+    //     options: [
+    //         "Es gratuito y permite ejecutar múltiples sistemas operativos",
+    //         "Solo funciona con Windows",
+    //         "No permite tomar instantáneas del sistema",
+    //         "Requiere una licencia de pago"
+    //     ],
+    //     correct: "Es gratuito y permite ejecutar múltiples sistemas operativos"
+    // },
+    // {
+    //     question: "¿Qué tipo de conexión de red permite que una VM se comunique con Internet y con la red local como si fuera otro dispositivo? (2 pts)",
+    //     options: [
+    //         "NAT",
+    //         "Bridge",
+    //         "DHCP",
+    //         "Loopback"
+    //     ],
+    //     correct: "Bridge"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes NO es un comando de Windows PowerShell? (2 pts)",
+    //     options: [
+    //         "Get-NetAdapter",
+    //         "ipconfig",
+    //         "mkdir",
+    //         "tasklist"
+    //     ],
+    //     correct: "mkdir"
+    // },
+    // {
+    //     question: "¿Qué atajo de teclado en el sistema operativo Windows abre el Administrador de Tareas directamente? (2 pts)",
+    //     options: [
+    //         "Ctrl + Alt + Supr",
+    //         "Ctrl + Shift + Esc",
+    //         "Win + R",
+    //         "Alt + F4"
+    //     ],
+    //     correct: "Ctrl + Shift + Esc"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux se usa para instalar un programa en sistemas basados en Debian? (2 pts)",
+    //     options: [
+    //         "install package",
+    //         "sudo apt install <paquete>",
+    //         "run application",
+    //         "setup software"
+    //     ],
+    //     correct: "sudo apt install <paquete>"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes comandos en Linux se usa para listar archivos en un directorio? (2 pts)",
+    //     options: [
+    //         "ls",
+    //         "dir",
+    //         "showfiles",
+    //         "list-all"
+    //     ],
+    //     correct: "ls"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux se usa para cambiar los permisos de un archivo? (2 pts)",
+    //     options: [
+    //         "chmod",
+    //         "ls -l",
+    //         "mkdir",
+    //         "rm"
+    //     ],
+    //     correct: "chmod"
+    // },
+    // {
+    //     question: "¿Qué significa CLI? (2 pts)",
+    //     options: [
+    //         "Command Line Interface",
+    //         "Computer Linux Interaction",
+    //         "Control Logic Integration",
+    //         "Cloud Linux Instance"
+    //     ],
+    //     correct: "Command Line Interface"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes comandos en Windows se usa para ver la configuración de red? (2 pts)",
+    //     options: [
+    //         "netconfig",
+    //         "ipconfig",
+    //         "list-network",
+    //         "configip"
+    //     ],
+    //     correct: "ipconfig"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux permite ver la dirección IP de la computadora? (2 pts)",
+    //     options: [
+    //         "ls /ip",
+    //         "ip a",
+    //         "netstat -an",
+    //         "show-ip"
+    //     ],
+    //     correct: "ip a"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux se usa para monitorear procesos en tiempo real? (2 pts)",
+    //     options: [
+    //         "top",
+    //         "tasklist",
+    //         "view-process",
+    //         "process-check"
+    //     ],
+    //     correct: "top"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes comandos de Windows permite cerrar un proceso específico? (2 pts)",
+    //     options: [
+    //         "taskkill",
+    //         "end-process",
+    //         "stop-app",
+    //         "shutdown -t 0"
+    //     ],
+    //     correct: "taskkill"
+    // },
 ];
 
 function loadQuestion(index) {
@@ -1264,12 +1354,13 @@ function saveAnswer(index, value) {
 }
 
 function nextQuestion() {
+    updateProgress();
     if (currentQuestion < window.uniqueQuestions.length - 1) {
         currentQuestion++;
+        localStorage.setItem("currentQuestionIndex", currentQuestion);
         loadQuestion(currentQuestion);
     } else {
         // Mostrar resultados aquí o continuar al paso siguiente
-        //alert("Examen finalizado");
         Swal.fire({
             title: "¡Parte #1 finalizada!",
             text: "Ahora continúa con la parte #2 de desarrollo.",
@@ -1279,7 +1370,9 @@ function nextQuestion() {
             localStorage.setItem("parte1Finalizada", "true");  // <-- guardamos la bandera
             document.getElementById("uniqueSelection").style.display = "none"; // Ocultar sección de selección única
             document.getElementById("essay").style.display = "block"; // Mostrar sección de desarrollo
-            mostrarPreguntaDesarrollo(0);
+            const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+            indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+            mostrarPreguntaDesarrollo(indiceDesarrollo);
             cargarPanelLateralDesarrollo();
         });
         console.log("Respuestas del estudiante:", studentAnswers);
@@ -1383,9 +1476,9 @@ initUniqueSelection();
 //CuandoIngresen.js
 /////////////////////////////////
 document.addEventListener('DOMContentLoaded', () => {
-  Swal.fire({
-    title: '🚨 Instrucciones importantes',
-    html: `
+    Swal.fire({
+        title: 'Instrucciones importantes',
+        html: `
       <p>Este examen es individual y debe completarse sin ayuda.</p>
       <br>
       <ul style="text-align:left;">
@@ -1398,26 +1491,26 @@ document.addEventListener('DOMContentLoaded', () => {
       <br>
       <b>¿Esta de acuerdo?</b>
     `,
-    imageUrl: 'images/question.png',
-    confirmButtonText: 'Sí estoy de acuerdo',
-    confirmButtonColor: '#0a691aff',
-    cancelButtonText: 'Cancelar',
-    cancelButtonColor: '#004080',
-    showCancelButton: true,
-    allowOutsideClick: false,
-    customClass: {
-      popup: 'swal-wide-low'
-    }
+        imageUrl: 'images/question.png',
+        confirmButtonText: 'Sí estoy de acuerdo',
+        confirmButtonColor: '#0a691aff',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#004080',
+        showCancelButton: true,
+        allowOutsideClick: false,
+        customClass: {
+            popup: 'swal-wide-low'
+        }
 
-  }).then((result) => {
-    if (result.isConfirmed) {
-      console.log("Usuario aceptó estas instrucciones");
-      // Aquí puedes permitir continuar con el examen
-    } else if (result.isDismissed) {
-      // El usuario presionó cancelar o cerró el cuadro
-      //window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
-    }
-  });
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("Usuario aceptó estas instrucciones");
+            // Aquí puedes permitir continuar con el examen
+        } else if (result.isDismissed) {
+            // El usuario presionó cancelar o cerró el cuadro
+            //window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
+        }
+    });
 });
 ////////////////////////////////////////
 
@@ -1479,16 +1572,16 @@ function obtenerResumenRespuestas() {
     const nombre = estado.nombreEstudiante || "Sin nombre";
     const cedula = estado.cedulaEstudiante || "Sin cédula";
 
-    let resumen = `📝 Resumen de Respuestas del Estudiante\n`;
-    resumen += `👤 Nombre: ${nombre}\n`;
-    resumen += `🆔 Cédula: ${cedula}\n\n`;
+    let resumen = `Resumen de Respuestas del Estudiante\n`;
+    resumen += `Nombre: ${nombre}\n`;
+    resumen += `Cédula: ${cedula}\n\n`;
 
     // Aquí agrego el estado de aceptación de instrucciones
     const aceptado = estado.instruccionesAceptadas ? "Sí" : "No";
-    resumen += `✔️ Instrucciones aceptadas: ${aceptado}\n`;
+    resumen += `Instrucciones aceptadas: ${aceptado}\n`;
 
     if (estado.fechaAceptacion) {
-        resumen += `🗓 Fecha de aceptación: ${new Date(estado.fechaAceptacion).toLocaleString()}\n`;
+        resumen += `Fecha de aceptación: ${new Date(estado.fechaAceptacion).toLocaleString()}\n`;
     }
 
     resumen += "\n";
@@ -1521,11 +1614,11 @@ function formatearValorRespuesta(valor) {
 }
 
 function guardarRespuestaDesarrollo(index, texto) {
-  const examData = JSON.parse(localStorage.getItem("examData")) || {};
-  examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
-  examData.respuestasDesarrollo[index] = texto;
-  localStorage.setItem("examData", JSON.stringify(examData));
-  cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
+    const examData = JSON.parse(localStorage.getItem("examData")) || {};
+    examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
+    examData.respuestasDesarrollo[index] = texto;
+    localStorage.setItem("examData", JSON.stringify(examData));
+    cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
 }
 ///////////////////////////////////////////
 
@@ -1548,7 +1641,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     const cedula = examData.cedula || "No registrada";
     const respuestasSeleccion = examData.respuestasSeleccionUnica || {};
     const respuestasDesarrollo = examData.respuestasDesarrollo || {};
-    
+
     //Título de PDF
     doc.setFontSize(16);
     doc.text("Resumen del Examen", 20, y);
@@ -1562,7 +1655,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         doc.text("El estudiante NO aceptó las instrucciones del examen.", 20, y);
     }
     y += 10;
-    
+
     // Información del estudiante
     doc.setFontSize(12);
     doc.text(`Nombre del estudiante: ${nombre}`, 20, y);

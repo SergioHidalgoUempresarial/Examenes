@@ -49,9 +49,9 @@ function formatearValorRespuesta(valor) {
 }
 
 function guardarRespuestaDesarrollo(index, texto) {
-  const examData = JSON.parse(localStorage.getItem("examData")) || {};
-  examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
-  examData.respuestasDesarrollo[index] = texto;
-  localStorage.setItem("examData", JSON.stringify(examData));
-  cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
+    const examData = JSON.parse(localStorage.getItem("examData")) || {};
+    examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
+    examData.respuestasDesarrollo[index] = texto;
+    localStorage.setItem("examData", JSON.stringify(examData));
+    cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
 }

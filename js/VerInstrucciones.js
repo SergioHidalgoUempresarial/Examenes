@@ -7,10 +7,10 @@ panelInstructions.style.display = "none";
 btnAcceptInstructions.addEventListener("click", () => {
     if (panelInstructions.style.display === "none") {
         panelInstructions.style.display = "block";
-        btnAcceptInstructions.innerText = "❌ Ocultar Instrucciones";
+        btnAcceptInstructions.innerText = "Ocultar Instrucciones";
     } else {
         panelInstructions.style.display = "none";
-        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+        btnAcceptInstructions.innerText = "Ver Instrucciones";
     }
 });
 
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         checkbox.checked = true;
         checkbox.disabled = true;
         panelInstructions.style.display = "none";
-        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+        btnAcceptInstructions.innerText = "Ver Instrucciones";
     }
 
     // Al marcar el checkbox
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkbox.checked = true;
                     checkbox.disabled = true;
                     panelInstructions.style.display = "none";
-                    btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+                    btnAcceptInstructions.innerText = "Ver Instrucciones";
 
                     // Guardar estado en localStorage
                     localStorage.setItem(agreeKey, "true");
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
             !checkbox.disabled // solo si NO está aceptado
         ) {
             panelInstructions.style.display = "none";
-            btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+            btnAcceptInstructions.innerText = "Ver Instrucciones";
 
             Swal.fire({
                 icon: 'warning',
@@ -98,9 +98,9 @@ document.addEventListener("DOMContentLoaded", function () {
 btnAcceptInstructions.addEventListener("click", () => {
     if (panelInstructions.style.display === "none") {
         panelInstructions.style.display = "block";
-        btnAcceptInstructions.innerText = "❌ Ocultar Instrucciones";
+        btnAcceptInstructions.innerText = "Ocultar Instrucciones";
     } else {
         panelInstructions.style.display = "none";
-        btnAcceptInstructions.innerText = "📘 Ver Instrucciones";
+        btnAcceptInstructions.innerText = "Ver Instrucciones";
     }
 });

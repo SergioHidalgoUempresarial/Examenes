@@ -19,7 +19,7 @@ function validateAccess() {
         document.getElementById("upload").style.display = "none";
         document.getElementById("final").style.display = "none";
         Swal.fire({
-            title: '🚨 ¡Recuerde!',
+            title: '¡Recuerde!',
             html: `
                 <p>Le doy mis mejores deseos en la evaluación.</p>
                 <br>
@@ -65,4 +65,3 @@ function validateAccess() {
         document.getElementById("accessError").style.display = "block";
     }
 }
-
