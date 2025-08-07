@@ -1,7 +1,4 @@
-// ===============================
 // GENERACIÓN DE RESUMEN DE RESPUESTAS
-// ===============================
-
 function obtenerResumenRespuestas() {
     const estado = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY));
     if (!estado) return "No hay respuestas registradas.";
@@ -10,16 +7,16 @@ function obtenerResumenRespuestas() {
     const nombre = estado.nombreEstudiante || "Sin nombre";
     const cedula = estado.cedulaEstudiante || "Sin cédula";
 
-    let resumen = `📝 Resumen de Respuestas del Estudiante\n`;
-    resumen += `👤 Nombre: ${nombre}\n`;
-    resumen += `🆔 Cédula: ${cedula}\n\n`;
+    let resumen = `Resumen de Respuestas del Estudiante\n`;
+    resumen += `Nombre: ${nombre}\n`;
+    resumen += `Cédula: ${cedula}\n\n`;
 
     // Aquí agrego el estado de aceptación de instrucciones
     const aceptado = estado.instruccionesAceptadas ? "Sí" : "No";
-    resumen += `✔️ Instrucciones aceptadas: ${aceptado}\n`;
+    resumen += `Instrucciones aceptadas: ${aceptado}\n`;
 
     if (estado.fechaAceptacion) {
-        resumen += `🗓 Fecha de aceptación: ${new Date(estado.fechaAceptacion).toLocaleString()}\n`;
+        resumen += `Fecha de aceptación: ${new Date(estado.fechaAceptacion).toLocaleString()}\n`;
     }
 
     resumen += "\n";
