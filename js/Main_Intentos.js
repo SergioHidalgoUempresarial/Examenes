@@ -1,4 +1,3 @@
-// VARIABLES GLOBALES
 let intentoYaRestado = false; // Para evitar que se reste más de una vez
 let devtoolsAbierto = false;
 let devtoolsYaDetectado = false;
@@ -102,7 +101,7 @@ function manejarSalidaExamen(tipo, evento = null) {
     localStorage.setItem(EXAM_STATE_KEY, "perdido");
 
     if (tipo === "recarga" && evento) {
-        const msg = "⚠️ Si recarga o sale, perderá un intento.";
+        const msg = "Si recarga o sale, perderá un intento.";
         evento.preventDefault();
         evento.returnValue = msg;
         return msg;
@@ -111,7 +110,7 @@ function manejarSalidaExamen(tipo, evento = null) {
     if (tipo === "cambioPestania") {
         Swal.fire({
             icon: 'warning',
-            title: '⚠ Atención',
+            title: 'Atención',
             text: 'Has salido del examen. Perdiste un intento.',
             confirmButtonText: 'Entendido'
         }).then(() => location.reload());
@@ -120,7 +119,7 @@ function manejarSalidaExamen(tipo, evento = null) {
     if (tipo === "devtools") {
         Swal.fire({
             icon: 'error',
-            title: '🚫 Acción no permitida',
+            title: 'Acción no permitida',
             text: 'Se detectó manipulación (DevTools). Has perdido un intento.',
         }).then(() => location.reload());
     }
@@ -152,7 +151,7 @@ function detectarDevtoolsConTiempo() {
 
         Swal.fire({
             icon: 'error',
-            title: '🚨 DevTools detectado',
+            title: 'DevTools detectado',
             html: `
                 <p>Has abierto las herramientas de desarrollo (DevTools).</p>
                 <p><strong>Se perderá un intento</strong> por esta acción.</p>
@@ -179,10 +178,10 @@ instructions.style.display = "none";
 btn?.addEventListener("click", () => {
     if (instructions.style.display === "none") {
         instructions.style.display = "block";
-        btn.innerText = "❌ Ocultar Instrucciones";
+        btn.innerText = "Ocultar Instrucciones";
     } else {
         instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        btn.innerText = "Ver Instrucciones";
     }
 });
 
@@ -196,7 +195,7 @@ document.addEventListener("click", function (e) {
             confirmButtonText: 'Entendido'
         });
         instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        btn.innerText = "Ver Instrucciones";
     }
 });
 
@@ -211,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
         checkbox.checked = true;
         checkbox.disabled = true;
         instructions.style.display = "none";
-        btn.innerText = "📘 Ver Instrucciones";
+        btn.innerText = "Ver Instrucciones";
     }
 
     // Evento para guardar cuando el usuario acepte
@@ -229,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (result.isConfirmed || result.dismiss) {
                     checkbox.disabled = true;
                     instructions.style.display = "none";
-                    btn.innerText = "📘 Ver Instrucciones";
+                    btn.innerText = "Ver Instrucciones";
 
                     // **Se añde esto para que se guarde en el localStorage**
                     let estado = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
@@ -272,7 +271,7 @@ window.addEventListener("DOMContentLoaded", () => {
             if (diffDays < 2) {
                 Swal.fire({
                     icon: "info",
-                    title: "⏳ Espera requerida",
+                    title: "Espera requerida",
                     text: "Este botón solo se puede usar cada 2 días.",
                 });
                 return;
@@ -280,7 +279,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         Swal.fire({
-            title: "🔐 Confirmación",
+            title: "Confirmación",
             input: "password",
             inputLabel: "Ingrese su clave de administrador",
             inputPlaceholder: "Contraseña",
@@ -303,7 +302,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
                 Swal.fire({
                     icon: "success",
-                    title: "✅ Datos borrados",
+                    title: "Datos borrados",
                     text: "Todo el progreso del examen fue eliminado.",
                 }).then(() => location.reload());
             }

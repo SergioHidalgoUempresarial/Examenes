@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  Swal.fire({
-    title: '🚨 Instrucciones importantes',
-    html: `
+    Swal.fire({
+        title: 'Instrucciones importantes',
+        html: `
       <p>Este examen es individual y debe completarse sin ayuda.</p>
       <br>
       <ul style="text-align:left;">
@@ -14,24 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
       <br>
       <b>¿Esta de acuerdo?</b>
     `,
-    imageUrl: 'images/question.png',
-    confirmButtonText: 'Sí estoy de acuerdo',
-    confirmButtonColor: '#0a691aff',
-    cancelButtonText: 'Cancelar',
-    cancelButtonColor: '#004080',
-    showCancelButton: true,
-    allowOutsideClick: false,
-    customClass: {
-      popup: 'swal-wide-low'
-    }
+        imageUrl: 'images/question.png',
+        confirmButtonText: 'Sí estoy de acuerdo',
+        confirmButtonColor: '#0a691aff',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#004080',
+        showCancelButton: true,
+        allowOutsideClick: false,
+        customClass: {
+            popup: 'swal-wide-low'
+        }
 
-  }).then((result) => {
-    if (result.isConfirmed) {
-      console.log("Usuario aceptó estas instrucciones");
-      // Aquí puedes permitir continuar con el examen
-    } else if (result.isDismissed) {
-      // El usuario presionó cancelar o cerró el cuadro
-      //window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
-    }
-  });
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("Usuario aceptó estas instrucciones");
+            // Aquí puedes permitir continuar con el examen
+        } else if (result.isDismissed) {
+            // El usuario presionó cancelar o cerró el cuadro
+            //window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
+        }
+    });
 });
