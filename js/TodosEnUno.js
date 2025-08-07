@@ -371,6 +371,97 @@ window.onload = function () {
     actualizarAccesoPorIntentos();
     controlarAccesoPorIntentos();
 };
+
+//Para que no lo vuelva a pedir el código a menos que sea necesario
+window.addEventListener("DOMContentLoaded", function () {
+    const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+    const intentosRestantes = examData.intentosRestantes ?? MAX_ATTEMPTS;
+
+    if (localStorage.getItem("parte1Finalizada") === "true") {
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "block";
+
+        // Recupera el índice guardado o empieza en 0 si no existe
+        const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+        indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+
+        mostrarPreguntaDesarrollo(indiceDesarrollo);
+        cargarPanelLateralDesarrollo();
+    }
+
+    // Si no hay intentos, muestra solo el acceso bloqueado
+    if (intentosRestantes <= 0) {
+        document.getElementById("access-section").style.display = "block";
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+        return;
+    }
+
+    // Si ya validó datos y aceptó instrucciones, muestra la parte correspondiente
+    if (examData.nombre && examData.cedula && examData.instruccionesAceptadas) {
+        document.getElementById("access-section").style.display = "none";
+        document.getElementById("name-section").style.display = "block";
+
+        if (localStorage.getItem("parte1Finalizada") === "true") {
+            document.getElementById("uniqueSelection").style.display = "none";
+            document.getElementById("essay").style.display = "block";
+            const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+            indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+            mostrarPreguntaDesarrollo(indiceDesarrollo);
+            cargarPanelLateralDesarrollo();
+        } else {
+            document.getElementById("uniqueSelection").style.display = "block";
+            document.getElementById("essay").style.display = "none";
+            initUniqueSelection(); //Para que cargue
+            renderProgressBar();
+        }
+    } else {
+        // Si no ha validado datos, muestra el acceso
+        document.getElementById("access-section").style.display = "block";
+        document.getElementById("name-section").style.display = "none";
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /////////////////////////////////
 
 
@@ -704,14 +795,9 @@ let indiceDesarrollo = 0;
 
 
 function initDevelopmentPart() {
+    const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+    indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
     mostrarPreguntaDesarrollo(indiceDesarrollo);
-
-    document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
-        if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
-            indiceDesarrollo++;
-            mostrarPreguntaDesarrollo(indiceDesarrollo);
-        }
-    });
 
     document.getElementById("btnFinalizarDesarrollo").addEventListener("click", () => {
         Swal.fire({
@@ -729,6 +815,9 @@ function mostrarPreguntaDesarrollo(index) {
     const contenedor = document.getElementById("essay-container");
     const pregunta = preguntasDesarrollo[index];
 
+    indiceDesarrollo = index; // Actualiza el índice global
+    localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el índice actual
+
     // Limpiar
     contenedor.innerHTML = `
     <div class="essay-question">
@@ -742,9 +831,13 @@ function mostrarPreguntaDesarrollo(index) {
   `;
 
     document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
+        guardarRespuestaDesarrollo(indiceDesarrollo, document.getElementById(`respuesta-${indiceDesarrollo}`).value);
+
         if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
             indiceDesarrollo++;
+            localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el nuevo índice
             mostrarPreguntaDesarrollo(indiceDesarrollo);
+            cargarPanelLateralDesarrollo(); // Actualiza el panel lateral
         }
     });
 
@@ -764,6 +857,7 @@ function guardarRespuestaDesarrollo(index, texto) {
     examData.respuestasDesarrollo = examData.respuestasDesarrollo || {};
     examData.respuestasDesarrollo[index] = texto;
     localStorage.setItem("examData", JSON.stringify(examData));
+    cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
 }
 
 function obtenerRespuestaDesarrollo(index) {
@@ -1260,12 +1354,13 @@ function saveAnswer(index, value) {
 }
 
 function nextQuestion() {
+    updateProgress();
     if (currentQuestion < window.uniqueQuestions.length - 1) {
         currentQuestion++;
+        localStorage.setItem("currentQuestionIndex", currentQuestion);
         loadQuestion(currentQuestion);
     } else {
         // Mostrar resultados aquí o continuar al paso siguiente
-        //alert("Examen finalizado");
         Swal.fire({
             title: "¡Parte #1 finalizada!",
             text: "Ahora continúa con la parte #2 de desarrollo.",
@@ -1275,7 +1370,9 @@ function nextQuestion() {
             localStorage.setItem("parte1Finalizada", "true");  // <-- guardamos la bandera
             document.getElementById("uniqueSelection").style.display = "none"; // Ocultar sección de selección única
             document.getElementById("essay").style.display = "block"; // Mostrar sección de desarrollo
-            mostrarPreguntaDesarrollo(0);
+            const savedEssayIndex = localStorage.getItem("currentEssayIndex");
+            indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
+            mostrarPreguntaDesarrollo(indiceDesarrollo);
             cargarPanelLateralDesarrollo();
         });
         console.log("Respuestas del estudiante:", studentAnswers);
