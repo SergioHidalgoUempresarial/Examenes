@@ -1,13 +1,9 @@
-// ===============================
 // VARIABLES GLOBALES
-// ===============================
 let intentoYaRestado = false; // Para evitar que se reste más de una vez
 let devtoolsAbierto = false;
 let devtoolsYaDetectado = false;
 
-// ===============================
 // GESTIÓN DE INTENTOS
-// ===============================
 function obtenerIntentosRestantes() {
     const data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY));
     return data?.intentosRestantes ?? MAX_ATTEMPTS;
@@ -95,9 +91,7 @@ function controlarAccesoPorIntentos() {
     }
 }
 
-// ===============================
 // CONTROL UNIFICADO DE SALIDA / TRAMPA
-// ===============================
 function manejarSalidaExamen(tipo, evento = null) {
     if (intentoYaRestado) return;
 
@@ -141,9 +135,7 @@ document.addEventListener("visibilitychange", function () {
 });
 
 
-// ===============================
 // DETECCIÓN CONFIABLE DE DEVTOOLS
-// ===============================
 function detectarDevtoolsConTiempo() {
     const umbral = 100; // milisegundos
 
@@ -177,9 +169,7 @@ function detectarDevtoolsConTiempo() {
 setInterval(detectarDevtoolsConTiempo, 1500);
 
 
-// ===============================
 // MOSTRAR/OCULTAR INSTRUCCIONES
-// ===============================
 const btn = document.getElementById("toggleInstructionsBtn");
 const instructions = document.getElementById("instruction");
 instructions.style.display = "none";
@@ -208,9 +198,7 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// ===============================
 // CHECKBOX DE CONSENTIMIENTO
-// ===============================
 document.addEventListener("DOMContentLoaded", function () {
     const checkbox = document.getElementById("agreeCheck");
     if (!checkbox) return;
@@ -256,9 +244,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// ===============================
+
 // BOTÓN SECRETO PARA ADMINISTRADOR
-// ===============================
 window.addEventListener("DOMContentLoaded", () => {
     const adminBtn = document.getElementById("admin-clear");
     adminBtn.style.display = "none";
@@ -323,9 +310,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// ===============================
 // INICIALIZACIÓN
-// ===============================
 window.onload = function () {
     verificarIntentos();
     mostrarIntentosRestantes();
