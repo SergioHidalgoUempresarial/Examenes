@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -440,9 +440,17 @@ window.addEventListener("DOMContentLoaded", function () {
     const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
     const intentosRestantes = examData.intentosRestantes ?? MAX_ATTEMPTS;
 
-    if (localStorage.getItem("parte1Finalizada") === "true") {
+    if (localStorage.getItem("parte2Finalizada") === "true") {
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "block";
+        initPracticePart();
+        showPracticeSection(1);
+        updatePracticeProgress();
+    } else if (localStorage.getItem("parte1Finalizada") === "true") {
         document.getElementById("uniqueSelection").style.display = "none";
         document.getElementById("essay").style.display = "block";
+        document.getElementById("practice").style.display = "none";
 
         // Recupera el índice guardado o empieza en 0 si no existe
         const savedEssayIndex = localStorage.getItem("currentEssayIndex");
@@ -450,6 +458,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
         mostrarPreguntaDesarrollo(indiceDesarrollo);
         cargarPanelLateralDesarrollo();
+    } else {
+        document.getElementById("uniqueSelection").style.display = "block";
+        document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "none";
     }
 
     // Si no hay intentos, muestra solo el acceso bloqueado
@@ -472,9 +484,17 @@ window.addEventListener("DOMContentLoaded", function () {
             startTimer();
         }
 
-        if (localStorage.getItem("parte1Finalizada") === "true") {
+        if (localStorage.getItem("parte2Finalizada") === "true") {
+            document.getElementById("uniqueSelection").style.display = "none";
+            document.getElementById("essay").style.display = "none";
+            document.getElementById("practice").style.display = "block";
+            initPracticePart();
+            showPracticeSection(1);
+            updatePracticeProgress();
+        } else if (localStorage.getItem("parte1Finalizada") === "true") {
             document.getElementById("uniqueSelection").style.display = "none";
             document.getElementById("essay").style.display = "block";
+            document.getElementById("practice").style.display = "none";
             const savedEssayIndex = localStorage.getItem("currentEssayIndex");
             indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
             mostrarPreguntaDesarrollo(indiceDesarrollo);
@@ -482,6 +502,7 @@ window.addEventListener("DOMContentLoaded", function () {
         } else {
             document.getElementById("uniqueSelection").style.display = "block";
             document.getElementById("essay").style.display = "none";
+            document.getElementById("practice").style.display = "none";
             initUniqueSelection(); //Para que cargue
             renderProgressBar();
         }
@@ -491,6 +512,7 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("name-section").style.display = "none";
         document.getElementById("uniqueSelection").style.display = "none";
         document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "none";
     }
 });
 ///////////////////////////////////////
@@ -2090,18 +2112,12 @@ const sopaGrid = [
 
 // Función para inicializar la tercera parte
 function initPracticePart() {
-    document.getElementById("essay").style.display = "none";
-    document.getElementById("practice").style.display = "block";
-    
     // Cargar datos guardados
     const savedData = JSON.parse(localStorage.getItem("practiceData")) || {};
     pareoMatches = savedData.pareoMatches || {};
     crucigramaAnswers = savedData.crucigramaAnswers || {};
     sopaFoundWords = savedData.sopaFoundWords || [];
     currentPracticeSection = savedData.currentSection || 1;
-    
-    showPracticeSection(currentPracticeSection);
-    updatePracticeProgress();
 }
 
 // Función para mostrar la sección de práctica actual
@@ -2375,15 +2391,9 @@ function savePracticeData() {
     localStorage.setItem("examData", JSON.stringify(examData));
 }
 
-// Modificar la función de finalizar desarrollo para iniciar práctica
-document.addEventListener('DOMContentLoaded', function() {
-    // Verificar si debe mostrar la práctica
-    if (localStorage.getItem("parte2Finalizada") === "true") {
-        initPracticePart();
-    }
-});
 
-// Modificar el botón de finalizar desarrollo en PreguntasDesarrollo.js
+
+// Función para finalizar desarrollo y pasar a práctica
 function finalizarDesarrollo() {
     Swal.fire({
         title: "Parte de desarrollo finalizada",
@@ -2392,7 +2402,11 @@ function finalizarDesarrollo() {
         confirmButtonText: "Continuar a Práctica"
     }).then(() => {
         localStorage.setItem("parte2Finalizada", "true");
+        document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "block";
         initPracticePart();
+        showPracticeSection(1);
+        updatePracticeProgress();
     });
 }
 /////////////////////////////////
