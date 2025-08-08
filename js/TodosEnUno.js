@@ -1,13 +1,13 @@
 //////////////////////////////////
 //VariablesConfigurables.js
 /////////////////////////////////
-const EXAM_NAME = "Examen de Fundamentos de TI - Código de curso TCS1003";
+const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
 const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 180; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
-const MAX_ATTEMPTS = 4; //Cantidad de intentos si los estudiantes recargan o hacen algo indebido
+const MAX_ATTEMPTS = 1000; //Cantidad de intentos si los estudiantes recargan o hacen algo indebido
 
 const ADMIN_PASSWORD = "profe123*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
 const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
@@ -50,7 +50,7 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
 //////////////////////////////////
 //Main_Intentos.js
 /////////////////////////////////
-// VARIABLES GLOBALES
+//VARIABLES GLOBALES
 let intentoYaRestado = false; // Para evitar que se reste más de una vez
 let devtoolsAbierto = false;
 let devtoolsYaDetectado = false;
@@ -109,7 +109,7 @@ function actualizarAccesoPorIntentos() {
 
     if (restantes <= 0) {
         accessSection.innerHTML = `
-            <p style="color: red; font-weight: bold; font-size: 1.2em; margin-top: 1em;">
+            <p style="color: red; font-weight: bold; font-size: 1.2em; margin-top: auto; margin-bottom: auto;">
                 Sus intentos se acabaron, por favor póngase en contacto con su docente.
             </p>
         `;
@@ -423,46 +423,7 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("essay").style.display = "none";
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////
+///////////////////////////////////////
 
 
 
@@ -471,7 +432,7 @@ window.addEventListener("DOMContentLoaded", function () {
 //////////////////////////////////
 //Seguridad.js
 /////////////////////////////////
-// BLOQUEO DE FUNCIONES NO PERMITIDAS
+//BLOQUEO DE FUNCIONES NO PERMITIDAS
 let seguridadActiva = true;
 
 // Función de bloqueo de combinaciones peligrosas
@@ -703,6 +664,18 @@ btnAcceptInstructions.addEventListener("click", () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////
 //IniciarCuentaRegresiva.js
 /////////////////////////////////
@@ -762,6 +735,15 @@ function finishExam() {
 
 
 
+
+
+
+
+
+
+
+
+
 //////////////////////////////////
 //MostrarFechaActual.js
 /////////////////////////////////
@@ -772,6 +754,13 @@ const formattedDate = now.toLocaleDateString("es-CR", {
 });
 dateElement.textContent = `Fecha: ${formattedDate}`;
 ////////////////////////////////////////
+
+
+
+
+
+
+
 
 
 
@@ -900,6 +889,21 @@ function cargarPanelLateralDesarrollo() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////
 //ValidarDatosDelEstudiante.js
 /////////////////////////////////
@@ -1000,6 +1004,21 @@ console.log(datos?.cedula);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////
 //PreguntasSeleccionUnica.js
 /////////////////////////////////
@@ -1037,246 +1056,246 @@ const uniqueQuestions = [
         ],
         correct: "Monitor"
     },
-    // {
-    //     question: "¿Qué componente se encarga de ejecutar las instrucciones en una computadora? (2 pts)",
-    //     options: [
-    //         "Memoria RAM",
-    //         "Tarjeta gráfica",
-    //         "Unidad central de proceso (CPU)",
-    //         "Disco duro"
-    //     ],
-    //     correct: "Unidad central de proceso (CPU)"
-    // },
-    // {
-    //     question: "¿Cuál es un ejemplo de memoria volátil? (2 pts)",
-    //     options: [
-    //         "ROM",
-    //         "HDD",
-    //         "RAM",
-    //         "SSD"
-    //     ],
-    //     correct: "RAM"
-    // },
-    // {
-    //     question: "¿Para qué se utiliza la memoria caché? (2 pts)",
-    //     options: [
-    //         "Para guardar archivos permanentemente",
-    //         "Para aumentar la velocidad de acceso a datos recurrentes",
-    //         "Para almacenar copias de seguridad del sistema",
-    //         "Para ejecutar gráficos de alta calidad"
-    //     ],
-    //     correct: "Para aumentar la velocidad de acceso a datos recurrentes"
-    // },
-    // {
-    //     question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
-    //     options: [
-    //         "La RAM es volátil y la ROM",
-    //         "La ROM es más rápida que la RAM",
-    //         "Ambas pueden ser modificadas libremente por el usuario",
-    //         "La RAM solo se usa en servidores"
-    //     ],
-    //     correct: "La RAM es volátil y la ROM"
-    // },
-    // {
-    //     question: "¿Qué memoria almacena los datos más utilizados por el procesador para acelerar el acceso? (2 pts)",
-    //     options: [
-    //         "RAM",
-    //         "Caché",
-    //         "ROM",
-    //         "Flash"
-    //     ],
-    //     correct: "Caché"
-    // },
-    // {
-    //     question: "¿Qué tipo de memoria se encuentra en las tarjetas gráficas y ayuda al procesamiento de imágenes? (2 pts)",
-    //     options: [
-    //         "VRAM",
-    //         "ROM",
-    //         "HDD",
-    //         "RAM"
-    //     ],
-    //     correct: "VRAM"
-    // },
-    // {
-    //     question: "¿Qué es la memoria virtual? (2 pts)",
-    //     options: [
-    //         "Un espacio en el disco duro utilizado como extensión de la RAM",
-    //         "Un tipo de memoria integrada en los procesadores",
-    //         "Un software que gestiona la memoria de la PC",
-    //         "Un almacenamiento físico externo"
-    //     ],
-    //     correct: "Un espacio en el disco duro utilizado como extensión de la RAM"
-    // },
-    // {
-    //     question: "¿Cuál es la función principal de la memoria ROM? (2 pts)",
-    //     options: [
-    //         "Almacenar programas temporalmente",
-    //         "Contener las instrucciones básicas para el arranque del sistema",
-    //         "Ejecutar videojuegos de alto rendimiento",
-    //         "Mejorar el rendimiento del procesador"
-    //     ],
-    //     correct: "Contener las instrucciones básicas para el arranque del sistema"
-    // },
-    // {
-    //     question: "¿Qué es un disco SSD? (2 pts)",
-    //     options: [
-    //         "Un disco duro mecánico",
-    //         "Un tipo de memoria RAM",
-    //         "Un almacenamiento basado en memoria flash",
-    //         "Una unidad de almacenamiento óptimo"
-    //     ],
-    //     correct: "Un almacenamiento basado en memoria flash"
-    // },
-    // {
-    //     question: "¿Cuál es la diferencia entre la memoria RAM DDR3 y DDR5? (2 pts)",
-    //     options: [
-    //         "la DDR5 es más rápida y eficiente",
-    //         "La DDR3 tiene mayor capacidad",
-    //         "La DDR5 es solo para servidores",
-    //         "No hay diferencias entre ellas"
-    //     ],
-    //     correct: "la DDR5 es más rápida y eficiente"
-    // },
-    // {
-    //     question: "¿Que significa M.2 en almacenamiento? (2 pts)",
-    //     options: [
-    //         "Un formato compacto para discos SSD",
-    //         "Un tipo de memoria ROM avanzada",
-    //         "Una categoría de procesadores",
-    //         "Un software de administración de archivos"
-    //     ],
-    //     correct: "Un formato compacto para discos SSD"
-    // },
-    // {
-    //     question: "¿Qué es una máquina virtual(VM)? (2 pts)",
-    //     options: [
-    //         "Un software que emula un sistema operativo dentro de otro",
-    //         "Un hardware físico adicional para aumentar el rendimiento",
-    //         "Un sistema que reemplaza a la memoria RAM",
-    //         "Una red de servidores conectados"
-    //     ],
-    //     correct: "Un software que emula un sistema operativo dentro de otro"
-    // },
-    // {
-    //     question: "¿Cuál es una de las principales ventajas de VirtualBox? (2 pts)",
-    //     options: [
-    //         "Es gratuito y permite ejecutar múltiples sistemas operativos",
-    //         "Solo funciona con Windows",
-    //         "No permite tomar instantáneas del sistema",
-    //         "Requiere una licencia de pago"
-    //     ],
-    //     correct: "Es gratuito y permite ejecutar múltiples sistemas operativos"
-    // },
-    // {
-    //     question: "¿Qué tipo de conexión de red permite que una VM se comunique con Internet y con la red local como si fuera otro dispositivo? (2 pts)",
-    //     options: [
-    //         "NAT",
-    //         "Bridge",
-    //         "DHCP",
-    //         "Loopback"
-    //     ],
-    //     correct: "Bridge"
-    // },
-    // {
-    //     question: "¿Cuál de los siguientes NO es un comando de Windows PowerShell? (2 pts)",
-    //     options: [
-    //         "Get-NetAdapter",
-    //         "ipconfig",
-    //         "mkdir",
-    //         "tasklist"
-    //     ],
-    //     correct: "mkdir"
-    // },
-    // {
-    //     question: "¿Qué atajo de teclado en el sistema operativo Windows abre el Administrador de Tareas directamente? (2 pts)",
-    //     options: [
-    //         "Ctrl + Alt + Supr",
-    //         "Ctrl + Shift + Esc",
-    //         "Win + R",
-    //         "Alt + F4"
-    //     ],
-    //     correct: "Ctrl + Shift + Esc"
-    // },
-    // {
-    //     question: "¿Qué comando en Linux se usa para instalar un programa en sistemas basados en Debian? (2 pts)",
-    //     options: [
-    //         "install package",
-    //         "sudo apt install <paquete>",
-    //         "run application",
-    //         "setup software"
-    //     ],
-    //     correct: "sudo apt install <paquete>"
-    // },
-    // {
-    //     question: "¿Cuál de los siguientes comandos en Linux se usa para listar archivos en un directorio? (2 pts)",
-    //     options: [
-    //         "ls",
-    //         "dir",
-    //         "showfiles",
-    //         "list-all"
-    //     ],
-    //     correct: "ls"
-    // },
-    // {
-    //     question: "¿Qué comando en Linux se usa para cambiar los permisos de un archivo? (2 pts)",
-    //     options: [
-    //         "chmod",
-    //         "ls -l",
-    //         "mkdir",
-    //         "rm"
-    //     ],
-    //     correct: "chmod"
-    // },
-    // {
-    //     question: "¿Qué significa CLI? (2 pts)",
-    //     options: [
-    //         "Command Line Interface",
-    //         "Computer Linux Interaction",
-    //         "Control Logic Integration",
-    //         "Cloud Linux Instance"
-    //     ],
-    //     correct: "Command Line Interface"
-    // },
-    // {
-    //     question: "¿Cuál de los siguientes comandos en Windows se usa para ver la configuración de red? (2 pts)",
-    //     options: [
-    //         "netconfig",
-    //         "ipconfig",
-    //         "list-network",
-    //         "configip"
-    //     ],
-    //     correct: "ipconfig"
-    // },
-    // {
-    //     question: "¿Qué comando en Linux permite ver la dirección IP de la computadora? (2 pts)",
-    //     options: [
-    //         "ls /ip",
-    //         "ip a",
-    //         "netstat -an",
-    //         "show-ip"
-    //     ],
-    //     correct: "ip a"
-    // },
-    // {
-    //     question: "¿Qué comando en Linux se usa para monitorear procesos en tiempo real? (2 pts)",
-    //     options: [
-    //         "top",
-    //         "tasklist",
-    //         "view-process",
-    //         "process-check"
-    //     ],
-    //     correct: "top"
-    // },
-    // {
-    //     question: "¿Cuál de los siguientes comandos de Windows permite cerrar un proceso específico? (2 pts)",
-    //     options: [
-    //         "taskkill",
-    //         "end-process",
-    //         "stop-app",
-    //         "shutdown -t 0"
-    //     ],
-    //     correct: "taskkill"
-    // },
+    {
+        question: "¿Qué componente se encarga de ejecutar las instrucciones en una computadora? (2 pts)",
+        options: [
+            "Memoria RAM",
+            "Tarjeta gráfica",
+            "Unidad central de proceso (CPU)",
+            "Disco duro"
+        ],
+        correct: "Unidad central de proceso (CPU)"
+    },
+    {
+        question: "¿Cuál es un ejemplo de memoria volátil? (2 pts)",
+        options: [
+            "ROM",
+            "HDD",
+            "RAM",
+            "SSD"
+        ],
+        correct: "RAM"
+    },
+    {
+        question: "¿Para qué se utiliza la memoria caché? (2 pts)",
+        options: [
+            "Para guardar archivos permanentemente",
+            "Para aumentar la velocidad de acceso a datos recurrentes",
+            "Para almacenar copias de seguridad del sistema",
+            "Para ejecutar gráficos de alta calidad"
+        ],
+        correct: "Para aumentar la velocidad de acceso a datos recurrentes"
+    },
+    {
+        question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
+        options: [
+            "La RAM es volátil y la ROM",
+            "La ROM es más rápida que la RAM",
+            "Ambas pueden ser modificadas libremente por el usuario",
+            "La RAM solo se usa en servidores"
+        ],
+        correct: "La RAM es volátil y la ROM"
+    },
+    {
+        question: "¿Qué memoria almacena los datos más utilizados por el procesador para acelerar el acceso? (2 pts)",
+        options: [
+            "RAM",
+            "Caché",
+            "ROM",
+            "Flash"
+        ],
+        correct: "Caché"
+    },
+    {
+        question: "¿Qué tipo de memoria se encuentra en las tarjetas gráficas y ayuda al procesamiento de imágenes? (2 pts)",
+        options: [
+            "VRAM",
+            "ROM",
+            "HDD",
+            "RAM"
+        ],
+        correct: "VRAM"
+    },
+    {
+        question: "¿Qué es la memoria virtual? (2 pts)",
+        options: [
+            "Un espacio en el disco duro utilizado como extensión de la RAM",
+            "Un tipo de memoria integrada en los procesadores",
+            "Un software que gestiona la memoria de la PC",
+            "Un almacenamiento físico externo"
+        ],
+        correct: "Un espacio en el disco duro utilizado como extensión de la RAM"
+    },
+    {
+        question: "¿Cuál es la función principal de la memoria ROM? (2 pts)",
+        options: [
+            "Almacenar programas temporalmente",
+            "Contener las instrucciones básicas para el arranque del sistema",
+            "Ejecutar videojuegos de alto rendimiento",
+            "Mejorar el rendimiento del procesador"
+        ],
+        correct: "Contener las instrucciones básicas para el arranque del sistema"
+    },
+    {
+        question: "¿Qué es un disco SSD? (2 pts)",
+        options: [
+            "Un disco duro mecánico",
+            "Un tipo de memoria RAM",
+            "Un almacenamiento basado en memoria flash",
+            "Una unidad de almacenamiento óptimo"
+        ],
+        correct: "Un almacenamiento basado en memoria flash"
+    },
+    {
+        question: "¿Cuál es la diferencia entre la memoria RAM DDR3 y DDR5? (2 pts)",
+        options: [
+            "la DDR5 es más rápida y eficiente",
+            "La DDR3 tiene mayor capacidad",
+            "La DDR5 es solo para servidores",
+            "No hay diferencias entre ellas"
+        ],
+        correct: "la DDR5 es más rápida y eficiente"
+    },
+    {
+        question: "¿Que significa M.2 en almacenamiento? (2 pts)",
+        options: [
+            "Un formato compacto para discos SSD",
+            "Un tipo de memoria ROM avanzada",
+            "Una categoría de procesadores",
+            "Un software de administración de archivos"
+        ],
+        correct: "Un formato compacto para discos SSD"
+    },
+    {
+        question: "¿Qué es una máquina virtual(VM)? (2 pts)",
+        options: [
+            "Un software que emula un sistema operativo dentro de otro",
+            "Un hardware físico adicional para aumentar el rendimiento",
+            "Un sistema que reemplaza a la memoria RAM",
+            "Una red de servidores conectados"
+        ],
+        correct: "Un software que emula un sistema operativo dentro de otro"
+    },
+    {
+        question: "¿Cuál es una de las principales ventajas de VirtualBox? (2 pts)",
+        options: [
+            "Es gratuito y permite ejecutar múltiples sistemas operativos",
+            "Solo funciona con Windows",
+            "No permite tomar instantáneas del sistema",
+            "Requiere una licencia de pago"
+        ],
+        correct: "Es gratuito y permite ejecutar múltiples sistemas operativos"
+    },
+    {
+        question: "¿Qué tipo de conexión de red permite que una VM se comunique con Internet y con la red local como si fuera otro dispositivo? (2 pts)",
+        options: [
+            "NAT",
+            "Bridge",
+            "DHCP",
+            "Loopback"
+        ],
+        correct: "Bridge"
+    },
+    {
+        question: "¿Cuál de los siguientes NO es un comando de Windows PowerShell? (2 pts)",
+        options: [
+            "Get-NetAdapter",
+            "ipconfig",
+            "mkdir",
+            "tasklist"
+        ],
+        correct: "mkdir"
+    },
+    {
+        question: "¿Qué atajo de teclado en el sistema operativo Windows abre el Administrador de Tareas directamente? (2 pts)",
+        options: [
+            "Ctrl + Alt + Supr",
+            "Ctrl + Shift + Esc",
+            "Win + R",
+            "Alt + F4"
+        ],
+        correct: "Ctrl + Shift + Esc"
+    },
+    {
+        question: "¿Qué comando en Linux se usa para instalar un programa en sistemas basados en Debian? (2 pts)",
+        options: [
+            "install package",
+            "sudo apt install <paquete>",
+            "run application",
+            "setup software"
+        ],
+        correct: "sudo apt install <paquete>"
+    },
+    {
+        question: "¿Cuál de los siguientes comandos en Linux se usa para listar archivos en un directorio? (2 pts)",
+        options: [
+            "ls",
+            "dir",
+            "showfiles",
+            "list-all"
+        ],
+        correct: "ls"
+    },
+    {
+        question: "¿Qué comando en Linux se usa para cambiar los permisos de un archivo? (2 pts)",
+        options: [
+            "chmod",
+            "ls -l",
+            "mkdir",
+            "rm"
+        ],
+        correct: "chmod"
+    },
+    {
+        question: "¿Qué significa CLI? (2 pts)",
+        options: [
+            "Command Line Interface",
+            "Computer Linux Interaction",
+            "Control Logic Integration",
+            "Cloud Linux Instance"
+        ],
+        correct: "Command Line Interface"
+    },
+    {
+        question: "¿Cuál de los siguientes comandos en Windows se usa para ver la configuración de red? (2 pts)",
+        options: [
+            "netconfig",
+            "ipconfig",
+            "list-network",
+            "configip"
+        ],
+        correct: "ipconfig"
+    },
+    {
+        question: "¿Qué comando en Linux permite ver la dirección IP de la computadora? (2 pts)",
+        options: [
+            "ls /ip",
+            "ip a",
+            "netstat -an",
+            "show-ip"
+        ],
+        correct: "ip a"
+    },
+    {
+        question: "¿Qué comando en Linux se usa para monitorear procesos en tiempo real? (2 pts)",
+        options: [
+            "top",
+            "tasklist",
+            "view-process",
+            "process-check"
+        ],
+        correct: "top"
+    },
+    {
+        question: "¿Cuál de los siguientes comandos de Windows permite cerrar un proceso específico? (2 pts)",
+        options: [
+            "taskkill",
+            "end-process",
+            "stop-app",
+            "shutdown -t 0"
+        ],
+        correct: "taskkill"
+    },
 ];
 
 function loadQuestion(index) {
@@ -1387,15 +1406,18 @@ function renderProgressBar() {
 
     for (let i = 0; i < total; i++) {
         const box = document.createElement("div");
-        box.style.width = "3em"
+        box.classList.add("progress-box");
         box.textContent = i + 1;
-        box.style.padding = "10px";
-        box.style.backgroundColor = "#e6e6e6ff"
-        box.style.borderRadius = "4px";
-        box.style.textAlign = "center";
-        box.style.cursor = "pointer";
-        box.style.marginBottom = "8px";
-        box.style.border = "1px solid #ccc";
+
+
+        // box.style.width = "3em"
+        // box.style.padding = "10px";
+        // box.style.backgroundColor = "#e6e6e6ff"
+        // box.style.borderRadius = "4px";
+        // box.style.textAlign = "center";
+        // box.style.cursor = "pointer";
+        // box.style.marginBottom = "8px";
+        // box.style.border = "1px solid #ccc";
 
         // Colorea si ya respondió
         box.style.background = studentAnswers[i] ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
@@ -1403,9 +1425,9 @@ function renderProgressBar() {
         // Si es la pregunta actual, resaltarla
         if (i === currentQuestion) {
             box.classList.add("active-question");
-            box.style.backgroundColor = "#d6d092ff"
-            box.style.width = "3.5em"
-            box.style.border = "2px solid #e8e19aff";
+            // box.style.backgroundColor = "#d6d092ff"
+            // box.style.width = "3.5em"
+            // box.style.border = "2px solid #e8e19aff";
         }
 
         box.style.cursor = "default";
@@ -1472,6 +1494,20 @@ initUniqueSelection();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////
 //CuandoIngresen.js
 /////////////////////////////////
@@ -1518,6 +1554,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////
 //MenuHamburguesa.js
 /////////////////////////////////
@@ -1554,6 +1600,18 @@ function showHideMenu() {
     });
 }
 ///////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1621,6 +1679,18 @@ function guardarRespuestaDesarrollo(index, texto) {
     cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
 }
 ///////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

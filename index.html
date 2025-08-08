@@ -17,9 +17,26 @@
 </head>
 
 <body>
-    <button id="toggleInstructionsBtn">📘 Ver Instrucciones</button>
+
+    <!-- Titulo y cronometro -->
+    <section id="exam-title" class="exam-title">
+        <div class="section-container">
+            <div class="top-bar">
+                <button id="toggleInstructionsBtn" class="toggleInstructionsBtn">Ver Instrucciones</button>
+            </div>
+            <h1 id="title" class="title"></h1>
+            <div id="begin-timer" style="display: none" class="timer">
+                <span id="dateDisplay"><strong></strong></span>
+                <span id="timer"><strong>Tiempo restante: 00:00</strong></span>
+            </div>
+            <div id="intento-panel" class="intento-panel">
+                <p>Intentos restantes: <span id="intentos-restantes"></span></p>
+            </div>
+        </div>
+    </section>
+
     <!-- Instrucciones de clausulas para el examen -->
-    <section id="instructions-section" class="instructions">
+    <section id="instructions-section" class="instructions-section">
         <div id="instruction" class="instructions">
             <h2>Instrucciones generales</h2>
             <ul>
@@ -67,7 +84,7 @@
                     Universidad Empresarial. </li>
             </ul>
             <div class="checkIntructions">
-                <input type="checkbox" id="agreeCheck" />
+                <input type="checkbox" id="agreeCheck" class="agreeCheck" />
                 <label for="agreeCheck"><strong>He leído y acepto todas las instrucciones del examen.</strong></label>
             </div>
         </div>
@@ -75,7 +92,7 @@
 
     <!-- Código de acceso para realizarlo-->
     <section id="access" class="access">
-        <div id="access-section">
+        <div id="access-section" class="access-section">
             <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
                 botón azul, deben aceptarlas!</h2>
             <label for="accessInput">Ingrese el código de acceso generado por el docente:</label>
@@ -86,22 +103,8 @@
         </div>
     </section>
 
-    <!-- Titulo y cronometro -->
-    <section class="exam-title" id="exam-title">
-        <div class="section-container">
-            <h1 id="title" class="title"></h1>
-            <div id="begin-timer" style="display: none" class="timer">
-                <span id="dateDisplay"><strong></strong></span>
-                <span id="timer"><Strong>Tiempo restante: 00:00</Strong></span>
-            </div>
-            <div id="intento-panel">
-                <p>🧠 Intentos restantes: <span id="intentos-restantes"></span></p>
-            </div>
-        </div>
-    </section>
-
     <!-- menu -->
-    <section class="start" id="start">
+    <section id="start" class="start">
         <div class="section-container">
             <header>
                 <div class="nav-bar" id="nav-bar" style="display: none;" onclick="showHideMenu()"></div>
@@ -117,7 +120,7 @@
 
     <!-- primera parte nombre del estudiante -->
     <section id="StudentData" class="StudentData">
-        <div id="name-section" style="display: none;">
+        <div id="name-section" class="name-section" style="display: none;">
             <div class="section-container">
                 <div class="names-student">
                     <span id="studentDisplay"><input type="text" id="studentName"
@@ -137,17 +140,17 @@
     <section id="uniqueSelection" class="uniqueSelection" style="display: none;">
         <div class="section-container">
             <!-- PANEL DE PROGRESO LATERAL -->
-            <aside id="question-progress">
+            <aside id="question-progress" class="question-progress">
                 <h3>Preguntas selección única.(<span id="totalQuestions">0</span>)</h3>
-                <div id="progressList"></div>
+                <div id="progressList" class="progressList"></div>
             </aside>
 
             <!-- CONTENEDOR DE PREGUNTA ACTUAL -->
-            <div id="question-container">
+            <div id="question-container" class="question-container">
                 <h2>Parte 1: Marque con X (Selección única)</h2>
                 <br>
-                <div id="question-content"></div>
-                <button onclick="nextQuestion()" id="nextBtn">Siguiente</button>
+                <div id="question-content" class="question-content"></div>
+                <button onclick="nextQuestion()" id="nextBtn" class="nextBtn">Siguiente</button>
             </div>
         </div>
     </section>
@@ -161,7 +164,7 @@
             </div>
 
             <!-- Pregunta actual y navegación -->
-            <div id="essay-container">
+            <div id="essay-container" class="essay-container">
                 <div id="contenedor-desarrollo"></div>
                 <div class="essay-navigation">
                     <button onclick="nextQuestion()" id="nextBtnDesarrollo">Siguiente</button>
