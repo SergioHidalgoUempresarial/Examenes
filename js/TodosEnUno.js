@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -848,9 +848,11 @@ function mostrarPreguntaDesarrollo(index) {
 
     // Limpiar
     contenedor.innerHTML = `
+    <h2>Parte 2: Preguntas de desarrollo</h2>
+    <br>
     <div class="essay-question">
         <label for="respuesta-${index}"><strong>${index + 1}.</strong> ${pregunta}</label><br>
-        <textarea id="respuesta-${index}" rows="5" cols="80" placeholder="Escribe tu respuesta aquí...">${obtenerRespuestaDesarrollo(index)}</textarea>
+        <textarea id="respuesta-${index}" placeholder="Escribe tu respuesta aquí...">${obtenerRespuestaDesarrollo(index)}</textarea>
     </div>
     <div class="essay-navigation">
         <button id="btnSiguienteDesarrollo">Siguiente</button>
@@ -858,8 +860,41 @@ function mostrarPreguntaDesarrollo(index) {
     </div>
   `;
 
+    // Inicializar TinyMCE
+    const isMobile = window.innerWidth <= 600;
+    
+    tinymce.init({
+        selector: `#respuesta-${index}`,
+        height: 400,
+        menubar: isMobile ? false : 'file edit view insert format tools table help',
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'table', 'help', 'wordcount',
+            'codesample', 'hr', 'pagebreak', 'nonbreaking'
+        ],
+        toolbar_mode: isMobile ? 'sliding' : 'wrap',
+        toolbar: isMobile ? 
+            'undo redo | bold italic | numlist bullist | link | fullscreen' :
+            'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor | align lineheight | numlist bullist indent outdent | link table codesample | code preview fullscreen | help',
+        content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }',
+        branding: false,
+        resize: 'both',
+        statusbar: true,
+        elementpath: !isMobile,
+        promotion: false,
+        setup: function (editor) {
+            editor.on('change keyup', function () {
+                const content = editor.getContent();
+                guardarRespuestaDesarrollo(index, content);
+            });
+        }
+    });
+
     document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
-        const respuestaActual = document.getElementById(`respuesta-${indiceDesarrollo}`).value.trim();
+        // Obtener contenido de TinyMCE
+        const editor = tinymce.get(`respuesta-${indiceDesarrollo}`);
+        const respuestaActual = editor ? editor.getContent({format: 'text'}).trim() : '';
         
         // Verificar si la respuesta está vacía
         if (!respuestaActual) {
@@ -893,7 +928,15 @@ function mostrarPreguntaDesarrollo(index) {
                 saveQuestionTimes();
             }
             
-            guardarRespuestaDesarrollo(indiceDesarrollo, document.getElementById(`respuesta-${indiceDesarrollo}`).value);
+            // Guardar contenido de TinyMCE
+            const editor = tinymce.get(`respuesta-${indiceDesarrollo}`);
+            const contenido = editor ? editor.getContent() : '';
+            guardarRespuestaDesarrollo(indiceDesarrollo, contenido);
+            
+            // Destruir el editor actual antes de crear el siguiente
+            if (editor) {
+                tinymce.remove(`#respuesta-${indiceDesarrollo}`);
+            }
 
             if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
                 indiceDesarrollo++;
@@ -925,7 +968,9 @@ function guardarRespuestaDesarrollo(index, texto) {
 
 function obtenerRespuestaDesarrollo(index) {
     const examData = JSON.parse(localStorage.getItem("examData")) || {};
-    return examData.respuestasDesarrollo?.[index] || "";
+    const contenido = examData.respuestasDesarrollo?.[index] || "";
+    // Escapar el contenido HTML para evitar problemas en el textarea inicial
+    return contenido.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 function cargarPanelLateralDesarrollo() {
@@ -933,26 +978,24 @@ function cargarPanelLateralDesarrollo() {
     panel.innerHTML = "";
     preguntasDesarrollo.forEach((_, i) => {
         const box = document.createElement("div");
-        box.style.width = "3em"
+        box.classList.add("progress-box");
         box.textContent = i + 1;
-        box.style.padding = "10px";
-        box.style.backgroundColor = "#e6e6e6ff"
-        box.style.borderRadius = "4px";
-        box.style.textAlign = "center";
-        box.style.cursor = "default";
-        box.style.marginBottom = "8px";
-        box.style.border = "1px solid #ccc";
 
-        // Colorea si ya respondió
-        box.style.background = obtenerRespuestaDesarrollo(i) ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
+        // Colorea si ya respondió (verificar contenido sin HTML)
+        const examData = JSON.parse(localStorage.getItem("examData")) || {};
+        const contenido = examData.respuestasDesarrollo?.[i] || "";
+        const tieneContenido = contenido.replace(/<[^>]*>/g, '').trim().length > 0;
+        
+        if (tieneContenido) {
+            box.classList.add("answered");
+        }
 
         // Si es la pregunta actual, resaltarla
         if (i === indiceDesarrollo) {
             box.classList.add("active-question");
-            box.style.backgroundColor = "#d6d092ff";
-            box.style.width = "3.5em";
-            box.style.border = "2px solid #e8e19aff";
         }
+        
+        box.style.cursor = "default";
         panel.appendChild(box);
     });
 }
@@ -1890,9 +1933,11 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     // Desarrollo
     const datosDesarrollo = Object.entries(respuestasDesarrollo).map(([key, value], index) => {
         const tiempo = tiemposGuardados.desarrollo?.[index] ? formatTime(tiemposGuardados.desarrollo[index]) : "N/A";
+        // Convertir HTML a texto plano para el PDF
+        const textoPlano = value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
         return [
             `Pregunta ${index + 1}`,
-            value,
+            textoPlano || 'Sin respuesta',
             tiempo
         ];
     });
