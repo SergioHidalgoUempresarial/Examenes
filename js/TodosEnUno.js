@@ -993,6 +993,7 @@ function mostrarPreguntaDesarrollo(index) {
     // Mostrar u ocultar el botón Finalizar
     if (indiceDesarrollo === preguntasDesarrollo.length - 1) {
         document.getElementById("btnFinalizarDesarrollo").style.display = "inline-block";
+        document.getElementById("btnFinalizarDesarrollo").addEventListener("click", finalizarDesarrollo);
     }
 
     // Guardar cambios automáticamente
@@ -1917,6 +1918,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     const cedula = examData.cedula || "No registrada";
     const respuestasSeleccion = examData.respuestasSeleccionUnica || {};
     const respuestasDesarrollo = examData.respuestasDesarrollo || {};
+    const respuestasPractica = examData.respuestasPractica || {};
 
     //Título de PDF
     doc.setFontSize(16);
@@ -1996,7 +1998,401 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         y = doc.lastAutoTable.finalY + 10;
     }
 
+    // Práctica
+    if (Object.keys(respuestasPractica).length > 0) {
+        doc.text("Respuestas de práctica:", 20, y);
+        y += 5;
+        
+        const datosPractica = [];
+        
+        // Pareo
+        if (respuestasPractica.pareoMatches) {
+            Object.entries(respuestasPractica.pareoMatches).forEach(([palabraIndex, defIndex]) => {
+                const palabra = ["CPU", "RAM", "SSD", "GPU"][palabraIndex];
+                const definicion = ["Unidad central de procesamiento", "Memoria de acceso aleatorio", "Disco de estado sólido", "Unidad de procesamiento gráfico"][defIndex];
+                datosPractica.push(["Pareo", `${palabra} - ${definicion}`, "Completado"]);
+            });
+        }
+        
+        // Crucigrama
+        if (respuestasPractica.crucigramaAnswers) {
+            const respuestasCrucigrama = Object.keys(respuestasPractica.crucigramaAnswers).length;
+            datosPractica.push(["Crucigrama", `${respuestasCrucigrama} casillas completadas`, "Parcial"]);
+        }
+        
+        // Sopa de letras
+        if (respuestasPractica.sopaFoundWords) {
+            const palabrasEncontradas = respuestasPractica.sopaFoundWords.join(", ");
+            datosPractica.push(["Sopa de letras", palabrasEncontradas || "Ninguna palabra encontrada", "Completado"]);
+        }
+        
+        if (datosPractica.length > 0) {
+            doc.autoTable({
+                startY: y,
+                head: [["Actividad", "Respuesta", "Estado"]],
+                body: datosPractica,
+            });
+        }
+    }
+
     // Guardar el PDF
     doc.save("resumen_examen.pdf");
 });
 ///////////////////////////////////////////////////
+
+//////////////////////////////////
+//TerceraParte.js
+/////////////////////////////////
+// Variables globales para la tercera parte
+let currentPracticeSection = 1;
+let pareoMatches = {};
+let crucigramaAnswers = {};
+let sopaFoundWords = [];
+
+// Datos para el pareo
+const pareoData = {
+    palabras: ["CPU", "RAM", "SSD", "GPU"],
+    definiciones: [
+        "Unidad central de procesamiento",
+        "Memoria de acceso aleatorio",
+        "Disco de estado sólido",
+        "Unidad de procesamiento gráfico"
+    ]
+};
+
+// Datos para el crucigrama (simplificado)
+const crucigramaData = {
+    words: [
+        { word: "CPU", clue: "Cerebro de la computadora", row: 2, col: 1, direction: "horizontal" },
+        { word: "RAM", clue: "Memoria temporal", row: 1, col: 2, direction: "vertical" }
+    ]
+};
+
+// Datos para la sopa de letras
+const sopaWords = ["CPU", "RAM", "SSD", "GPU", "USB"];
+const sopaGrid = [
+    ['C', 'P', 'U', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'],
+    ['R', 'A', 'M', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S'],
+    ['S', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N'],
+    ['G', 'P', 'U', 'M', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A'],
+    ['U', 'S', 'B', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Q', 'W', 'E'],
+    ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'],
+    ['P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D'],
+    ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S'],
+    ['T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+    ['I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'],
+    ['X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'],
+    ['M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A'],
+    ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'],
+    ['Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E'],
+    ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T']
+];
+
+// Función para inicializar la tercera parte
+function initPracticePart() {
+    document.getElementById("essay").style.display = "none";
+    document.getElementById("practice").style.display = "block";
+    
+    // Cargar datos guardados
+    const savedData = JSON.parse(localStorage.getItem("practiceData")) || {};
+    pareoMatches = savedData.pareoMatches || {};
+    crucigramaAnswers = savedData.crucigramaAnswers || {};
+    sopaFoundWords = savedData.sopaFoundWords || [];
+    currentPracticeSection = savedData.currentSection || 1;
+    
+    showPracticeSection(currentPracticeSection);
+    updatePracticeProgress();
+}
+
+// Función para mostrar la sección de práctica actual
+function showPracticeSection(section) {
+    // Ocultar todas las secciones
+    document.querySelectorAll('.practice-section').forEach(s => s.style.display = 'none');
+    
+    currentPracticeSection = section;
+    
+    switch(section) {
+        case 1:
+            document.getElementById('pareo-section').style.display = 'block';
+            initPareo();
+            break;
+        case 2:
+            document.getElementById('crucigrama-section').style.display = 'block';
+            initCrucigrama();
+            break;
+        case 3:
+            document.getElementById('sopa-section').style.display = 'block';
+            initSopaLetras();
+            break;
+    }
+    
+    updatePracticeProgress();
+    savePracticeData();
+}
+
+// Función para actualizar el progreso visual
+function updatePracticeProgress() {
+    document.querySelectorAll('.practice-box').forEach((box, index) => {
+        box.classList.remove('active', 'completed');
+        
+        if (index + 1 === currentPracticeSection) {
+            box.classList.add('active');
+        } else if (index + 1 < currentPracticeSection) {
+            box.classList.add('completed');
+        }
+    });
+}
+
+// Inicializar pareo
+function initPareo() {
+    const container = document.getElementById('pareo-container');
+    container.innerHTML = `
+        <div class="pareo-column">
+            <h4>Palabras</h4>
+            ${pareoData.palabras.map((palabra, index) => 
+                `<div class="pareo-item" data-type="palabra" data-index="${index}" onclick="selectPareoItem(this)">${palabra}</div>`
+            ).join('')}
+        </div>
+        <div class="pareo-column">
+            <h4>Definiciones</h4>
+            ${pareoData.definiciones.map((def, index) => 
+                `<div class="pareo-item" data-type="definicion" data-index="${index}" onclick="selectPareoItem(this)">${def}</div>`
+            ).join('')}
+        </div>
+    `;
+    
+    // Restaurar matches guardados
+    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex]) => {
+        const palabraEl = container.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
+        const defEl = container.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
+        if (palabraEl && defEl) {
+            palabraEl.classList.add('matched');
+            defEl.classList.add('matched');
+        }
+    });
+}
+
+let selectedPareoItem = null;
+
+function selectPareoItem(element) {
+    if (element.classList.contains('matched')) return;
+    
+    if (selectedPareoItem) {
+        selectedPareoItem.classList.remove('selected');
+        
+        if (selectedPareoItem.dataset.type !== element.dataset.type) {
+            // Hacer match
+            const palabraIndex = selectedPareoItem.dataset.type === 'palabra' ? 
+                selectedPareoItem.dataset.index : element.dataset.index;
+            const defIndex = selectedPareoItem.dataset.type === 'definicion' ? 
+                selectedPareoItem.dataset.index : element.dataset.index;
+            
+            pareoMatches[palabraIndex] = defIndex;
+            selectedPareoItem.classList.add('matched');
+            element.classList.add('matched');
+            savePracticeData();
+        }
+        selectedPareoItem = null;
+    } else {
+        selectedPareoItem = element;
+        element.classList.add('selected');
+    }
+}
+
+// Inicializar crucigrama
+function initCrucigrama() {
+    const container = document.getElementById('crucigrama-container');
+    let grid = '';
+    
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            const isWhite = crucigramaData.words.some(word => {
+                if (word.direction === 'horizontal') {
+                    return row === word.row && col >= word.col && col < word.col + word.word.length;
+                } else {
+                    return col === word.col && row >= word.row && row < word.row + word.word.length;
+                }
+            });
+            
+            if (isWhite) {
+                const cellId = `cell-${row}-${col}`;
+                grid += `<div class="crucigrama-cell white">
+                    <input type="text" maxlength="1" id="${cellId}" onchange="saveCrucigramaAnswer('${cellId}', this.value)">
+                </div>`;
+            } else {
+                grid += `<div class="crucigrama-cell black"></div>`;
+            }
+        }
+    }
+    
+    container.innerHTML = grid;
+    
+    // Restaurar respuestas guardadas
+    Object.entries(crucigramaAnswers).forEach(([cellId, value]) => {
+        const input = document.getElementById(cellId);
+        if (input) input.value = value;
+    });
+}
+
+function saveCrucigramaAnswer(cellId, value) {
+    crucigramaAnswers[cellId] = value.toUpperCase();
+    savePracticeData();
+}
+
+// Inicializar sopa de letras
+function initSopaLetras() {
+    const container = document.getElementById('sopa-container');
+    let grid = '';
+    
+    for (let row = 0; row < 15; row++) {
+        for (let col = 0; col < 15; col++) {
+            const cellId = `sopa-${row}-${col}`;
+            grid += `<div class="sopa-cell" id="${cellId}" onclick="selectSopaCell(${row}, ${col})">${sopaGrid[row][col]}</div>`;
+        }
+    }
+    
+    container.innerHTML = grid;
+    
+    // Mostrar palabras a encontrar
+    const listaPalabras = document.getElementById('lista-palabras');
+    listaPalabras.innerHTML = sopaWords.map(word => 
+        `<span class="palabra-item ${sopaFoundWords.includes(word) ? 'encontrada' : ''}">${word}</span>`
+    ).join('');
+}
+
+let sopaSelection = [];
+
+function selectSopaCell(row, col) {
+    const cellId = `sopa-${row}-${col}`;
+    const cell = document.getElementById(cellId);
+    
+    if (sopaSelection.length === 0) {
+        sopaSelection.push({row, col});
+        cell.classList.add('selected');
+    } else if (sopaSelection.length === 1) {
+        sopaSelection.push({row, col});
+        checkSopaWord();
+    }
+}
+
+function checkSopaWord() {
+    const [start, end] = sopaSelection;
+    let word = '';
+    
+    // Construir la palabra seleccionada
+    if (start.row === end.row) {
+        // Horizontal
+        const minCol = Math.min(start.col, end.col);
+        const maxCol = Math.max(start.col, end.col);
+        for (let col = minCol; col <= maxCol; col++) {
+            word += sopaGrid[start.row][col];
+        }
+    } else if (start.col === end.col) {
+        // Vertical
+        const minRow = Math.min(start.row, end.row);
+        const maxRow = Math.max(start.row, end.row);
+        for (let row = minRow; row <= maxRow; row++) {
+            word += sopaGrid[row][start.col];
+        }
+    }
+    
+    // Verificar si la palabra está en la lista
+    if (sopaWords.includes(word) && !sopaFoundWords.includes(word)) {
+        sopaFoundWords.push(word);
+        markSopaWordFound();
+        updateSopaWordsList();
+        savePracticeData();
+    }
+    
+    // Limpiar selección
+    document.querySelectorAll('.sopa-cell.selected').forEach(cell => {
+        if (!cell.classList.contains('found')) {
+            cell.classList.remove('selected');
+        }
+    });
+    sopaSelection = [];
+}
+
+function markSopaWordFound() {
+    const [start, end] = sopaSelection;
+    
+    if (start.row === end.row) {
+        const minCol = Math.min(start.col, end.col);
+        const maxCol = Math.max(start.col, end.col);
+        for (let col = minCol; col <= maxCol; col++) {
+            document.getElementById(`sopa-${start.row}-${col}`).classList.add('found');
+        }
+    } else if (start.col === end.col) {
+        const minRow = Math.min(start.row, end.row);
+        const maxRow = Math.max(start.row, end.row);
+        for (let row = minRow; row <= maxRow; row++) {
+            document.getElementById(`sopa-${row}-${start.col}`).classList.add('found');
+        }
+    }
+}
+
+function updateSopaWordsList() {
+    const listaPalabras = document.getElementById('lista-palabras');
+    listaPalabras.innerHTML = sopaWords.map(word => 
+        `<span class="palabra-item ${sopaFoundWords.includes(word) ? 'encontrada' : ''}">${word}</span>`
+    ).join('');
+}
+
+// Función para avanzar a la siguiente sección
+function nextPracticeSection() {
+    if (currentPracticeSection < 3) {
+        showPracticeSection(currentPracticeSection + 1);
+    }
+}
+
+// Función para finalizar la práctica
+function finalizarPractica() {
+    Swal.fire({
+        title: '¡Práctica finalizada!',
+        text: 'Has completado todas las actividades prácticas.',
+        icon: 'success',
+        confirmButtonText: 'Generar PDF final'
+    }).then(() => {
+        // Aquí se puede generar el PDF final o mostrar resumen
+        document.getElementById("practice").style.display = "none";
+        document.getElementById("upload").style.display = "block";
+    });
+}
+
+// Función para guardar datos de práctica
+function savePracticeData() {
+    const practiceData = {
+        currentSection: currentPracticeSection,
+        pareoMatches,
+        crucigramaAnswers,
+        sopaFoundWords
+    };
+    localStorage.setItem("practiceData", JSON.stringify(practiceData));
+    
+    // También guardar en examData para el PDF
+    let examData = JSON.parse(localStorage.getItem("examData")) || {};
+    examData.respuestasPractica = practiceData;
+    localStorage.setItem("examData", JSON.stringify(examData));
+}
+
+// Modificar la función de finalizar desarrollo para iniciar práctica
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar si debe mostrar la práctica
+    if (localStorage.getItem("parte2Finalizada") === "true") {
+        initPracticePart();
+    }
+});
+
+// Modificar el botón de finalizar desarrollo en PreguntasDesarrollo.js
+function finalizarDesarrollo() {
+    Swal.fire({
+        title: "Parte de desarrollo finalizada",
+        text: "Ahora continúa con la parte 3: Práctica.",
+        icon: "success",
+        confirmButtonText: "Continuar a Práctica"
+    }).then(() => {
+        localStorage.setItem("parte2Finalizada", "true");
+        initPracticePart();
+    });
+}
+/////////////////////////////////
