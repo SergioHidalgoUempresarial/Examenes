@@ -3,13 +3,13 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
-const EXAM_DURATION_MINUTES = 180; // Cambiar a 180 u otro valor si se desea
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
 const MAX_ATTEMPTS = 1000; //Cantidad de intentos si los estudiantes recargan o hacen algo indebido
 
-const ADMIN_PASSWORD = "profe123*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
+const ADMIN_PASSWORD = "profe123"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
 const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
 /////////////////////////////////
@@ -859,21 +859,48 @@ function mostrarPreguntaDesarrollo(index) {
   `;
 
     document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
-        // Guardar tiempo de pregunta actual
-        if (questionStartTime !== null) {
-            const timeSpent = Date.now() - questionStartTime;
-            if (!questionTimes.desarrollo) questionTimes.desarrollo = {};
-            questionTimes.desarrollo[indiceDesarrollo] = timeSpent;
-            saveQuestionTimes();
+        const respuestaActual = document.getElementById(`respuesta-${indiceDesarrollo}`).value.trim();
+        
+        // Verificar si la respuesta está vacía
+        if (!respuestaActual) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Respuesta vacía',
+                text: '¿Deseas continuar sin responder esta pregunta?',
+                showCancelButton: true,
+                confirmButtonText: 'Continuar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Usuario eligió continuar
+                    continuarSiguientePregunta();
+                }
+                // Si cancela, no hace nada y se queda en la pregunta actual
+            });
+        } else {
+            // Si hay respuesta, continuar normalmente
+            continuarSiguientePregunta();
         }
         
-        guardarRespuestaDesarrollo(indiceDesarrollo, document.getElementById(`respuesta-${indiceDesarrollo}`).value);
+        function continuarSiguientePregunta() {
+            // Guardar tiempo de pregunta actual
+            if (questionStartTime !== null) {
+                const timeSpent = Date.now() - questionStartTime;
+                if (!questionTimes.desarrollo) questionTimes.desarrollo = {};
+                questionTimes.desarrollo[indiceDesarrollo] = timeSpent;
+                saveQuestionTimes();
+            }
+            
+            guardarRespuestaDesarrollo(indiceDesarrollo, document.getElementById(`respuesta-${indiceDesarrollo}`).value);
 
-        if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
-            indiceDesarrollo++;
-            localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el nuevo índice
-            mostrarPreguntaDesarrollo(indiceDesarrollo);
-            cargarPanelLateralDesarrollo(); // Actualiza el panel lateral
+            if (indiceDesarrollo < preguntasDesarrollo.length - 1) {
+                indiceDesarrollo++;
+                localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el nuevo índice
+                mostrarPreguntaDesarrollo(indiceDesarrollo);
+                cargarPanelLateralDesarrollo(); // Actualiza el panel lateral
+            }
         }
     });
 
