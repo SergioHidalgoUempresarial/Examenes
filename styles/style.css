@@ -501,7 +501,8 @@ label[for="agreeCheck"] {
   flex: 1 0 auto;
   min-width: 50px;
   max-width: 50px;
-  height: 50px; /* asegúrate de establecer una altura fija */
+  height: 50px;
+  /* asegúrate de establecer una altura fija */
   gap: 2px;
   padding: 1%;
   text-align: center;
@@ -510,7 +511,7 @@ label[for="agreeCheck"] {
   background-color: #f1f1f1;
   border: 1px solid #ccc;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
   display: flex;
   align-items: center;
@@ -528,6 +529,7 @@ label[for="agreeCheck"] {
 .progress-box.active-question {
   border: 2px solid #444;
   background-color: #f1f1f1;
+  color: #444;
   font-weight: bold;
 }
 
@@ -785,11 +787,11 @@ label[for="agreeCheck"] {
   .tox .tox-toolbar__overflow {
     display: none !important;
   }
-  
+
   .tox .tox-toolbar__primary {
     flex-wrap: wrap !important;
   }
-  
+
   .tox .tox-toolbar-overlord {
     flex-wrap: wrap !important;
   }
@@ -800,11 +802,11 @@ label[for="agreeCheck"] {
   .tox-tinymce {
     border-radius: 4px !important;
   }
-  
+
   .tox .tox-toolbar {
     padding: 4px !important;
   }
-  
+
   .tox .tox-tbtn {
     margin: 1px !important;
     padding: 4px !important;
@@ -905,9 +907,10 @@ button:hover {
   }
 
   .progress-box.active-question {
-    background-color: #ffd700;
-    border: 2px solid #c1a500;
+    background-color: #f1f1f1;
+    border: 2px solid #444;
     color: #000;
+    font-weight: bold;
   }
 
   .progress-box.answered {
