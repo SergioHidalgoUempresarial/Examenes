@@ -42,6 +42,70 @@ body {
   margin-bottom: 10px;
 }
 
+/* Responsive para SweetAlert en pantallas pequeñas */
+@media (max-width: 600px) {
+  .swal2-popup {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 0 auto !important;
+    padding: 15px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .swal-wide-low {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    padding: 15px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .swal2-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .swal-wide-low .swal2-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .swal2-html-container {
+    font-size: 0.9rem !important;
+    padding: 0 5px !important;
+    max-height: 250px !important;
+  }
+  
+  .swal-wide-low .swal2-html-container {
+    font-size: 0.9rem !important;
+    padding: 0 5px !important;
+    max-height: 250px !important;
+  }
+  
+  .swal2-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  
+  .swal2-confirm,
+  .swal2-cancel {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .swal2-image {
+    max-width: 80px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .swal-wide-low .swal2-image {
+    max-width: 80px !important;
+    margin-bottom: 8px !important;
+  }
+}
+
 /* Estilo adicional si usás las clases del contenido */
 .alert-content ul {
   padding-left: 20px;
