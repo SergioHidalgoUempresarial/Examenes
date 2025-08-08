@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 180; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -30,6 +30,7 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
         localStorage.removeItem("studentAnswers");
         localStorage.removeItem("currentQuestionIndex");
         localStorage.removeItem("parte1Finalizada");
+        localStorage.removeItem("currentEssayIndex");
         // Reinicia también el estado de instrucciones aceptadas
         localStorage.removeItem("aceptoInstruccionesExamen");
     }
@@ -40,6 +41,8 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
     if (examData?.accessCode !== ACCESS_CODE) {
         delete newExamData.instruccionesAceptadas;
         delete newExamData.fechaAceptacion;
+        delete newExamData.respuestasDesarrollo;
+        delete newExamData.respuestasSeleccionUnica;
     }
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(newExamData));
 })();
@@ -179,6 +182,8 @@ function manejarSalidaExamen(tipo, evento = null) {
 }
 
 window.addEventListener("beforeunload", function (e) {
+    // Marcar que se va a recargar para detectarlo después
+    localStorage.setItem("paginaRecargada", "true");
     manejarSalidaExamen("recarga", e);
 });
 
@@ -366,6 +371,17 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // INICIALIZACIÓN
 window.onload = function () {
+    // Detectar si hubo recarga y mostrar mensaje
+    if (localStorage.getItem("paginaRecargada") === "true") {
+        localStorage.removeItem("paginaRecargada");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Página recargada',
+            text: 'Has recargado la página. Perdiste un intento.',
+            confirmButtonText: 'Entendido'
+        });
+    }
+    
     verificarIntentos();
     mostrarIntentosRestantes();
     actualizarAccesoPorIntentos();
@@ -401,6 +417,13 @@ window.addEventListener("DOMContentLoaded", function () {
     if (examData.nombre && examData.cedula && examData.instruccionesAceptadas) {
         document.getElementById("access-section").style.display = "none";
         document.getElementById("name-section").style.display = "block";
+        document.getElementById("nav-bar").style.display = "block"; // Mostrar menú hamburguesa
+        document.getElementById("begin-timer").style.display = "block"; // Mostrar timer
+        
+        // Reiniciar el timer si es necesario
+        if (localStorage.getItem("examStarted") === "true") {
+            startTimer();
+        }
 
         if (localStorage.getItem("parte1Finalizada") === "true") {
             document.getElementById("uniqueSelection").style.display = "none";
@@ -1512,6 +1535,12 @@ initUniqueSelection();
 //CuandoIngresen.js
 /////////////////////////////////
 document.addEventListener('DOMContentLoaded', () => {
+    // No mostrar el mensaje si el examen ya inició
+    const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
+    if (examData.nombre && examData.cedula && examData.instruccionesAceptadas) {
+        return; // Salir sin mostrar el mensaje
+    }
+    
     Swal.fire({
         title: 'Instrucciones importantes',
         html: `
