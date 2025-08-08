@@ -175,8 +175,47 @@
     </section>
 
     <section id="practice" class="practice" style="display: none;">
-        <div id="practice-container">
+        <div class="section-container">
+            <!-- Panel lateral de progreso -->
+            <div id="practice-progress" class="practice-progress">
+                <h3>Parte 3: Práctica</h3>
+                <div id="practiceProgressList">
+                    <div class="practice-box" data-section="1">3.1 Pareo</div>
+                    <div class="practice-box" data-section="2">3.2 Crucigrama</div>
+                    <div class="practice-box" data-section="3">3.3 Sopa de letras</div>
+                </div>
+            </div>
 
+            <!-- Contenedor de la actividad actual -->
+            <div id="practice-container" class="practice-container">
+                <!-- Pareo de palabras -->
+                <div id="pareo-section" class="practice-section" style="display: none;">
+                    <h2>3.1 Pareo de palabras y definiciones</h2>
+                    <p>Conecte cada palabra con su definición correspondiente:</p>
+                    <div id="pareo-container" class="pareo-container"></div>
+                    <button onclick="nextPracticeSection()" class="practice-btn">Siguiente</button>
+                </div>
+
+                <!-- Crucigrama -->
+                <div id="crucigrama-section" class="practice-section" style="display: none;">
+                    <h2>3.2 Crucigrama</h2>
+                    <p>Complete el crucigrama con las palabras correctas:</p>
+                    <div id="crucigrama-container" class="crucigrama-container"></div>
+                    <button onclick="nextPracticeSection()" class="practice-btn">Siguiente</button>
+                </div>
+
+                <!-- Sopa de letras -->
+                <div id="sopa-section" class="practice-section" style="display: none;">
+                    <h2>3.3 Sopa de letras</h2>
+                    <p>Encuentre las palabras ocultas en la sopa de letras:</p>
+                    <div id="sopa-container" class="sopa-container"></div>
+                    <div id="palabras-encontradas" class="palabras-encontradas">
+                        <h4>Palabras a encontrar:</h4>
+                        <div id="lista-palabras"></div>
+                    </div>
+                    <button onclick="finalizarPractica()" class="practice-btn">Finalizar Práctica</button>
+                </div>
+            </div>
         </div>
     </section>
 
