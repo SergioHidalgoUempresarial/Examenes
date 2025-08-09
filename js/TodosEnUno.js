@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -30,8 +30,11 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
         localStorage.removeItem("studentAnswers");
         localStorage.removeItem("currentQuestionIndex");
         localStorage.removeItem("parte1Finalizada");
+        localStorage.removeItem("parte2Finalizada");
         localStorage.removeItem("currentEssayIndex");
         localStorage.removeItem("aceptoInstruccionesExamen");
+        localStorage.removeItem("practiceData");
+        localStorage.removeItem("questionTimes");
         localStorage.removeItem("paginaRecargada"); // Remover el flag de recarga
         localStorage.setItem("codigoCambiado", "true"); // Marcar que el código cambió
     }
@@ -44,6 +47,7 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
         delete newExamData.fechaAceptacion;
         delete newExamData.respuestasDesarrollo;
         delete newExamData.respuestasSeleccionUnica;
+        delete newExamData.respuestasPractica;
     }
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(newExamData));
 })();
@@ -931,18 +935,27 @@ function mostrarPreguntaDesarrollo(index) {
     tinymce.init({
         selector: `#respuesta-${index}`,
         height: 400,
-        menubar: isMobile ? false : 'file edit view insert format tools table help',
+        skin: 'oxide',
+        content_css: 'default',
+        menubar: isMobile ? false : 'edit view insert format tools table',
         plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'table', 'help', 'wordcount',
-            'codesample', 'hr', 'pagebreak', 'nonbreaking'
+            'advlist', 'autolink', 'lists', 'link', 'charmap',
+            'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+            'table', 'help', 'wordcount'
         ],
         toolbar_mode: isMobile ? 'sliding' : 'wrap',
         toolbar: isMobile ? 
-            'undo redo | bold italic | numlist bullist | link | fullscreen' :
-            'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | forecolor backcolor | align lineheight | numlist bullist indent outdent | link table codesample | code preview fullscreen | help',
-        content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }',
+            'undo redo | bold italic | numlist bullist | fullscreen' :
+            'undo redo | formatselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright | numlist bullist | outdent indent | link table | fullscreen',
+        content_style: `
+            body { 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                font-size: 14px; 
+                line-height: 1.6; 
+                color: #333;
+                padding: 10px;
+            }
+        `,
         branding: false,
         resize: 'both',
         statusbar: true,
@@ -1014,6 +1027,7 @@ function mostrarPreguntaDesarrollo(index) {
 
     // Mostrar u ocultar el botón Finalizar
     if (indiceDesarrollo === preguntasDesarrollo.length - 1) {
+        document.getElementById("btnSiguienteDesarrollo").style.display = "none";
         document.getElementById("btnFinalizarDesarrollo").style.display = "inline-block";
         document.getElementById("btnFinalizarDesarrollo").addEventListener("click", finalizarDesarrollo);
     }
@@ -2357,7 +2371,23 @@ function updateSopaWordsList() {
 // Función para avanzar a la siguiente sección
 function nextPracticeSection() {
     if (currentPracticeSection < 3) {
-        showPracticeSection(currentPracticeSection + 1);
+        Swal.fire({
+            title: '¿Continuar a la siguiente actividad?',
+            text: 'Estás a punto de pasar a la siguiente actividad práctica.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#004080',
+            cancelButtonColor: '#d33',
+            customClass: {
+                popup: 'swal-wide-low'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showPracticeSection(currentPracticeSection + 1);
+            }
+        });
     }
 }
 
