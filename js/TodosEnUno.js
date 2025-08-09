@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -499,6 +499,14 @@ window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("uniqueSelection").style.display = "none";
             document.getElementById("essay").style.display = "block";
             document.getElementById("practice").style.display = "none";
+            // Solo inicializar preguntas aleatorias si no existen
+            const savedQuestions = localStorage.getItem("preguntasDesarrolloSeleccionadas");
+            if (!savedQuestions) {
+                preguntasDesarrollo = getRandomDevelopmentQuestions();
+                localStorage.setItem("preguntasDesarrolloSeleccionadas", JSON.stringify(preguntasDesarrollo));
+            } else {
+                preguntasDesarrollo = JSON.parse(savedQuestions);
+            }
             const savedEssayIndex = localStorage.getItem("currentEssayIndex");
             indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
             mostrarPreguntaDesarrollo(indiceDesarrollo);
@@ -866,7 +874,7 @@ dateElement.textContent = `Fecha: ${formattedDate}`;
 const preguntasDesarrolloCompletas = [
     "Explica con tus palabras la importancia de la memoria RAM en una computadora.",
     "Describe el funcionamiento de la memoria caché y su impacto en el rendimiento del procesador.",
-    "Menciona y explica dos diferencias entre una supercomputadora y una computadora persona.",
+    "Menciona y explica dos diferencias entre una supercomputadora y una computadora personal.",
     "Explica el concepto de memoria virtual y cómo afecta el rendimiento de una computadora.",
     "Diferencias entre un HDD y un SSD en términos de velocidad, durabilidad y tecnología.",
     "Explica con tus palabras qué es una máquina virtual y cuál es su utilidad.",
@@ -1693,6 +1701,14 @@ function nextQuestion() {
             localStorage.setItem("parte1Finalizada", "true");  // <-- guardamos la bandera
             document.getElementById("uniqueSelection").style.display = "none"; // Ocultar sección de selección única
             document.getElementById("essay").style.display = "block"; // Mostrar sección de desarrollo
+            // Solo inicializar preguntas aleatorias si no existen
+            const savedQuestions = localStorage.getItem("preguntasDesarrolloSeleccionadas");
+            if (!savedQuestions) {
+                preguntasDesarrollo = getRandomDevelopmentQuestions();
+                localStorage.setItem("preguntasDesarrolloSeleccionadas", JSON.stringify(preguntasDesarrollo));
+            } else {
+                preguntasDesarrollo = JSON.parse(savedQuestions);
+            }
             const savedEssayIndex = localStorage.getItem("currentEssayIndex");
             indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
             mostrarPreguntaDesarrollo(indiceDesarrollo);
