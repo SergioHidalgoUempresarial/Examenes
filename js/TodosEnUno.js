@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -586,10 +586,6 @@ function validateAccess() {
     }
 
     if (inputCode === ACCESS_CODE) {
-        document.getElementById("access-section").style.display = "none";
-
-        document.getElementById("upload").style.display = "none";
-        document.getElementById("final").style.display = "none";
         Swal.fire({
             title: '¡Recuerde!',
             html: `
@@ -618,11 +614,13 @@ function validateAccess() {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log("Usuario aceptó las instrucciones");
-
-                // Aquí se da la línea para marcar que el examen empezó anteriormente y no reinicie el temporizador
+                // Ocultar sección de acceso
+                document.getElementById("access-section").style.display = "none";
+                
+                // Marcar que el examen empezó
                 localStorage.setItem("examStarted", "true");
 
+                // Mostrar elementos del examen
                 startTimer();
                 document.getElementById("nav-bar").style.display = "block";
                 document.getElementById("begin-timer").style.display = "block";
@@ -630,7 +628,7 @@ function validateAccess() {
 
             } else if (result.isDismissed) {
                 // El usuario presionó cancelar o cerró el cuadro
-                window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
+                window.location.href = "https://www.google.com";
             }
         });
     } else {
@@ -868,12 +866,12 @@ dateElement.textContent = `Fecha: ${formattedDate}`;
 const preguntasDesarrollo = [
     "Explique qué es una base de datos relacional.",
     "Describa las ventajas del modelo cliente-servidor.",
-    "¿Qué es una tabla en SQL? Dé un ejemplo.",
-    "¿Por qué es importante normalizar una base de datos?",
-    "Explique la diferencia entre DELETE y TRUNCATE.",
-    "¿Qué es una transacción en bases de datos?",
-    "Describa el concepto de integridad referencial.",
-    "Mencione al menos tres comandos DDL y su función."
+    "¿Qué es una tabla en SQL? Dé un ejemplo."
+    // "¿Por qué es importante normalizar una base de datos?",
+    // "Explique la diferencia entre DELETE y TRUNCATE.",
+    // "¿Qué es una transacción en bases de datos?",
+    // "Describa el concepto de integridad referencial.",
+    // "Mencione al menos tres comandos DDL y su función."
 ];
 
 let indiceDesarrollo = 0;
