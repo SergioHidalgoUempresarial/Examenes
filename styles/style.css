@@ -804,14 +804,16 @@ label[for="agreeCheck"] {
 
 /* Estilos para TinyMCE */
 .tox-tinymce {
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   border: 2px solid #004080 !important;
-  box-shadow: 0 2px 10px rgba(0, 64, 128, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 64, 128, 0.15) !important;
+  overflow: hidden !important;
 }
 
 .tox .tox-toolbar {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-  border-bottom: 1px solid #004080 !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border-bottom: 2px solid #e9ecef !important;
+  padding: 8px !important;
 }
 
 .tox .tox-toolbar__primary {
@@ -819,31 +821,57 @@ label[for="agreeCheck"] {
 }
 
 .tox .tox-tbtn {
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   margin: 2px !important;
+  transition: all 0.2s ease !important;
 }
 
 .tox .tox-tbtn:hover {
   background-color: #004080 !important;
   color: white !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 4px rgba(0, 64, 128, 0.2) !important;
 }
 
-.tox .tox-tbtn--enabled {
+.tox .tox-tbtn--enabled,
+.tox .tox-tbtn--enabled:hover {
   background-color: #19A06E !important;
   color: white !important;
+  box-shadow: 0 2px 4px rgba(25, 160, 110, 0.3) !important;
 }
 
 .tox .tox-statusbar {
-  background: #f8f9fa !important;
-  border-top: 1px solid #004080 !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
+  border-top: 2px solid #e9ecef !important;
+  padding: 6px 12px !important;
 }
 
 .tox-editor-header {
-  border-radius: 8px 8px 0 0 !important;
+  border-radius: 12px 12px 0 0 !important;
 }
 
 .tox .tox-edit-area {
-  border-radius: 0 0 8px 8px !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+.tox .tox-edit-area__iframe {
+  background-color: #ffffff !important;
+}
+
+/* Mejorar apariencia de menús desplegables */
+.tox .tox-collection {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.tox .tox-collection__item {
+  border-radius: 4px !important;
+  margin: 2px !important;
+}
+
+.tox .tox-collection__item--enabled {
+  background-color: #004080 !important;
+  color: white !important;
 }
 
 /* Toolbar siempre visible en desktop */
@@ -864,16 +892,16 @@ label[for="agreeCheck"] {
 /* Toolbar compacta en móvil */
 @media (max-width: 600px) {
   .tox-tinymce {
-    border-radius: 4px !important;
+    border-radius: 8px !important;
   }
 
   .tox .tox-toolbar {
-    padding: 4px !important;
+    padding: 6px !important;
   }
 
   .tox .tox-tbtn {
     margin: 1px !important;
-    padding: 4px !important;
+    padding: 6px !important;
   }
 }
 
