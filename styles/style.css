@@ -1111,24 +1111,26 @@ label[for="agreeCheck"] {
 
 .crucigrama-grid {
   display: grid;
-  grid-template-columns: repeat(12, 35px);
-  grid-template-rows: repeat(12, 35px);
+  grid-template-columns: repeat(15, 30px);
+  grid-template-rows: repeat(15, 30px);
   gap: 1px;
   justify-content: center;
   background-color: #333;
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .crucigrama-cell {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   border: 2px solid #ddd;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   position: relative;
 }
@@ -1625,15 +1627,15 @@ button:hover {
   }
   
   .crucigrama-grid {
-    grid-template-columns: repeat(12, 25px);
-    grid-template-rows: repeat(12, 25px);
+    grid-template-columns: repeat(15, 20px);
+    grid-template-rows: repeat(15, 20px);
     padding: 8px;
   }
 
   .crucigrama-cell {
-    width: 25px;
-    height: 25px;
-    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
   }
   
   .crucigrama-cell input {

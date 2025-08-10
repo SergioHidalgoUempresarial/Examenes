@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -395,7 +395,7 @@ window.onload = function () {
             confirmButtonText: 'Entendido'
         });
     }
-    
+
     verificarIntentos();
     mostrarIntentosRestantes();
     actualizarAccesoPorIntentos();
@@ -482,7 +482,7 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("name-section").style.display = "block";
         document.getElementById("nav-bar").style.display = "block"; // Mostrar menú hamburguesa
         document.getElementById("begin-timer").style.display = "block"; // Mostrar timer
-        
+
         // Reiniciar el timer si es necesario
         if (localStorage.getItem("examStarted") === "true") {
             startTimer();
@@ -624,7 +624,7 @@ function validateAccess() {
             if (result.isConfirmed) {
                 // Ocultar sección de acceso
                 document.getElementById("access-section").style.display = "none";
-                
+
                 // Marcar que el examen empezó
                 localStorage.setItem("examStarted", "true");
 
@@ -895,14 +895,14 @@ function getRandomDevelopmentQuestions() {
     // Crear una copia del array original
     const available = [...preguntasDesarrolloCompletas];
     const selected = [];
-    
+
     // Seleccionar 8 preguntas únicas aleatoriamente
     for (let i = 0; i < 8 && available.length > 0; i++) {
         const randomIndex = Math.floor(Math.random() * available.length);
         selected.push(available[randomIndex]);
         available.splice(randomIndex, 1); // Remover la pregunta seleccionada
     }
-    
+
     return selected;
 }
 
@@ -913,7 +913,7 @@ let indiceDesarrollo = 0;
 
 function initDevelopmentPart() {
     loadQuestionTimes(); // Cargar tiempos guardados
-    
+
     // Verificar si ya hay preguntas seleccionadas guardadas
     const savedQuestions = localStorage.getItem("preguntasDesarrolloSeleccionadas");
     if (savedQuestions) {
@@ -922,9 +922,9 @@ function initDevelopmentPart() {
         preguntasDesarrollo = getRandomDevelopmentQuestions();
         localStorage.setItem("preguntasDesarrolloSeleccionadas", JSON.stringify(preguntasDesarrollo));
     }
-    
+
     console.log('Preguntas de desarrollo seleccionadas:', preguntasDesarrollo.length, preguntasDesarrollo);
-    
+
     const savedEssayIndex = localStorage.getItem("currentEssayIndex");
     indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
     mostrarPreguntaDesarrollo(indiceDesarrollo);
@@ -949,10 +949,10 @@ function mostrarPreguntaDesarrollo(index) {
         questionTimes.desarrollo[indiceDesarrollo] = timeSpent;
         saveQuestionTimes();
     }
-    
+
     // Iniciar tiempo para nueva pregunta
     questionStartTime = Date.now();
-    
+
     const contenedor = document.getElementById("essay-container");
     const pregunta = preguntasDesarrollo[index];
 
@@ -975,7 +975,7 @@ function mostrarPreguntaDesarrollo(index) {
 
     // Inicializar TinyMCE
     const isMobile = window.innerWidth <= 600;
-    
+
     tinymce.init({
         selector: `#respuesta-${index}`,
         height: 450,
@@ -988,7 +988,7 @@ function mostrarPreguntaDesarrollo(index) {
             'insertdatetime', 'table', 'help', 'wordcount', 'autosave'
         ],
         toolbar_mode: isMobile ? 'sliding' : 'wrap',
-        toolbar: isMobile ? 
+        toolbar: isMobile ?
             'undo redo | bold italic underline | alignleft aligncenter alignright | numlist bullist | fullscreen' :
             'undo redo | formatselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | removeformat | table link | code preview fullscreen | help',
         toolbar_sticky: true,
@@ -1036,27 +1036,27 @@ function mostrarPreguntaDesarrollo(index) {
         promotion: false,
         placeholder: 'Desarrolla tu respuesta de manera clara y detallada...',
         setup: function (editor) {
-            editor.on('init', function() {
+            editor.on('init', function () {
                 const container = editor.getContainer();
                 container.style.border = '3px solid #004080';
                 container.style.borderRadius = '12px';
                 container.style.boxShadow = '0 8px 25px rgba(0, 64, 128, 0.2)';
                 container.style.transition = 'all 0.3s ease';
             });
-            
+
             editor.on('change keyup', function () {
                 const content = editor.getContent();
                 guardarRespuestaDesarrollo(index, content);
             });
-            
-            editor.on('focus', function() {
+
+            editor.on('focus', function () {
                 const container = editor.getContainer();
                 container.style.borderColor = '#19A06E';
                 container.style.boxShadow = '0 12px 30px rgba(25, 160, 110, 0.3)';
                 container.style.transform = 'translateY(-2px)';
             });
-            
-            editor.on('blur', function() {
+
+            editor.on('blur', function () {
                 const container = editor.getContainer();
                 container.style.borderColor = '#004080';
                 container.style.boxShadow = '0 8px 25px rgba(0, 64, 128, 0.2)';
@@ -1068,8 +1068,8 @@ function mostrarPreguntaDesarrollo(index) {
     document.getElementById("btnSiguienteDesarrollo").addEventListener("click", () => {
         // Obtener contenido de TinyMCE
         const editor = tinymce.get(`respuesta-${indiceDesarrollo}`);
-        const respuestaActual = editor ? editor.getContent({format: 'text'}).trim() : '';
-        
+        const respuestaActual = editor ? editor.getContent({ format: 'text' }).trim() : '';
+
         // Verificar si la respuesta está vacía
         if (!respuestaActual) {
             Swal.fire({
@@ -1092,7 +1092,7 @@ function mostrarPreguntaDesarrollo(index) {
             // Si hay respuesta, continuar normalmente
             continuarSiguientePregunta();
         }
-        
+
         function continuarSiguientePregunta() {
             // Guardar tiempo de pregunta actual
             if (questionStartTime !== null) {
@@ -1101,12 +1101,12 @@ function mostrarPreguntaDesarrollo(index) {
                 questionTimes.desarrollo[indiceDesarrollo] = timeSpent;
                 saveQuestionTimes();
             }
-            
+
             // Guardar contenido de TinyMCE
             const editor = tinymce.get(`respuesta-${indiceDesarrollo}`);
             const contenido = editor ? editor.getContent() : '';
             guardarRespuestaDesarrollo(indiceDesarrollo, contenido);
-            
+
             // Destruir el editor actual antes de crear el siguiente
             if (editor) {
                 tinymce.remove(`#respuesta-${indiceDesarrollo}`);
@@ -1161,7 +1161,7 @@ function cargarPanelLateralDesarrollo() {
         const examData = JSON.parse(localStorage.getItem("examData")) || {};
         const contenido = examData.respuestasDesarrollo?.[i] || "";
         const tieneContenido = contenido.replace(/<[^>]*>/g, '').trim().length > 0;
-        
+
         if (tieneContenido) {
             box.classList.add("answered");
         }
@@ -1170,7 +1170,7 @@ function cargarPanelLateralDesarrollo() {
         if (i === indiceDesarrollo) {
             box.classList.add("active-question");
         }
-        
+
         box.style.cursor = "default";
         panel.appendChild(box);
     });
@@ -1329,16 +1329,16 @@ const uniqueQuestions = [
         ],
         correct: "La protección de sistemas y redes contra amenazas digitales"
     },
-    // {
-    //     question: "¿Qué relación existe entre hardware y software? (2 pts)",
-    //     options: [
-    //         "Son independientes y no interactúan",
-    //         "El hardware funciona sin necesidad de software",
-    //         "El software depende del hardware para ejecutarse",
-    //         "Solo las computadoras de escritorio usan software"
-    //     ],
-    //     correct: "El software depende del hardware para ejecutarse"
-    // },
+    {
+        question: "¿Qué relación existe entre hardware y software? (2 pts)",
+        options: [
+            "Son independientes y no interactúan",
+            "El hardware funciona sin necesidad de software",
+            "El software depende del hardware para ejecutarse",
+            "Solo las computadoras de escritorio usan software"
+        ],
+        correct: "El software depende del hardware para ejecutarse"
+    },
     // {
     //     question: "¿Cuál de las siguientes opciones NO es un dispositivo de entrada? (2 pts)",
     //     options: [
@@ -1599,10 +1599,10 @@ function loadQuestion(index) {
         questionTimes.seleccionUnica[currentQuestion] = timeSpent;
         saveQuestionTimes();
     }
-    
+
     // Iniciar tiempo para nueva pregunta
     questionStartTime = Date.now();
-    
+
     const q = window.uniqueQuestions[index];
     const container = document.getElementById("question-content");
 
@@ -1684,7 +1684,7 @@ function nextQuestion() {
         questionTimes.seleccionUnica[currentQuestion] = timeSpent;
         saveQuestionTimes();
     }
-    
+
     updateProgress();
     if (currentQuestion < window.uniqueQuestions.length - 1) {
         currentQuestion++;
@@ -1850,7 +1850,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (examData.nombre && examData.cedula && examData.instruccionesAceptadas) {
         return; // Salir sin mostrar el mensaje
     }
-    
+
     Swal.fire({
         title: 'Instrucciones importantes',
         html: `
@@ -2093,7 +2093,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
 
     // Obtener tiempos guardados
     const tiemposGuardados = JSON.parse(localStorage.getItem("questionTimes")) || {};
-    
+
     // Selección única
     const datosSeleccion = respuestasSeleccion.map((item, index) => {
         const tiempo = tiemposGuardados.seleccionUnica?.[index] ? formatTime(tiemposGuardados.seleccionUnica[index]) : "N/A";
@@ -2142,9 +2142,9 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     if (Object.keys(respuestasPractica).length > 0) {
         doc.text("Respuestas de práctica:", 20, y);
         y += 5;
-        
+
         const datosPractica = [];
-        
+
         // Pareo
         if (respuestasPractica.pareoMatches) {
             Object.entries(respuestasPractica.pareoMatches).forEach(([palabraIndex, defIndex]) => {
@@ -2153,19 +2153,19 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
                 datosPractica.push(["Pareo", `${palabra} - ${definicion}`, "Completado"]);
             });
         }
-        
+
         // Crucigrama
         if (respuestasPractica.crucigramaAnswers) {
             const respuestasCrucigrama = Object.keys(respuestasPractica.crucigramaAnswers).length;
             datosPractica.push(["Crucigrama", `${respuestasCrucigrama} casillas completadas`, "Parcial"]);
         }
-        
+
         // Sopa de letras
         if (respuestasPractica.sopaFoundWords) {
             const palabrasEncontradas = respuestasPractica.sopaFoundWords.join(", ");
             datosPractica.push(["Sopa de letras", palabrasEncontradas || "Ninguna palabra encontrada", "Completado"]);
         }
-        
+
         if (datosPractica.length > 0) {
             doc.autoTable({
                 startY: y,
@@ -2188,6 +2188,7 @@ let currentPracticeSection = 1;
 let pareoMatches = {};
 let crucigramaAnswers = {};
 let sopaFoundWords = [];
+let currentCrucigramaWord = null; // Para mantener la dirección de escritura
 
 // Datos para el pareo - Términos del examen
 const pareoDataComplete = {
@@ -2214,7 +2215,7 @@ const pareoDataComplete = {
 function getRandomPareoData() {
     const shuffled = [...pareoDataComplete.items].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 8); // Seleccionar 8 elementos
-    
+
     return {
         palabras: selected.map(item => item.palabra),
         definiciones: selected.map(item => item.definicion).sort(() => Math.random() - 0.5) // Mezclar definiciones
@@ -2223,17 +2224,23 @@ function getRandomPareoData() {
 
 let pareoData = getRandomPareoData();
 
-// Datos para el crucigrama - Diseño fijo con palabras clave
+// Datos para el crucigrama - Diseño 18x18 con intersecciones reales
 const crucigramaData = {
     words: [
-        { word: "HARDWARE", clue: "Componentes físicos de una computadora", row: 2, col: 1, direction: "horizontal" },
-        { word: "SOFTWARE", clue: "Programas y aplicaciones de la computadora", row: 6, col: 1, direction: "horizontal" },
-        { word: "MEMORIA", clue: "Dispositivo que almacena datos temporalmente", row: 1, col: 4, direction: "vertical" },
-        { word: "SISTEMA", clue: "Conjunto organizado de elementos que funcionan juntos", row: 4, col: 6, direction: "vertical" },
-        { word: "RED", clue: "Conexión entre computadoras", row: 8, col: 3, direction: "horizontal" },
-        { word: "DATOS", clue: "Información procesada por la computadora", row: 3, col: 8, direction: "vertical" }
+        // Horizontales
+        { word: "SPYWARE", clue: "Recopila información del usuario sin su consentimiento.", row: 1, col: 4, direction: "horizontal" },
+        { word: "PHISHING", clue: "Robo de información confidencial: Contraseñas, datos bancarios, documentos personales.", row: 4, col: 6, direction: "horizontal" },
+        { word: "VIRUS", clue: "Se adjunta a archivos y se propaga cuando se ejecuta.", row: 8, col: 1, direction: "horizontal" },
+        { word: "MALWARE", clue: "Cualquier software diseñado para dañar, explotar o interrumpir dispositivos, redes o sistemas informáticos.", row: 10, col: 3, direction: "horizontal" },
+        { word: "SISTEMA", clue: "Conjunto organizado de elementos que funcionan juntos para procesar, almacenar y transmitir información(Es lo que ataca cualquier virus).", row: 13, col: 7, direction: "horizontal" },
+        // Verticales
+        { word: "GUSANOS", clue: "Se replican automáticamente a través de redes sin necesidad de acción del usuario.", row: 7, col: 4, direction: "vertical" },
+        { word: "TROYANOS", clue: "Se disfrazan de software legítimo para engañar a los usuarios y dar acceso a atacantes.", row: 6, col: 7, direction: "vertical" },
+        { word: "RANSOMWARE", clue: "Secuestra datos o sistemas, los bloquea y exige un rescate para liberarlos y restaurar el acceso.", row: 1, col: 9, direction: "vertical" },
+        { word: "ADWARE", clue: "Muestra anuncios no deseados y recopila datos de navegación, para el marketing malicioso.", row: 8, col: 11, direction: "vertical" },
+        { word: "SEGURIDAD", clue: "Conjunto de medidas y técnicas para proteger sistemas, redes y datos de amenazas digitales.", row: 2, col: 13, direction: "vertical" },        
     ],
-    gridSize: 12
+    gridSize: 15
 };
 
 // Palabras para la sopa de letras - Términos del examen
@@ -2249,17 +2256,17 @@ function generateSopaLetras() {
     const selectedWords = [...sopaWordsComplete].sort(() => Math.random() - 0.5).slice(0, 12);
     const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
     const placedWords = [];
-    
+
     // Colocar palabras aleatoriamente
     selectedWords.forEach(word => {
         let placed = false;
         let attempts = 0;
-        
+
         while (!placed && attempts < 50) {
             const direction = Math.random() < 0.5 ? 'horizontal' : 'vertical';
             const row = Math.floor(Math.random() * gridSize);
             const col = Math.floor(Math.random() * gridSize);
-            
+
             if (canPlaceWord(grid, word, row, col, direction, gridSize)) {
                 placeWord(grid, word, row, col, direction);
                 placedWords.push({ word, row, col, direction });
@@ -2268,7 +2275,7 @@ function generateSopaLetras() {
             attempts++;
         }
     });
-    
+
     // Llenar espacios vacíos con letras aleatorias
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for (let i = 0; i < gridSize; i++) {
@@ -2278,7 +2285,7 @@ function generateSopaLetras() {
             }
         }
     }
-    
+
     return {
         grid,
         words: placedWords.map(p => p.word),
@@ -2323,7 +2330,7 @@ let sopaData = generateSopaLetras();
 function initPracticePart() {
     // Regenerar datos aleatorios si no existen
     const savedData = JSON.parse(localStorage.getItem("practiceData")) || {};
-    
+
     if (!savedData.pareoGenerated) {
         pareoData = getRandomPareoData();
         savedData.pareoData = pareoData;
@@ -2331,7 +2338,7 @@ function initPracticePart() {
     } else {
         pareoData = savedData.pareoData;
     }
-    
+
     if (!savedData.sopaGenerated) {
         sopaData = generateSopaLetras();
         savedData.sopaData = sopaData;
@@ -2339,12 +2346,12 @@ function initPracticePart() {
     } else {
         sopaData = savedData.sopaData;
     }
-    
+
     pareoMatches = savedData.pareoMatches || {};
     crucigramaAnswers = savedData.crucigramaAnswers || {};
     sopaFoundWords = savedData.sopaFoundWords || [];
     currentPracticeSection = savedData.currentSection || 1;
-    
+
     // Guardar datos actualizados
     localStorage.setItem("practiceData", JSON.stringify(savedData));
 }
@@ -2353,10 +2360,10 @@ function initPracticePart() {
 function showPracticeSection(section) {
     // Ocultar todas las secciones
     document.querySelectorAll('.practice-section').forEach(s => s.style.display = 'none');
-    
+
     currentPracticeSection = section;
-    
-    switch(section) {
+
+    switch (section) {
         case 1:
             document.getElementById('pareo-section').style.display = 'block';
             initPareo();
@@ -2370,7 +2377,7 @@ function showPracticeSection(section) {
             initSopaLetras();
             break;
     }
-    
+
     updatePracticeProgress();
     savePracticeData();
 }
@@ -2379,7 +2386,7 @@ function showPracticeSection(section) {
 function updatePracticeProgress() {
     document.querySelectorAll('.practice-box').forEach((box, index) => {
         box.classList.remove('active', 'completed');
-        
+
         if (index + 1 === currentPracticeSection) {
             box.classList.add('active');
         } else if (index + 1 < currentPracticeSection) {
@@ -2394,18 +2401,18 @@ function initPareo() {
     container.innerHTML = `
         <div class="pareo-column">
             <h4>Palabras</h4>
-            ${pareoData.palabras.map((palabra, index) => 
-                `<div class="pareo-item" data-type="palabra" data-index="${index}" onclick="selectPareoItem(this)">${palabra}</div>`
-            ).join('')}
+            ${pareoData.palabras.map((palabra, index) =>
+        `<div class="pareo-item" data-type="palabra" data-index="${index}" onclick="selectPareoItem(this)">${palabra}</div>`
+    ).join('')}
         </div>
         <div class="pareo-column">
             <h4>Definiciones</h4>
-            ${pareoData.definiciones.map((def, index) => 
-                `<div class="pareo-item" data-type="definicion" data-index="${index}" onclick="selectPareoItem(this)">${def}</div>`
-            ).join('')}
+            ${pareoData.definiciones.map((def, index) =>
+        `<div class="pareo-item" data-type="definicion" data-index="${index}" onclick="selectPareoItem(this)">${def}</div>`
+    ).join('')}
         </div>
     `;
-    
+
     // Restaurar matches guardados
     Object.entries(pareoMatches).forEach(([palabraIndex, defIndex]) => {
         const palabraEl = container.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
@@ -2421,17 +2428,17 @@ let selectedPareoItem = null;
 
 function selectPareoItem(element) {
     if (element.classList.contains('matched')) return;
-    
+
     if (selectedPareoItem) {
         selectedPareoItem.classList.remove('selected');
-        
+
         if (selectedPareoItem.dataset.type !== element.dataset.type) {
             // Hacer match
-            const palabraIndex = selectedPareoItem.dataset.type === 'palabra' ? 
+            const palabraIndex = selectedPareoItem.dataset.type === 'palabra' ?
                 selectedPareoItem.dataset.index : element.dataset.index;
-            const defIndex = selectedPareoItem.dataset.type === 'definicion' ? 
+            const defIndex = selectedPareoItem.dataset.type === 'definicion' ?
                 selectedPareoItem.dataset.index : element.dataset.index;
-            
+
             pareoMatches[palabraIndex] = defIndex;
             selectedPareoItem.classList.add('matched');
             element.classList.add('matched');
@@ -2448,10 +2455,10 @@ function selectPareoItem(element) {
 function initCrucigrama() {
     const container = document.getElementById('crucigrama-container');
     const gridSize = crucigramaData.gridSize;
-    
+
     // Crear grid vacío
     const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(false));
-    
+
     // Marcar celdas que deben ser blancas
     crucigramaData.words.forEach(wordData => {
         for (let i = 0; i < wordData.word.length; i++) {
@@ -2462,7 +2469,7 @@ function initCrucigrama() {
             }
         }
     });
-    
+
     // Generar HTML del grid
     let gridHTML = '';
     for (let row = 0; row < gridSize; row++) {
@@ -2472,35 +2479,35 @@ function initCrucigrama() {
                 // Verificar si es el inicio de una palabra
                 const wordNumber = getWordNumber(row, col);
                 const numberLabel = wordNumber ? `<span class="word-number">${wordNumber}</span>` : '';
-                
+
                 gridHTML += `<div class="crucigrama-cell white">
                     ${numberLabel}
-                    <input type="text" maxlength="1" id="${cellId}" onchange="saveCrucigramaAnswer('${cellId}', this.value)" oninput="this.value = this.value.toUpperCase()">
+                    <input type="text" maxlength="1" id="${cellId}" onchange="saveCrucigramaAnswer('${cellId}', this.value)" oninput="handleCrucigramaInput(this, ${row}, ${col})" onkeydown="handleCrucigramaKeydown(event, ${row}, ${col})" onfocus="setCrucigramaWord(${row}, ${col})">
                 </div>`;
             } else {
                 gridHTML += `<div class="crucigrama-cell black"></div>`;
             }
         }
     }
-    
+
     // Generar pistas
     const cluesHTML = `
         <div class="crucigrama-clues">
             <div class="clues-column">
                 <h4>Horizontales</h4>
                 ${crucigramaData.words.filter(w => w.direction === 'horizontal')
-                    .map((w, i) => `<p><strong>${i + 1}.</strong> ${w.clue}</p>`).join('')}
+            .map((w, i) => `<p><strong>${i + 1}.</strong> ${w.clue}</p>`).join('')}
             </div>
             <div class="clues-column">
                 <h4>Verticales</h4>
                 ${crucigramaData.words.filter(w => w.direction === 'vertical')
-                    .map((w, i) => `<p><strong>${i + 1}.</strong> ${w.clue}</p>`).join('')}
+            .map((w, i) => `<p><strong>${i + 1}.</strong> ${w.clue}</p>`).join('')}
             </div>
         </div>
     `;
-    
+
     container.innerHTML = `<div class="crucigrama-grid">${gridHTML}</div>` + cluesHTML;
-    
+
     // Restaurar respuestas guardadas
     Object.entries(crucigramaAnswers).forEach(([cellId, value]) => {
         const input = document.getElementById(cellId);
@@ -2509,13 +2516,24 @@ function initCrucigrama() {
 }
 
 function getWordNumber(row, col) {
-    let number = 1;
-    for (const wordData of crucigramaData.words) {
-        if (wordData.row === row && wordData.col === col) {
-            return number;
+    // Separar palabras horizontales y verticales
+    const horizontales = crucigramaData.words.filter(w => w.direction === 'horizontal');
+    const verticales = crucigramaData.words.filter(w => w.direction === 'vertical');
+
+    // Buscar en horizontales (numeración 1, 2, 3)
+    for (let i = 0; i < horizontales.length; i++) {
+        if (horizontales[i].row === row && horizontales[i].col === col) {
+            return i + 1;
         }
-        number++;
     }
+
+    // Buscar en verticales (numeración 1, 2, 3)
+    for (let i = 0; i < verticales.length; i++) {
+        if (verticales[i].row === row && verticales[i].col === col) {
+            return i + 1;
+        }
+    }
+
     return null;
 }
 
@@ -2524,24 +2542,189 @@ function saveCrucigramaAnswer(cellId, value) {
     savePracticeData();
 }
 
+// Función para manejar entrada de texto (solo una letra)
+function handleCrucigramaInput(input, row, col) {
+    let value = input.value;
+
+    // Solo permitir letras, eliminar espacios y caracteres especiales
+    value = value.replace(/[^A-Za-z]/g, '');
+
+    // Solo tomar la primera letra si hay más de una
+    if (value.length > 1) {
+        value = value.charAt(0);
+    }
+
+    // Convertir a mayúscula
+    value = value.toUpperCase();
+
+    // Actualizar el input
+    input.value = value;
+
+    // Guardar la respuesta
+    saveCrucigramaAnswer(input.id, value);
+
+    // Si se escribió una letra, avanzar automáticamente
+    if (value) {
+        setTimeout(() => {
+            moveToNextCell(row, col, value);
+        }, 10);
+    }
+}
+
+// Función para establecer la palabra actual cuando se hace foco
+function setCrucigramaWord(row, col) {
+    // Si no hay palabra actual, establecer la primera que encuentre
+    if (!currentCrucigramaWord) {
+        currentCrucigramaWord = findWordAtPosition(row, col);
+    }
+    // Si la posición actual no pertenece a la palabra actual, cambiar
+    else if (!isPositionInWord(row, col, currentCrucigramaWord)) {
+        currentCrucigramaWord = findWordAtPosition(row, col);
+    }
+}
+
+// Función para manejar navegación con teclado en el crucigrama
+function handleCrucigramaKeydown(event, row, col) {
+    const key = event.key;
+
+    // Bloquear espacios y caracteres especiales
+    if (key === ' ' || key.match(/[^a-zA-Z\b\t\r\n]/)) {
+        event.preventDefault();
+        return;
+    }
+
+    // Si es una letra, el manejo se hace en handleCrucigramaInput
+    if (key.match(/[a-zA-Z]/)) {
+        return;
+    }
+
+    // Navegación con flechas
+    let newRow = row;
+    let newCol = col;
+
+    switch (key) {
+        case 'ArrowUp':
+            newRow = row - 1;
+            break;
+        case 'ArrowDown':
+            newRow = row + 1;
+            break;
+        case 'ArrowLeft':
+            newCol = col - 1;
+            break;
+        case 'ArrowRight':
+            newCol = col + 1;
+            break;
+        case 'Backspace':
+            // Si la celda actual está vacía, ir a la anterior
+            if (!event.target.value) {
+                moveToPreviousCell(row, col);
+            }
+            return;
+        default:
+            return;
+    }
+
+    // Buscar la siguiente celda válida
+    const nextCell = document.getElementById(`cell-${newRow}-${newCol}`);
+    if (nextCell && nextCell.tagName === 'INPUT') {
+        event.preventDefault();
+        nextCell.focus();
+    }
+}
+
+// Función para moverse a la siguiente celda automáticamente
+function moveToNextCell(row, col, value) {
+    if (!value || !currentCrucigramaWord) return;
+
+    let nextRow = row;
+    let nextCol = col;
+
+    if (currentCrucigramaWord.direction === 'horizontal') {
+        nextCol = col + 1;
+    } else {
+        nextRow = row + 1;
+    }
+
+    // Verificar si la siguiente celda está dentro de la palabra actual
+    if (isPositionInWord(nextRow, nextCol, currentCrucigramaWord)) {
+        const nextCell = document.getElementById(`cell-${nextRow}-${nextCol}`);
+        if (nextCell && nextCell.tagName === 'INPUT') {
+            nextCell.focus();
+        }
+    } else {
+        // Si llegamos al final de la palabra, limpiar la palabra actual
+        currentCrucigramaWord = null;
+    }
+}
+
+// Función para moverse a la celda anterior
+function moveToPreviousCell(row, col) {
+    if (!currentCrucigramaWord) return;
+
+    let prevRow = row;
+    let prevCol = col;
+
+    if (currentCrucigramaWord.direction === 'horizontal') {
+        prevCol = col - 1;
+    } else {
+        prevRow = row - 1;
+    }
+
+    if (isPositionInWord(prevRow, prevCol, currentCrucigramaWord)) {
+        const prevCell = document.getElementById(`cell-${prevRow}-${prevCol}`);
+        if (prevCell && prevCell.tagName === 'INPUT') {
+            prevCell.focus();
+            prevCell.value = '';
+            saveCrucigramaAnswer(`cell-${prevRow}-${prevCol}`, '');
+        }
+    }
+}
+
+// Función para encontrar la palabra en una posición (prioriza la palabra actual si existe)
+function findWordAtPosition(row, col) {
+    const wordsAtPosition = crucigramaData.words.filter(word => isPositionInWord(row, col, word));
+
+    // Si hay múltiples palabras en esta posición (intersección)
+    if (wordsAtPosition.length > 1) {
+        // Si ya tenemos una palabra actual y está en esta posición, mantenerla
+        if (currentCrucigramaWord && wordsAtPosition.includes(currentCrucigramaWord)) {
+            return currentCrucigramaWord;
+        }
+        // Si no, devolver la primera
+        return wordsAtPosition[0];
+    }
+
+    return wordsAtPosition[0] || null;
+}
+
+// Función para verificar si una posición está dentro de una palabra
+function isPositionInWord(row, col, word) {
+    if (word.direction === 'horizontal') {
+        return row === word.row && col >= word.col && col < word.col + word.word.length;
+    } else {
+        return col === word.col && row >= word.row && row < word.row + word.word.length;
+    }
+}
+
 // Inicializar sopa de letras
 function initSopaLetras() {
     const container = document.getElementById('sopa-container');
     const gridSize = sopaData.grid.length;
     let grid = '';
-    
+
     for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
             const cellId = `sopa-${row}-${col}`;
             grid += `<div class="sopa-cell" id="${cellId}" onclick="selectSopaCell(${row}, ${col})">${sopaData.grid[row][col]}</div>`;
         }
     }
-    
+
     container.innerHTML = grid;
-    
+
     // Mostrar palabras a encontrar
     const listaPalabras = document.getElementById('lista-palabras');
-    listaPalabras.innerHTML = sopaData.words.map(word => 
+    listaPalabras.innerHTML = sopaData.words.map(word =>
         `<span class="palabra-item ${sopaFoundWords.includes(word) ? 'encontrada' : ''}">${word}</span>`
     ).join('');
 }
@@ -2551,12 +2734,12 @@ let sopaSelection = [];
 function selectSopaCell(row, col) {
     const cellId = `sopa-${row}-${col}`;
     const cell = document.getElementById(cellId);
-    
+
     if (sopaSelection.length === 0) {
-        sopaSelection.push({row, col});
+        sopaSelection.push({ row, col });
         cell.classList.add('selected');
     } else if (sopaSelection.length === 1) {
-        sopaSelection.push({row, col});
+        sopaSelection.push({ row, col });
         checkSopaWord();
     }
 }
@@ -2565,7 +2748,7 @@ function checkSopaWord() {
     const [start, end] = sopaSelection;
     let word = '';
     let wordReverse = '';
-    
+
     // Construir la palabra seleccionada
     if (start.row === end.row) {
         // Horizontal
@@ -2590,7 +2773,7 @@ function checkSopaWord() {
         const steps = Math.max(Math.abs(rowDiff), Math.abs(colDiff));
         const rowStep = rowDiff / steps;
         const colStep = colDiff / steps;
-        
+
         for (let i = 0; i <= steps; i++) {
             const row = start.row + Math.round(i * rowStep);
             const col = start.col + Math.round(i * colStep);
@@ -2598,7 +2781,7 @@ function checkSopaWord() {
         }
         wordReverse = word.split('').reverse().join('');
     }
-    
+
     // Verificar si la palabra (o su reverso) está en la lista
     const foundWord = sopaData.words.find(w => w === word || w === wordReverse);
     if (foundWord && !sopaFoundWords.includes(foundWord)) {
@@ -2606,7 +2789,7 @@ function checkSopaWord() {
         markSopaWordFound();
         updateSopaWordsList();
         savePracticeData();
-        
+
         // Mostrar mensaje de éxito
         Swal.fire({
             icon: 'success',
@@ -2616,7 +2799,7 @@ function checkSopaWord() {
             showConfirmButton: false
         });
     }
-    
+
     // Limpiar selección
     document.querySelectorAll('.sopa-cell.selected').forEach(cell => {
         if (!cell.classList.contains('found')) {
@@ -2628,7 +2811,7 @@ function checkSopaWord() {
 
 function markSopaWordFound() {
     const [start, end] = sopaSelection;
-    
+
     if (start.row === end.row) {
         const minCol = Math.min(start.col, end.col);
         const maxCol = Math.max(start.col, end.col);
@@ -2646,7 +2829,7 @@ function markSopaWordFound() {
 
 function updateSopaWordsList() {
     const listaPalabras = document.getElementById('lista-palabras');
-    listaPalabras.innerHTML = sopaData.words.map(word => 
+    listaPalabras.innerHTML = sopaData.words.map(word =>
         `<span class="palabra-item ${sopaFoundWords.includes(word) ? 'encontrada' : ''}">${word}</span>`
     ).join('');
 }
@@ -2697,7 +2880,7 @@ function savePracticeData() {
         sopaFoundWords
     };
     localStorage.setItem("practiceData", JSON.stringify(practiceData));
-    
+
     // También guardar en examData para el PDF
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
     examData.respuestasPractica = practiceData;
