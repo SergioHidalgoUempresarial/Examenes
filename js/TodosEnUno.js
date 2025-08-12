@@ -2146,10 +2146,10 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         const datosPractica = [];
 
         // Pareo
-        if (respuestasPractica.pareoMatches) {
+        if (respuestasPractica.pareoMatches && respuestasPractica.pareoData) {
             Object.entries(respuestasPractica.pareoMatches).forEach(([palabraIndex, defIndex]) => {
-                const palabra = ["CPU", "RAM", "SSD", "GPU"][palabraIndex];
-                const definicion = ["Unidad central de procesamiento", "Memoria de acceso aleatorio", "Disco de estado sólido", "Unidad de procesamiento gráfico"][defIndex];
+                const palabra = respuestasPractica.pareoData.palabras[palabraIndex] || "Palabra no encontrada";
+                const definicion = respuestasPractica.pareoData.definiciones[defIndex] || "Definición no encontrada";
                 datosPractica.push(["Pareo", `${palabra} - ${definicion}`, "Completado"]);
             });
         }
@@ -2427,7 +2427,33 @@ function initPareo() {
 let selectedPareoItem = null;
 
 function selectPareoItem(element) {
-    if (element.classList.contains('matched')) return;
+    // Si el elemento ya está emparejado, permitir deshacerlo
+    if (element.classList.contains('matched')) {
+        const elementIndex = element.dataset.index;
+        const elementType = element.dataset.type;
+        
+        // Encontrar y deshacer el emparejamiento
+        if (elementType === 'palabra') {
+            const defIndex = pareoMatches[elementIndex];
+            if (defIndex !== undefined) {
+                const defElement = document.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
+                if (defElement) defElement.classList.remove('matched');
+                delete pareoMatches[elementIndex];
+            }
+        } else {
+            // Buscar la palabra que está emparejada con esta definición
+            const palabraIndex = Object.keys(pareoMatches).find(key => pareoMatches[key] == elementIndex);
+            if (palabraIndex !== undefined) {
+                const palabraElement = document.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
+                if (palabraElement) palabraElement.classList.remove('matched');
+                delete pareoMatches[palabraIndex];
+            }
+        }
+        
+        element.classList.remove('matched');
+        savePracticeData();
+        return;
+    }
 
     if (selectedPareoItem) {
         selectedPareoItem.classList.remove('selected');
@@ -2877,7 +2903,11 @@ function savePracticeData() {
         currentSection: currentPracticeSection,
         pareoMatches,
         crucigramaAnswers,
-        sopaFoundWords
+        sopaFoundWords,
+        pareoData,
+        sopaData,
+        pareoGenerated: true,
+        sopaGenerated: true
     };
     localStorage.setItem("practiceData", JSON.stringify(practiceData));
 
