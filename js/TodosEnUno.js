@@ -2216,7 +2216,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         // Crucigrama
         if (respuestasPractica.crucigramaPalabras) {
             Object.entries(respuestasPractica.crucigramaPalabras).forEach(([clave, datos]) => {
-                const estado = datos.completa ? (datos.palabra === datos.correcta ? "Correcta" : "Incorrecta") : "Incompleta";
+                const estado = datos.completa ? "Completado" : "Incompleto";
                 datosPractica.push([`Crucigrama ${clave}`, datos.palabra || "(vacía)", estado]);
             });
         } else if (respuestasPractica.crucigramaAnswers) {
