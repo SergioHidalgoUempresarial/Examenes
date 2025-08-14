@@ -2214,7 +2214,12 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         }
 
         // Crucigrama
-        if (respuestasPractica.crucigramaAnswers) {
+        if (respuestasPractica.crucigramaPalabras) {
+            Object.entries(respuestasPractica.crucigramaPalabras).forEach(([clave, datos]) => {
+                const estado = datos.completa ? (datos.palabra === datos.correcta ? "Correcta" : "Incorrecta") : "Incompleta";
+                datosPractica.push([`Crucigrama ${clave}`, datos.palabra || "(vacía)", estado]);
+            });
+        } else if (respuestasPractica.crucigramaAnswers) {
             const respuestasCrucigrama = Object.keys(respuestasPractica.crucigramaAnswers).length;
             datosPractica.push(["Crucigrama", `${respuestasCrucigrama} casillas completadas`, "Parcial"]);
         }
@@ -2598,6 +2603,9 @@ function initCrucigrama() {
         const input = document.getElementById(cellId);
         if (input) input.value = value;
     });
+    
+    // Capturar palabras completas al cargar
+    capturarPalabrasCompletas();
 }
 
 function getWordNumber(row, col) {
@@ -2624,7 +2632,46 @@ function getWordNumber(row, col) {
 
 function saveCrucigramaAnswer(cellId, value) {
     crucigramaAnswers[cellId] = value.toUpperCase();
+    // Capturar palabras completas
+    capturarPalabrasCompletas();
     savePracticeData();
+}
+
+function capturarPalabrasCompletas() {
+    const palabrasCompletas = {};
+    
+    crucigramaData.words.forEach((wordData, index) => {
+        let palabra = '';
+        for (let i = 0; i < wordData.word.length; i++) {
+            let cellId;
+            if (wordData.direction === 'horizontal') {
+                cellId = `cell-${wordData.row}-${wordData.col + i}`;
+            } else {
+                cellId = `cell-${wordData.row + i}-${wordData.col}`;
+            }
+            palabra += crucigramaAnswers[cellId] || '';
+        }
+        
+        const tipo = wordData.direction === 'horizontal' ? 'H' : 'V';
+        const numero = crucigramaData.words.filter(w => w.direction === wordData.direction).indexOf(wordData) + 1;
+        palabrasCompletas[`${tipo}${numero}`] = {
+            palabra: palabra,
+            correcta: wordData.word,
+            completa: palabra.length === wordData.word.length && palabra !== '',
+            pista: wordData.clue
+        };
+    });
+    
+    // Guardar las palabras completas en practiceData
+    const practiceData = JSON.parse(localStorage.getItem("practiceData")) || {};
+    practiceData.crucigramaPalabras = palabrasCompletas;
+    localStorage.setItem("practiceData", JSON.stringify(practiceData));
+    
+    // También guardar en examData
+    let examData = JSON.parse(localStorage.getItem("examData")) || {};
+    if (!examData.respuestasPractica) examData.respuestasPractica = {};
+    examData.respuestasPractica.crucigramaPalabras = palabrasCompletas;
+    localStorage.setItem("examData", JSON.stringify(examData));
 }
 
 // Función para manejar entrada de texto (solo una letra)
@@ -2958,10 +3005,14 @@ function finalizarPractica() {
 
 // Función para guardar datos de práctica
 function savePracticeData() {
+    // Obtener datos existentes para preservar crucigramaPalabras
+    const existingData = JSON.parse(localStorage.getItem("practiceData")) || {};
+    
     const practiceData = {
         currentSection: currentPracticeSection,
         pareoMatches,
         crucigramaAnswers,
+        crucigramaPalabras: existingData.crucigramaPalabras || {},
         sopaFoundWords,
         pareoData,
         sopaData,
