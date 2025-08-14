@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -2993,13 +2993,22 @@ function nextPracticeSection() {
 function finalizarPractica() {
     Swal.fire({
         title: '¡Práctica finalizada!',
-        text: 'Has completado todas las actividades prácticas.',
+        text: 'Has completado todas las actividades prácticas. Ahora puedes descargar tu examen completo.',
         icon: 'success',
-        confirmButtonText: 'Generar PDF final'
+        confirmButtonText: 'Continuar'
     }).then(() => {
-        // Aquí se puede generar el PDF final o mostrar resumen
-        document.getElementById("practice").style.display = "none";
-        document.getElementById("upload").style.display = "block";
+        // Mostrar botón de descarga
+        const btnFinalizar = document.querySelector('.practice-btn[onclick="finalizarPractica()"]');
+        if (btnFinalizar) {
+            btnFinalizar.style.display = 'none';
+            const btnDescargar = document.createElement('button');
+            btnDescargar.className = 'practice-btn';
+            btnDescargar.style.backgroundColor = '#19A06E';
+            btnDescargar.style.marginTop = '15px';
+            btnDescargar.textContent = 'Descargar Examen Completo (PDF)';
+            btnDescargar.onclick = () => document.getElementById('btnGenerarPDF').click();
+            btnFinalizar.parentNode.appendChild(btnDescargar);
+        }
     });
 }
 
