@@ -802,6 +802,37 @@ label[for="agreeCheck"] {
   border-radius: 8px;
 }
 
+/* Warning message for development section */
+.development-warning {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  padding: 15px 20px;
+  margin: 15px 0 25px 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.development-warning::before {
+  content: '⚠️';
+  position: absolute;
+  top: -5px;
+  left: 15px;
+  font-size: 1.5em;
+  opacity: 0.7;
+}
+
+.development-warning h3 {
+  color: #856404;
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 0;
+  padding-left: 35px;
+  line-height: 1.4;
+}
+
 /* Estilos para TinyMCE */
 .tox-tinymce {
   border-radius: 12px !important;
@@ -1540,6 +1571,25 @@ button:hover {
   .essay-question textarea {
     padding: 12px;
     min-height: 100px;
+  }
+
+  /* Responsive warning message */
+  .development-warning {
+    padding: 12px 15px;
+    margin: 10px 0 20px 0;
+    border-radius: 8px;
+  }
+
+  .development-warning::before {
+    font-size: 1.2em;
+    top: -3px;
+    left: 10px;
+  }
+
+  .development-warning h3 {
+    font-size: 1em;
+    padding-left: 25px;
+    line-height: 1.3;
   }
 
   .essay-navigation {
