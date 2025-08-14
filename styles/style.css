@@ -1391,6 +1391,61 @@ button:hover {
 
 
 /* RESPONSIVE DESIGN GENERAL */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) and (min-width: 601px) {
+  .uniqueSelection .section-container,
+  .essay .section-container,
+  .practice .section-container {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .question-progress,
+  .essay-progress,
+  .practice-progress {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .progress-box {
+    min-width: 35px;
+    max-width: 40px;
+    height: 40px;
+  }
+
+  .pareo-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .crucigrama-grid {
+    grid-template-columns: repeat(15, 25px);
+    grid-template-rows: repeat(15, 25px);
+  }
+
+  .crucigrama-cell {
+    width: 25px;
+    height: 25px;
+  }
+
+  .sopa-container {
+    grid-template-columns: repeat(16, 22px);
+    grid-template-rows: repeat(16, 22px);
+  }
+
+  .sopa-cell {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+}
+
+/* Móviles */
 @media (max-width: 600px) {
 
   .uniqueSelection .section-container,
@@ -1752,6 +1807,28 @@ button:hover {
     width: 100%;
     padding: 12px;
     font-size: 1em;
+  }
+}
+
+/* Pantallas muy grandes */
+@media (min-width: 1400px) {
+  .uniqueSelection .section-container,
+  .essay .section-container,
+  .practice .section-container {
+    max-width: 1400px;
+  }
+
+  .question-progress,
+  .essay-progress,
+  .practice-progress {
+    width: 350px;
+  }
+
+  .progress-box {
+    min-width: 55px;
+    max-width: 60px;
+    height: 60px;
+    font-size: 1.2em;
   }
 }
 
