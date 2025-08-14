@@ -449,7 +449,10 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("essay").style.display = "none";
         document.getElementById("practice").style.display = "block";
         initPracticePart();
-        showPracticeSection(1);
+        // Recuperar la sección actual guardada
+        const savedData = JSON.parse(localStorage.getItem("practiceData")) || {};
+        const currentSection = savedData.currentSection || 1;
+        showPracticeSection(currentSection);
         updatePracticeProgress();
     } else if (localStorage.getItem("parte1Finalizada") === "true") {
         document.getElementById("uniqueSelection").style.display = "none";
@@ -493,7 +496,10 @@ window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("essay").style.display = "none";
             document.getElementById("practice").style.display = "block";
             initPracticePart();
-            showPracticeSection(1);
+            // Recuperar la sección actual guardada
+            const savedData = JSON.parse(localStorage.getItem("practiceData")) || {};
+            const currentSection = savedData.currentSection || 1;
+            showPracticeSection(currentSection);
             updatePracticeProgress();
         } else if (localStorage.getItem("parte1Finalizada") === "true") {
             document.getElementById("uniqueSelection").style.display = "none";
@@ -3006,7 +3012,22 @@ function finalizarPractica() {
             btnDescargar.style.backgroundColor = '#19A06E';
             btnDescargar.style.marginTop = '15px';
             btnDescargar.textContent = 'Descargar Examen Completo (PDF)';
-            btnDescargar.onclick = () => document.getElementById('btnGenerarPDF').click();
+            btnDescargar.onclick = () => {
+                document.getElementById('btnGenerarPDF').click();
+                // Desactivar todo después de descargar
+                setTimeout(() => {
+                    document.querySelectorAll('input, button, textarea').forEach(el => {
+                        if (el.id !== 'btnGenerarPDF' && !el.closest('#nav')) {
+                            el.disabled = true;
+                        }
+                    });
+                    document.querySelectorAll('.pareo-item, .sopa-cell, .crucigrama-cell input').forEach(el => {
+                        el.style.pointerEvents = 'none';
+                    });
+                    btnDescargar.textContent = 'Examen Finalizado - Solo Descarga Disponible';
+                    btnDescargar.onclick = () => document.getElementById('btnGenerarPDF').click();
+                }, 1000);
+            };
             btnFinalizar.parentNode.appendChild(btnDescargar);
         }
     });
