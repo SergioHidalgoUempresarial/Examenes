@@ -1291,7 +1291,9 @@ document.addEventListener("DOMContentLoaded", function () {
         Swal.fire({
             icon: "success",
             title: "Datos validados",
-            text: "Nombre y cédula han sido guardados correctamente.",
+            text: "Nombre y cédula han sido guardados correctamente. Ahora puede comenzar con la Parte 1: Selección Única.",
+            confirmButtonText: "Comenzar Parte 1",
+            confirmButtonColor: '#004080'
         });
     });
 
@@ -1620,7 +1622,7 @@ const uniqueQuestions = [
 
 function loadQuestion(index) {
     // Mostrar advertencia solo en la primera pregunta
-    if (index === 0 && !localStorage.getItem("selectionWarningShown")) {
+    if (index === 1 && !localStorage.getItem("selectionWarningShown")) {
         Swal.fire({
             icon: 'info',
             title: 'Parte 1: Selección Única',
