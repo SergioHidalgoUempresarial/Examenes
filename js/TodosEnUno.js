@@ -1294,6 +1294,13 @@ document.addEventListener("DOMContentLoaded", function () {
             text: "Nombre y cédula han sido guardados correctamente. Ahora puede comenzar con la Parte 1: Selección Única.",
             confirmButtonText: "Comenzar Parte 1",
             confirmButtonColor: '#004080'
+        }).then(() => {
+            // Asegurar que se inicialice la selección única y se muestre el mensaje
+            initUniqueSelection();
+            renderProgressBar();
+            // Forzar que aparezca el mensaje de la primera pregunta
+            localStorage.removeItem("selectionWarningShown");
+            loadQuestion(0);
         });
     });
 
@@ -1622,11 +1629,11 @@ const uniqueQuestions = [
 
 function loadQuestion(index) {
     // Mostrar advertencia solo en la primera pregunta
-    if (index === 1 && !localStorage.getItem("selectionWarningShown")) {
+    if (index === 0 && !localStorage.getItem("selectionWarningShown")) {
         Swal.fire({
             icon: 'info',
             title: 'Parte 1: Selección Única',
-            text: 'Seleccione la respuesta correcta haciendo clic en la opción de su preferencia. Una vez seleccionada, podrá avanzar a la siguiente pregunta.',
+            text: 'Seleccione la respuesta correcta haciendo clic en la opción de su preferencia. Una vez seleccionada, podrá avanzar a la siguiente pregunta. Recuerde que no podrá regresar a preguntas anteriores.',
             confirmButtonText: 'Comenzar',
             confirmButtonColor: '#004080',
             allowOutsideClick: false
