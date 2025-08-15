@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -2313,22 +2313,44 @@ const crucigramaData = {
     gridSize: 15
 };
 
-// Palabras para la sopa de letras - Términos del examen
+// Palabras para la sopa de letras - Términos del examen con definiciones
 const sopaWordsComplete = [
-    "CPU", "RAM", "SSD", "GPU", "USB", "ROM", "HDD", "WIFI", "BIOS", "CACHE",
-    "VIRUS", "BACKUP", "DRIVER", "KERNEL", "FIREWALL", "MALWARE", "HARDWARE",
-    "SOFTWARE", "MEMORIA", "SISTEMA", "DATOS", "RED", "SERVIDOR", "CLIENTE"
+    { word: "CPU", definition: "Unidad central de procesamiento que ejecuta instrucciones" },
+    { word: "RAM", definition: "Memoria volátil de acceso aleatorio" },
+    { word: "SSD", definition: "Disco de estado sólido basado en memoria flash" },
+    { word: "GPU", definition: "Unidad de procesamiento gráfico para imágenes" },
+    { word: "USB", definition: "Puerto universal en serie para dispositivos" },
+    { word: "ROM", definition: "Memoria no volátil con instrucciones de arranque" },
+    { word: "HDD", definition: "Disco duro mecánico tradicional" },
+    { word: "WIFI", definition: "Tecnología de red inalámbrica" },
+    { word: "BIOS", definition: "Sistema básico de entrada y salida" },
+    { word: "CACHE", definition: "Memoria que acelera el acceso a datos recurrentes" },
+    { word: "VIRUS", definition: "Software malicioso que se adjunta a archivos" },
+    { word: "BACKUP", definition: "Copia de seguridad de datos importantes" },
+    { word: "DRIVER", definition: "Software que controla dispositivos de hardware" },
+    { word: "KERNEL", definition: "Núcleo del sistema operativo" },
+    { word: "FIREWALL", definition: "Sistema de protección contra amenazas de red" },
+    { word: "MALWARE", definition: "Software malicioso que daña sistemas" },
+    { word: "HARDWARE", definition: "Componentes físicos de una computadora" },
+    { word: "SOFTWARE", definition: "Programas y conjuntos de instrucciones que permiten a las computadoras realizar tareas específicas (lo intangible de una PC)" },
+    { word: "MEMORIA", definition: "Es la que tiene capacidad para almacenar, retener y hacer disponible información" },
+    { word: "SISTEMA", definition: "Conjunto organizado de elementos que funcionan juntos" },
+    { word: "DATOS", definition: "Información procesada por una computadora" },
+    { word: "RED", definition: "Conexión entre múltiples dispositivos" },
+    { word: "SERVIDOR", definition: "Computadora que proporciona servicios a otras" },
+    { word: "CLIENTE", definition: "Dispositivo que solicita servicios a un servidor" }
 ];
 
 // Función para generar sopa de letras aleatoria
 function generateSopaLetras() {
     const gridSize = 16;
-    const selectedWords = [...sopaWordsComplete].sort(() => Math.random() - 0.5).slice(0, 12);
+    const selectedItems = [...sopaWordsComplete].sort(() => Math.random() - 0.5).slice(0, 12);
     const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
     const placedWords = [];
 
     // Colocar palabras aleatoriamente
-    selectedWords.forEach(word => {
+    selectedItems.forEach(item => {
+        const word = item.word;
         let placed = false;
         let attempts = 0;
 
@@ -2339,7 +2361,7 @@ function generateSopaLetras() {
 
             if (canPlaceWord(grid, word, row, col, direction, gridSize)) {
                 placeWord(grid, word, row, col, direction);
-                placedWords.push({ word, row, col, direction });
+                placedWords.push({ word, row, col, direction, definition: item.definition });
                 placed = true;
             }
             attempts++;
@@ -2359,7 +2381,8 @@ function generateSopaLetras() {
     return {
         grid,
         words: placedWords.map(p => p.word),
-        wordPositions: placedWords
+        wordPositions: placedWords,
+        definitions: placedWords
     };
 }
 
@@ -2860,11 +2883,16 @@ function initSopaLetras() {
 
     container.innerHTML = grid;
 
-    // Mostrar palabras a encontrar
+    // Mostrar definiciones en lugar de palabras
     const listaPalabras = document.getElementById('lista-palabras');
-    listaPalabras.innerHTML = sopaData.words.map(word =>
-        `<span class="palabra-item ${sopaFoundWords.includes(word) ? 'encontrada' : ''}">${word}</span>`
-    ).join('');
+    listaPalabras.innerHTML = sopaData.definitions.map(item => {
+        const guiones = '_'.repeat(item.word.length);
+        const encontrada = sopaFoundWords.includes(item.word);
+        return `<div class="palabra-item ${encontrada ? 'encontrada' : ''}">
+            <div class="definition">${item.definition}:</div>
+            <div class="word-spaces">${encontrada ? item.word : guiones}</div>
+        </div>`;
+    }).join('');
 }
 
 let sopaSelection = [];
@@ -2967,9 +2995,14 @@ function markSopaWordFound() {
 
 function updateSopaWordsList() {
     const listaPalabras = document.getElementById('lista-palabras');
-    listaPalabras.innerHTML = sopaData.words.map(word =>
-        `<span class="palabra-item ${sopaFoundWords.includes(word) ? 'encontrada' : ''}">${word}</span>`
-    ).join('');
+    listaPalabras.innerHTML = sopaData.definitions.map(item => {
+        const guiones = '_'.repeat(item.word.length);
+        const encontrada = sopaFoundWords.includes(item.word);
+        return `<div class="palabra-item ${encontrada ? 'encontrada' : ''}">
+            <div class="definition">${item.definition}:</div>
+            <div class="word-spaces">${encontrada ? item.word : guiones}</div>
+        </div>`;
+    }).join('');
 }
 
 // Función para avanzar a la siguiente sección
