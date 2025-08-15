@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="theme-color" content="">
@@ -14,11 +13,11 @@
     <link rel="shortcut icon" href="images/Logo.png" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" integrity="sha512-6JR4bbn8rCKvrkdoTJd/VFyXAN4CE9XMtgykPWgKiHjou56YDJxWsi90hAeMTYxNwUnKSQu9JPc3SQUg+aGCHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"
+        integrity="sha512-6JR4bbn8rCKvrkdoTJd/VFyXAN4CE9XMtgykPWgKiHjou56YDJxWsi90hAeMTYxNwUnKSQu9JPc3SQUg+aGCHw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-
 <body>
-
     <!-- Titulo y cronometro -->
     <section id="exam-title" class="exam-title">
         <div class="section-container">
@@ -35,7 +34,6 @@
             </div>
         </div>
     </section>
-
     <!-- Instrucciones de clausulas para el examen -->
     <section id="instructions-section" class="instructions-section">
         <div id="instruction" class="instructions">
@@ -90,7 +88,6 @@
             </div>
         </div>
     </section>
-
     <!-- Código de acceso para realizarlo-->
     <section id="access" class="access">
         <div id="access-section" class="access-section">
@@ -103,7 +100,6 @@
             <button onclick="resetAccess()" style="display:none;" id="adminResetBtn">Reset Access</button>
         </div>
     </section>
-
     <!-- menu -->
     <section id="start" class="start">
         <div class="section-container">
@@ -118,7 +114,6 @@
             </header>
         </div>
     </section>
-
     <!-- primera parte nombre del estudiante -->
     <section id="StudentData" class="StudentData">
         <div id="name-section" class="name-section" style="display: none;">
@@ -137,7 +132,6 @@
             </div>
         </div>
     </section>
-
     <section id="uniqueSelection" class="uniqueSelection" style="display: none;">
         <div class="section-container">
             <!-- PANEL DE PROGRESO LATERAL -->
@@ -145,7 +139,6 @@
                 <h3>Preguntas selección única.(<span id="totalQuestions">0</span>)</h3>
                 <div id="progressList" class="progressList"></div>
             </aside>
-
             <!-- CONTENEDOR DE PREGUNTA ACTUAL -->
             <div id="question-container" class="question-container">
                 <h2>Parte 1: Marque con X (Selección única)</h2>
@@ -155,7 +148,6 @@
             </div>
         </div>
     </section>
-
     <section id="essay" class="essay" style="display: none;">
         <div class="section-container">
             <!-- Panel lateral de preguntas de desarrollo -->
@@ -163,7 +155,6 @@
                 <h3>Preguntas de desarrollo.</h3>
                 <div id="essayProgressList"></div>
             </div>
-
             <!-- Pregunta actual y navegación -->
             <div id="essay-container" class="essay-container">
                 <div id="contenedor-desarrollo"></div>
@@ -173,7 +164,6 @@
             </div>
         </div>
     </section>
-
     <section id="practice" class="practice" style="display: none;">
         <div class="section-container">
             <!-- Panel lateral de progreso -->
@@ -185,7 +175,6 @@
                     <div class="practice-box" data-section="3">3.3 Sopa de letras</div>
                 </div>
             </div>
-
             <!-- Contenedor de la actividad actual -->
             <div id="practice-container" class="practice-container">
                 <!-- Pareo de palabras -->
@@ -195,10 +184,6 @@
                     <div id="pareo-container" class="pareo-container"></div>
                     <button onclick="nextPracticeSection()" class="practice-btn">Siguiente</button>
                 </div>
-
-
-
-                
                 <!-- Crucigrama -->
                 <div id="crucigrama-section" class="practice-section" style="display: none;">
                     <h2>3.2 Crucigrama</h2>
@@ -206,7 +191,6 @@
                     <div id="crucigrama-container" class="crucigrama-container"></div>
                     <button onclick="nextPracticeSection()" class="practice-btn">Siguiente</button>
                 </div>
-
                 <!-- Sopa de letras -->
                 <div id="sopa-section" class="practice-section" style="display: none;">
                     <h2>3.3 Sopa de letras</h2>
@@ -221,29 +205,13 @@
             </div>
         </div>
     </section>
-
     <button id="admin-clear" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
         🧹 Limpiar almacenamiento
     </button>
-
+        
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- <script src="js/VariablesConfigurables.js"></script>
-    <script src="js/VerificaCambioDeCodigo.js"></script>
-    <script src="js/Main_Intentos.js"></script>
-    <script src="js/Seguridad.js"></script>
-    <script src="js/ValidarAcceso.js"></script>
-    <script src="js/VerInstrucciones.js"></script>
-    <script src="js/IniciarCuentaRegresiva.js"></script>
-    <script src="js/MostrarFechaActual.js"></script>
-    <script src="js/PreguntasDesarrollo.js"></script>
-    <script src="js/ValidarDatosDelEstudiante.js"></script>
-    <script src="js/PreguntasSeleccionUnica.js"></script>
-    <script src="js/CuandoIngresen.js"></script>
-    <script src="js/MenuHamburguesa.js"></script>
-    <script src="js/ResumenRespuestas.js"></script>
-    <script src="js/GenerarPDF.js"></script> -->
     <script src="js/TodosEnUno.js"></script>
+    
 </body>
 
 </html>

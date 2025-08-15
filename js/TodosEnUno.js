@@ -1,20 +1,17 @@
 //////////////////////////////////
 //VariablesConfigurables.js
 /////////////////////////////////
-const EXAM_NAME = "Examen de Fundamentos de TI - TCS1003";
+const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "PruebaFundamentosIICO2025_1.2$"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
-const MAX_ATTEMPTS = 1000; //Cantidad de intentos si los estudiantes recargan o hacen algo indebido
-
-const ADMIN_PASSWORD = "profe123"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
-const MAX_CLEAR_USES = 10; // Cambia a 2 o 3 si deseas permitir más usos
+const MAX_ATTEMPTS = 500; //Cantidad de intentos si los estudiantes recargan o hacen algo indebido
+const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
+const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
 /////////////////////////////////
-
-
 
 //////////////////////////////////
 //VerificaCambioDeCodigo.js
@@ -87,7 +84,7 @@ function verificarIntentos() {
     if (intentosRestantes <= 0) {
         Swal.fire({
             icon: 'error',
-            title: 'Examen bloqueado',
+            title: 'Exámen bloqueado',
             text: 'Has agotado todos tus intentos.',
         }).then(() => window.location.href = "bloqueado.html");
     }
@@ -176,7 +173,7 @@ function manejarSalidaExamen(tipo, evento = null) {
         Swal.fire({
             icon: 'warning',
             title: 'Atención',
-            text: 'Has salido del examen. Perdiste un intento.',
+            text: 'Has salido del exámen. Perdiste un intento.',
             confirmButtonText: 'Entendido'
         }).then(() => location.reload());
     }
@@ -370,7 +367,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 Swal.fire({
                     icon: "success",
                     title: "Datos borrados",
-                    text: "Todo el progreso del examen fue eliminado.",
+                    text: "Todo el progreso del exámen fue eliminado.",
                 }).then(() => location.reload());
             }
         });
@@ -407,14 +404,14 @@ function mostrarInstruccionesImportantes() {
     Swal.fire({
         title: 'Instrucciones importantes',
         html: `
-      <p>Este examen es individual y debe completarse sin ayuda.</p>
+      <p>Este exámen es individual y debe completarse sin ayuda.</p>
       <br>
       <ul style="text-align:left;">
-        <li>Por favor lea las intrucciones generales rápidamente</li>
+        <li>Por favor lea las instrucciones generales detenidamente</li>
         <li>No recargue la página</li>
         <li>No cambie de pestaña o ventana</li>
         <li>Evite cerrar el navegador</li>
-        <li>El código para empezar a realizar el examen es: <strong>${ACCESS_CODE}</strong> </li>
+        <li>Copie el siguiente código para iniciar su exámen es: <strong>${ACCESS_CODE}</strong> </li>
       </ul>
       <br>
       <b>¿Esta de acuerdo?</b>
@@ -596,7 +593,7 @@ function validateAccess() {
         Swal.fire({
             icon: 'warning',
             title: 'Debe aceptar las instrucciones',
-            text: 'Por favor lea y acepte las instrucciones antes de comenzar el examen.',
+            text: 'Por favor lea y acepte las instrucciones antes de comenzar el exámen.',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#004080',
         });
@@ -615,7 +612,7 @@ function validateAccess() {
                     <li>Evite cerrar el navegador</li>
                     <br>
                     <br>
-                    <li>El examen podría anularse</li>
+                    <li>El exámen podría anularse</li>
                 </ul>
                 <br>
                 <b>¡"Porque Jehová da la sabiduría, y de su boca viene el conocimiento y la inteligencia."Proverbios 2:6!</b>
@@ -635,20 +632,20 @@ function validateAccess() {
                 // Ocultar sección de acceso
                 document.getElementById("access-section").style.display = "none";
 
-                // Marcar que el examen empezó
+                // Marcar que el exámen empezó
                 localStorage.setItem("examStarted", "true");
 
-                // Mostrar elementos del examen
+                // Mostrar elementos del exámen
                 startTimer();
                 document.getElementById("nav-bar").style.display = "block";
                 document.getElementById("begin-timer").style.display = "block";
                 document.getElementById("name-section").style.display = "block";
                 
-                // Mostrar mensaje de bienvenida al examen
+                // Mostrar mensaje de bienvenida al exámen
                 setTimeout(() => {
                     Swal.fire({
                         icon: 'info',
-                        title: 'Bienvenido al Examen',
+                        title: 'Bienvenido al Exámen',
                         text: 'Complete sus datos personales y luego podrá comenzar con la Parte 1: Selección Única.',
                         confirmButtonText: 'Entendido',
                         confirmButtonColor: '#004080'
@@ -710,7 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Swal.fire({
                 icon: 'info',
                 title: 'Consentimiento registrado',
-                text: 'Usted ha aceptado las instrucciones del examen. Esta acción no se puede deshacer.',
+                text: 'Usted ha aceptado las instrucciones del exámen. Esta acción no se puede deshacer.',
                 confirmButtonText: 'Aceptar',
                 confirmButtonColor: '#004080',
                 allowOutsideClick: true,
@@ -732,7 +729,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Instrucciones no aceptadas',
-                        text: 'No se han aceptado las instrucciones y para poder iniciar el examen es necesario aceptarlas.',
+                        text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas.',
                         confirmButtonText: 'Entendido',
                         confirmButtonColor: '#c0392b',
                         allowOutsideClick: false
@@ -763,7 +760,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Swal.fire({
                 icon: 'warning',
                 title: 'Instrucciones no aceptadas',
-                text: 'No se han aceptado las instrucciones y para poder iniciar el examen es necesario aceptarlas.',
+                text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas.',
                 confirmButtonText: 'Entendido',
                 confirmButtonColor: '#c0392b',
                 allowOutsideClick: false
@@ -843,10 +840,10 @@ function finishExam() {
     localStorage.removeItem("examEndTime");
     localStorage.removeItem("examStarted");
     clearInterval(timerInterval);
-    // Aquí continúa el proceso normal de cierre del examen
+    // Aquí continúa el proceso normal de cierre del exámen
     Swal.fire({
         icon: 'info',
-        title: 'Examen finalizado',
+        title: 'Exámen finalizado',
         text: 'Tu temporizador ha terminado.',
         confirmButtonText: 'Aceptar'
     }).then(() => {
@@ -893,22 +890,22 @@ dateElement.textContent = `Fecha: ${formattedDate}`;
 //PreguntasDesarrollo.js
 /////////////////////////////////
 const preguntasDesarrolloCompletas = [
-    "Explica con tus palabras la importancia de la memoria RAM en una computadora.",
-    "Describe el funcionamiento de la memoria caché y su impacto en el rendimiento del procesador.",
-    "Menciona y explica dos diferencias entre una supercomputadora y una computadora personal.",
-    "Explica el concepto de memoria virtual y cómo afecta el rendimiento de una computadora.",
-    "Diferencias entre un HDD y un SSD en términos de velocidad, durabilidad y tecnología.",
-    "Explica con tus palabras qué es una máquina virtual y cuál es su utilidad.",
-    "Explica el propósito del comando chmod en Linux y proporciona un ejemplo.     chmod 755 script.sh",
-    "Describe cómo funciona el comando tasklist en Windows y para qué se usa.",
-    "¿Cómo se gestiona la memoria en un sistema operativo moderno?",
-    "Explica cómo usar ping para diagnosticar problemas de red.     ping 8.8.8.8",
-    "¿Que hace el comando 'ipconfig' en CMD de una pc con SO Windows?",
-    "Describe el proceso de arranque de un sistema operativo desde el encendido de la computadora hasta que está listo para usarse.",
-    "¿Que hace el comando 'tasklist' en CMD de una pc con SO Windows?",
-    "¿Que hace el comando df -h en bash de una pc con SO en base Linux?",
-    "¿Que hace el comando top en bash de una pc con SO en base Linux?",
-    "Explica el concepto de virtualización y cómo se utiliza en la computación moderna."
+    "Explica con tus palabras la importancia de la memoria RAM en una computadora. (3pts)",
+    "Describe el funcionamiento de la memoria caché y su impacto en el rendimiento del procesador. (3pts)",
+    "Menciona y explica dos diferencias entre una supercomputadora y una computadora personal. (3pts)",
+    "Explica el concepto de memoria virtual y cómo afecta el rendimiento de una computadora. (3pts)",
+    "Diferencias entre un HDD y un SSD en términos de velocidad, durabilidad y tecnología. Explique (3pts)",
+    "Explica con tus palabras qué es una máquina virtual y cuál es su utilidad. (3pts)",
+    "Explica el propósito del comando chmod en Linux y proporciona un ejemplo.     chmod 755 script.sh (3pts)",
+    "Describe cómo funciona el comando tasklist en Windows y para qué se usa. (3pts)",
+    "¿Cómo se gestiona la memoria en un sistema operativo moderno? (3pts)",
+    "Explica cómo usar ping para diagnosticar problemas de red.     ping 8.8.8.8 (3pts)",
+    "¿Que hace el comando 'ipconfig' en CMD de una pc con SO Windows? (3pts)",
+    "Describe el proceso de arranque de un sistema operativo desde el encendido de la computadora hasta que está listo para usarse. (3pts)",
+    "¿Que hace el comando 'tasklist' en CMD de una pc con SO Windows? (3pts)",
+    "¿Que hace el comando df -h en bash de una pc con SO en base Linux? (3pts)",
+    "¿Que hace el comando top en bash de una pc con SO en base Linux? (3pts)",
+    "Explica el concepto de virtualización y cómo se utiliza en la computación moderna. (3pts)"
 ];
 
 // Función para seleccionar 8 preguntas aleatorias únicas
@@ -1691,7 +1688,7 @@ function loadQuestion(index) {
     }
 
     updateProgress();
-    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del examen Selección Única y Pasar a Desarrollo" : "Siguiente";
+    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del exámen Selección Única y Pasar a Desarrollo" : "Siguiente";
 }
 
 function guardarDatosEstudiante() {
@@ -1910,7 +1907,7 @@ initUniqueSelection();
 //CuandoIngresen.js
 /////////////////////////////////
 document.addEventListener('DOMContentLoaded', () => {
-    // No mostrar el mensaje si el examen ya inició
+    // No mostrar el mensaje si el exámen ya inició
     const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
     if (examData.nombre && examData.cedula && examData.instruccionesAceptadas) {
         return; // Salir sin mostrar el mensaje
@@ -1919,14 +1916,14 @@ document.addEventListener('DOMContentLoaded', () => {
     Swal.fire({
         title: 'Instrucciones importantes',
         html: `
-      <p>Este examen es individual y debe completarse sin ayuda.</p>
+      <p>Este exámen es individual y debe completarse sin ayuda.</p>
       <br>
       <ul style="text-align:left;">
         <li>Por favor lea las intrucciones generales rápidamente</li>
         <li>No recargue la página</li>
         <li>No cambie de pestaña o ventana</li>
         <li>Evite cerrar el navegador</li>
-        <li>El código para empezar a realizar el examen es: <strong>${ACCESS_CODE}</strong> </li>
+        <li>El código para empezar a realizar el exámen es: <strong>${ACCESS_CODE}</strong> </li>
       </ul>
       <br>
       <b>¿Esta de acuerdo?</b>
@@ -1945,7 +1942,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then((result) => {
         if (result.isConfirmed) {
             console.log("Usuario aceptó estas instrucciones");
-            // Aquí puedes permitir continuar con el examen
+            // Aquí puedes permitir continuar con el exámen
         } else if (result.isDismissed) {
             // El usuario presionó cancelar o cerró el cuadro
             //window.location.href = "https://www.google.com"; // o cerrar ventana: window.close();
@@ -2117,7 +2114,7 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     let y = 20;
 
     const examData = JSON.parse(localStorage.getItem("examData")) || {};
-    console.log("Datos examen para PDF:", examData);
+    console.log("Datos exámen para PDF:", examData);
 
     const nombre = examData.nombre || "No registrado";
     const cedula = examData.cedula || "No registrada";
@@ -2127,15 +2124,15 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
 
     //Título de PDF
     doc.setFontSize(16);
-    doc.text("Resumen del Examen", 20, y);
+    doc.text("Resumen del Exámen", 20, y);
     y += 10;
 
     //Instrucciones aceptadas
     doc.setFontSize(12);
     if (examData.instruccionesAceptadas) {
-        doc.text("El estudiante aceptó las instrucciones del examen.", 20, y);
+        doc.text("El estudiante aceptó las instrucciones del exámen.", 20, y);
     } else {
-        doc.text("El estudiante NO aceptó las instrucciones del examen.", 20, y);
+        doc.text("El estudiante NO aceptó las instrucciones del exámen.", 20, y);
     }
     y += 10;
 
@@ -2146,12 +2143,12 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     doc.text(`Cédula: ${cedula}`, 20, y);
     y += 10;
 
-    // Agregar fecha y hora actual del examen
+    // Agregar fecha y hora actual del exámen
     const fechaTexto = document.getElementById("dateDisplay")?.textContent || "Fecha no disponible";
     doc.text(fechaTexto, 20, y);
     y += 10;
 
-    // Agregar tiempo restante del examen
+    // Agregar tiempo restante del exámen
     const tiempoTexto = document.getElementById("timer")?.textContent || "Tiempo no disponible";
     doc.text(tiempoTexto, 20, y);
     y += 10;
