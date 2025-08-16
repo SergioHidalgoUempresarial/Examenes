@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -2938,6 +2938,9 @@ function initSopaLetras() {
 
     container.innerHTML = grid;
 
+    // Restaurar palabras encontradas en el grid
+    restoreFoundWordsInGrid();
+
     // Mostrar definiciones en lugar de palabras
     const listaPalabras = document.getElementById('lista-palabras');
     listaPalabras.innerHTML = sopaData.definitions.map(item => {
@@ -3058,6 +3061,32 @@ function updateSopaWordsList() {
             <div class="word-spaces">${encontrada ? item.word : guiones}</div>
         </div>`;
     }).join('');
+}
+
+// Función para restaurar palabras encontradas en el grid
+function restoreFoundWordsInGrid() {
+    sopaFoundWords.forEach(foundWord => {
+        const wordPosition = sopaData.wordPositions.find(pos => pos.word === foundWord);
+        if (wordPosition) {
+            const { row, col, direction, word } = wordPosition;
+            
+            for (let i = 0; i < word.length; i++) {
+                let cellRow = row;
+                let cellCol = col;
+                
+                if (direction === 'horizontal') {
+                    cellCol = col + i;
+                } else {
+                    cellRow = row + i;
+                }
+                
+                const cell = document.getElementById(`sopa-${cellRow}-${cellCol}`);
+                if (cell) {
+                    cell.classList.add('found');
+                }
+            }
+        }
+    });
 }
 
 // Función para avanzar a la siguiente sección
