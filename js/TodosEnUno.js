@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -423,7 +423,7 @@ function mostrarInstruccionesImportantes() {
         <li>No recargue la página</li>
         <li>No cambie de pestaña o ventana</li>
         <li>Evite cerrar el navegador</li>
-        <li>Copie el siguiente código para iniciar su exámen es: <strong>${ACCESS_CODE}</strong> </li>
+        <li>El siguiente código debe memorizarlo o apuntarlo, es para iniciar su exámen: <strong>${ACCESS_CODE}</strong> </li>
       </ul>
       <br>
       <b>¿Esta de acuerdo?</b>
