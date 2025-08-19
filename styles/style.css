@@ -277,6 +277,10 @@ body {
   cursor: pointer;
   transition: .3s;
   font-size: 15px;
+  /* Ocultar completamente el menú hamburguesa */
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 .start .section-container header .nav-bar:hover {
@@ -1686,17 +1690,12 @@ button:hover {
   }
 
   .nav-bar {
-    display: block !important;
-    width: 2.5em;
-    height: 2.5em;
-    background-color: #F8C21A;
-    background-image: url(../icons/MenuHamburguesa.png);
-    background-repeat: no-repeat;
-    background-size: 20px;
-    background-position: center;
-    border-radius: 40%;
-    cursor: pointer;
-    margin-right: 8px;
+    /* Ocultar completamente el menú hamburguesa en móvil también */
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0;
+    height: 0;
   }
 
   .exam-title .title,

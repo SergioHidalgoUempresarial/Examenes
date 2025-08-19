@@ -680,7 +680,6 @@ function validateAccess() {
 
                 // Mostrar elementos del exámen
                 startTimer();
-                document.getElementById("nav-bar").style.display = "block";
                 document.getElementById("begin-timer").style.display = "block";
                 document.getElementById("name-section").style.display = "block";
                 
@@ -3123,7 +3122,11 @@ function finalizarPractica() {
         icon: 'success',
         confirmButtonText: 'Continuar'
     }).then(() => {
-        // Mostrar botón de descarga
+        // Mostrar la sección del menú con el botón de descarga
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('nav').style.display = 'block';
+        
+        // Mostrar botón de descarga personalizado
         const btnFinalizar = document.querySelector('.practice-btn[onclick="finalizarPractica()"]');
         if (btnFinalizar) {
             btnFinalizar.style.display = 'none';
