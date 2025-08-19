@@ -1234,6 +1234,105 @@ label[for="agreeCheck"] {
   font-size: 0.95em;
 }
 
+/* Cybersecurity section styling */
+.cybersecurity-header {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
+  text-align: center;
+}
+
+.cybersecurity-header h2 {
+  color: white;
+  font-size: 1.5em;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+}
+
+.instructions-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.instructions-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1e3c72, #2a5298, #1e3c72);
+}
+
+.intro-text {
+  font-size: 1.1em;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-list li {
+  background: white;
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border-left: 4px solid #1e3c72;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+}
+
+.task-list li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.example-item {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
+  border-left-color: #ffc107 !important;
+}
+
+.example-box {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 2px dashed #1e3c72;
+  text-align: center;
+}
+
+.example-box strong {
+  color: #1e3c72;
+  font-size: 1.1em;
+}
+
+.example-box .word-spaces {
+  display: block;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #2a5298;
+  margin-top: 8px;
+  letter-spacing: 3px;
+}
+
 /* Sopa de letras */
 .sopa-container {
   display: grid;
@@ -1242,10 +1341,10 @@ label[for="agreeCheck"] {
   gap: 2px;
   margin: 20px 0;
   justify-content: center;
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
 }
 
 .sopa-cell {
@@ -1473,6 +1572,37 @@ button:hover {
 
 /* Móviles */
 @media (max-width: 600px) {
+  .cybersecurity-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .cybersecurity-header h2 {
+    font-size: 1.2em;
+  }
+
+  .instructions-card {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+
+  .intro-text {
+    font-size: 1em;
+  }
+
+  .task-list li {
+    padding: 12px 15px;
+    font-size: 0.95em;
+  }
+
+  .example-box {
+    padding: 12px;
+  }
+
+  .example-box .word-spaces {
+    font-size: 1em;
+    letter-spacing: 2px;
+  }
 
   .uniqueSelection .section-container,
   .essay .section-container {

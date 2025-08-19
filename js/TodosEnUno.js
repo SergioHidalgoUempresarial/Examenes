@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -1467,7 +1467,7 @@ const uniqueQuestions = [
     {
         question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
         options: [
-            "La RAM es volátil y la ROM",
+            "La RAM es volátil y la ROM no",
             "La ROM es más rápida que la RAM",
             "Ambas pueden ser modificadas libremente por el usuario",
             "La RAM solo se usa en servidores"
