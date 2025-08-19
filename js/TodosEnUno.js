@@ -76,12 +76,12 @@ function restarIntentoYGuardar() {
     let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || { intentosRestantes: MAX_ATTEMPTS };
     data.intentosRestantes = Math.max(0, (data.intentosRestantes ?? MAX_ATTEMPTS) - 1);
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
-    
+
     // Sincronizar con examData para el PDF
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
     examData.intentosRestantes = data.intentosRestantes;
     localStorage.setItem("examData", JSON.stringify(examData));
-    
+
     intentoYaRestado = true;
 }
 
@@ -403,7 +403,7 @@ window.onload = function () {
     mostrarIntentosRestantes();
     actualizarAccesoPorIntentos();
     controlarAccesoPorIntentos();
-    
+
     // Sincronizar intentos con examData
     const intentosActuales = obtenerIntentosRestantes();
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
@@ -453,7 +453,35 @@ window.addEventListener("DOMContentLoaded", function () {
     const examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
     const intentosRestantes = examData.intentosRestantes ?? MAX_ATTEMPTS;
 
-    if (localStorage.getItem("parte2Finalizada") === "true") {
+    if (localStorage.getItem("examFinalizado") === "true") {
+        // Mostrar pantalla de finalización
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "block";
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('nav').style.display = 'block';
+
+        const practiceContainer = document.querySelector('.practice .section-container');
+        if (practiceContainer) {
+            practiceContainer.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; padding: 15px; margin: 0 auto;">
+                    <div style="text-align: center; padding: clamp(25px, 5vw, 45px) clamp(20px, 4vw, 36px); background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border-radius: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); border: 2px solid #19A06E; max-width: min(540px, 90vw); width: 90%; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #19A06E 0%, #004080 100%);"></div>
+                        <div style="font-size: clamp(2.5em, 8vw, 4em); color: #19A06E; margin-bottom: clamp(15px, 3vw, 20px);">✓</div>
+                        <h2 style="color: #19A06E; margin-bottom: clamp(15px, 4vw, 25px); font-size: clamp(1.5em, 5vw, 2.2em); font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">¡Examen Completado!</h2>
+                        <p style="font-size: clamp(1em, 3vw, 1.2em); margin-bottom: clamp(20px, 5vw, 35px); color: #555; line-height: 1.6; font-weight: 500;">Has finalizado todas las partes del examen exitosamente.<br>Ahora puedes descargar tu archivo PDF para subirlo al espacio designado en el Cloud Campus Tienes 5 minutos.</p>
+                        <button id="btnDescargarFinal" style="padding: clamp(12px, 3vw, 18px) clamp(25px, 6vw, 40px); background: linear-gradient(135deg, #19A06E 0%, #158a5a 100%); color: white; border: none; border-radius: 12px; font-size: clamp(1em, 3vw, 1.2em); font-weight: bold; cursor: pointer; box-shadow: 0 6px 20px rgba(25,160,110,0.4); transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(25,160,110,0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 20px rgba(25,160,110,0.4)';">Descargar Examen Completo (PDF)</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('btnDescargarFinal').onclick = () => {
+                document.getElementById('btnGenerarPDF').click();
+                setTimeout(() => {
+                    document.getElementById('btnDescargarFinal').textContent = 'Examen Finalizado - Solo Descarga Disponible';
+                }, 1000);
+            };
+        }
+    } else if (localStorage.getItem("parte2Finalizada") === "true") {
         document.getElementById("uniqueSelection").style.display = "none";
         document.getElementById("essay").style.display = "none";
         document.getElementById("practice").style.display = "block";
@@ -526,7 +554,7 @@ window.addEventListener("DOMContentLoaded", function () {
             indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
             mostrarPreguntaDesarrollo(indiceDesarrollo);
             cargarPanelLateralDesarrollo();
-            
+
 
         } else {
             document.getElementById("uniqueSelection").style.display = "block";
@@ -534,7 +562,7 @@ window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("practice").style.display = "none";
             initUniqueSelection(); //Para que cargue
             renderProgressBar();
-            
+
 
         }
     } else {
@@ -590,7 +618,7 @@ function detectDevTools() {
     const threshold = 160;
     const widthThreshold = window.outerWidth - window.innerWidth > threshold;
     const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-    
+
     if (widthThreshold || heightThreshold) {
         if (!devToolsDetected) {
             devToolsDetected = true;
@@ -607,7 +635,7 @@ window.addEventListener('load', detectDevTools);
 window.addEventListener('resize', detectDevTools);
 
 // Detección de cambio de pestaña
-document.addEventListener('visibilitychange', function() {
+document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
         const examData = JSON.parse(localStorage.getItem("examData")) || {};
         examData.tabSwitched = true;
@@ -682,7 +710,7 @@ function validateAccess() {
                 startTimer();
                 document.getElementById("begin-timer").style.display = "block";
                 document.getElementById("name-section").style.display = "block";
-                
+
                 // Mostrar mensaje de bienvenida al exámen
                 setTimeout(() => {
                     Swal.fire({
@@ -1200,7 +1228,31 @@ function mostrarPreguntaDesarrollo(index) {
     if (indiceDesarrollo === preguntasDesarrollo.length - 1) {
         document.getElementById("btnSiguienteDesarrollo").style.display = "none";
         document.getElementById("btnFinalizarDesarrollo").style.display = "inline-block";
-        document.getElementById("btnFinalizarDesarrollo").addEventListener("click", finalizarDesarrollo);
+        document.getElementById("btnFinalizarDesarrollo").addEventListener("click", () => {
+            // Obtener contenido de TinyMCE
+            const editor = tinymce.get(`respuesta-${indiceDesarrollo}`);
+            const respuestaActual = editor ? editor.getContent({ format: 'text' }).trim() : '';
+
+            // Verificar si la respuesta está vacía
+            if (!respuestaActual) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Respuesta vacía',
+                    text: '¿Deseas finalizar el desarrollo sin responder esta pregunta?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Finalizar sin responder',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        finalizarDesarrollo();
+                    }
+                });
+            } else {
+                finalizarDesarrollo();
+            }
+        });
     }
 
     // Guardar cambios automáticamente
@@ -2365,7 +2417,7 @@ const crucigramaData = {
         { word: "TROYANOS", clue: "Se disfrazan de software legítimo para engañar a los usuarios y dar acceso a atacantes.", row: 6, col: 7, direction: "vertical" },
         { word: "RANSOMWARE", clue: "Secuestra datos o sistemas, los bloquea y exige un rescate para liberarlos y restaurar el acceso.", row: 1, col: 9, direction: "vertical" },
         { word: "ADWARE", clue: "Muestra anuncios no deseados y recopila datos de navegación, para el marketing malicioso.", row: 8, col: 11, direction: "vertical" },
-        { word: "SEGURIDAD", clue: "Conjunto de medidas y técnicas para proteger sistemas, redes y datos de amenazas digitales.", row: 2, col: 13, direction: "vertical" },        
+        { word: "SEGURIDAD", clue: "Conjunto de medidas y técnicas para proteger sistemas, redes y datos de amenazas digitales.", row: 2, col: 13, direction: "vertical" },
     ],
     gridSize: 15
 };
@@ -2504,6 +2556,7 @@ function initPracticePart() {
 
     // Guardar datos actualizados
     localStorage.setItem("practiceData", JSON.stringify(savedData));
+    window.scrollTo(0, 0);
 }
 
 // Función para mostrar la sección de práctica actual
@@ -2530,6 +2583,7 @@ function showPracticeSection(section) {
 
     updatePracticeProgress();
     savePracticeData();
+    window.scrollTo(0, 0);
 }
 
 // Función para actualizar el progreso visual
@@ -2581,7 +2635,7 @@ function selectPareoItem(element) {
     if (element.classList.contains('matched')) {
         const elementIndex = element.dataset.index;
         const elementType = element.dataset.type;
-        
+
         // Encontrar y deshacer el emparejamiento
         if (elementType === 'palabra') {
             const defIndex = pareoMatches[elementIndex];
@@ -2599,7 +2653,7 @@ function selectPareoItem(element) {
                 delete pareoMatches[palabraIndex];
             }
         }
-        
+
         element.classList.remove('matched');
         savePracticeData();
         return;
@@ -2689,7 +2743,7 @@ function initCrucigrama() {
         const input = document.getElementById(cellId);
         if (input) input.value = value;
     });
-    
+
     // Capturar palabras completas al cargar
     capturarPalabrasCompletas();
 }
@@ -2725,7 +2779,7 @@ function saveCrucigramaAnswer(cellId, value) {
 
 function capturarPalabrasCompletas() {
     const palabrasCompletas = {};
-    
+
     crucigramaData.words.forEach((wordData, index) => {
         let palabra = '';
         for (let i = 0; i < wordData.word.length; i++) {
@@ -2737,7 +2791,7 @@ function capturarPalabrasCompletas() {
             }
             palabra += crucigramaAnswers[cellId] || '';
         }
-        
+
         const tipo = wordData.direction === 'horizontal' ? 'H' : 'V';
         const numero = crucigramaData.words.filter(w => w.direction === wordData.direction).indexOf(wordData) + 1;
         palabrasCompletas[`${tipo}${numero}`] = {
@@ -2747,12 +2801,12 @@ function capturarPalabrasCompletas() {
             pista: wordData.clue
         };
     });
-    
+
     // Guardar las palabras completas en practiceData
     const practiceData = JSON.parse(localStorage.getItem("practiceData")) || {};
     practiceData.crucigramaPalabras = palabrasCompletas;
     localStorage.setItem("practiceData", JSON.stringify(practiceData));
-    
+
     // También guardar en examData
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
     if (!examData.respuestasPractica) examData.respuestasPractica = {};
@@ -3071,17 +3125,17 @@ function restoreFoundWordsInGrid() {
         const wordPosition = sopaData.wordPositions.find(pos => pos.word === foundWord);
         if (wordPosition) {
             const { row, col, direction, word } = wordPosition;
-            
+
             for (let i = 0; i < word.length; i++) {
                 let cellRow = row;
                 let cellCol = col;
-                
+
                 if (direction === 'horizontal') {
                     cellCol = col + i;
                 } else {
                     cellRow = row + i;
                 }
-                
+
                 const cell = document.getElementById(`sopa-${cellRow}-${cellCol}`);
                 if (cell) {
                     cell.classList.add('found');
@@ -3117,41 +3171,60 @@ function nextPracticeSection() {
 // Función para finalizar la práctica
 function finalizarPractica() {
     Swal.fire({
-        title: '¡Práctica finalizada!',
-        text: 'Has completado todas las actividades prácticas. Ahora puedes descargar tu examen completo.',
-        icon: 'success',
-        confirmButtonText: 'Continuar'
-    }).then(() => {
-        // Mostrar la sección del menú con el botón de descarga
-        document.getElementById('start').style.display = 'block';
-        document.getElementById('nav').style.display = 'block';
-        
-        // Mostrar botón de descarga personalizado
-        const btnFinalizar = document.querySelector('.practice-btn[onclick="finalizarPractica()"]');
-        if (btnFinalizar) {
-            btnFinalizar.style.display = 'none';
-            const btnDescargar = document.createElement('button');
-            btnDescargar.className = 'practice-btn';
-            btnDescargar.style.backgroundColor = '#19A06E';
-            btnDescargar.style.marginTop = '15px';
-            btnDescargar.textContent = 'Descargar Examen Completo (PDF)';
-            btnDescargar.onclick = () => {
-                document.getElementById('btnGenerarPDF').click();
-                // Desactivar todo después de descargar
-                setTimeout(() => {
-                    document.querySelectorAll('input, button, textarea').forEach(el => {
-                        if (el.id !== 'btnGenerarPDF' && !el.closest('#nav')) {
-                            el.disabled = true;
-                        }
-                    });
-                    document.querySelectorAll('.pareo-item, .sopa-cell, .crucigrama-cell input').forEach(el => {
-                        el.style.pointerEvents = 'none';
-                    });
-                    btnDescargar.textContent = 'Examen Finalizado - Solo Descarga Disponible';
-                    btnDescargar.onclick = () => document.getElementById('btnGenerarPDF').click();
-                }, 1000);
-            };
-            btnFinalizar.parentNode.appendChild(btnDescargar);
+        title: '¿Finalizar el examen?',
+        text: 'Estás a punto de finalizar completamente el examen. Una vez finalizado no podrás hacer cambios.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, finalizar examen',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#19A06E',
+        cancelButtonColor: '#d33',
+        customClass: {
+            popup: 'swal-wide-low'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: '¡Práctica finalizada!',
+                text: 'Has completado todas las actividades prácticas. Ahora puedes descargar tu examen completo.',
+                icon: 'success',
+                confirmButtonText: 'Continuar'
+            }).then(() => {
+                // Ocultar la sección de práctica
+                document.getElementById('practice').style.display = 'none';
+
+                // Mostrar la sección del menú con el botón de descarga
+                document.getElementById('start').style.display = 'block';
+                document.getElementById('nav').style.display = 'block';
+
+                // Crear mensaje de finalización
+                const practiceContainer = document.querySelector('.practice .section-container');
+                if (practiceContainer) {
+                    practiceContainer.innerHTML = `
+                        <div style="display: flex; justify-content: center; align-items: center; min-height: 50vh; padding: 15px; margin: 0 auto;">
+                            <div style="text-align: center; padding: clamp(25px, 5vw, 45px) clamp(20px, 4vw, 36px); background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border-radius: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); border: 2px solid #19A06E; max-width: min(540px, 90vw); width: 90%; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #19A06E 0%, #004080 100%);"></div>
+                                <div style="font-size: clamp(2.5em, 8vw, 4em); color: #19A06E; margin-bottom: clamp(15px, 3vw, 20px);">✓</div>
+                                <h2 style="color: #19A06E; margin-bottom: clamp(15px, 4vw, 25px); font-size: clamp(1.5em, 5vw, 2.2em); font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">¡Examen Completado!</h2>
+                                <p style="font-size: clamp(1em, 3vw, 1.2em); margin-bottom: clamp(20px, 5vw, 35px); color: #555; line-height: 1.6; font-weight: 500;">Has finalizado todas las partes del examen exitosamente.<br>Ahora puedes descargar tu archivo PDF para subirlo al espacio designado en el Cloud Campus Tienes 5 minutos.</p>
+                                <button id="btnDescargarFinal" style="padding: clamp(12px, 3vw, 18px) clamp(25px, 6vw, 40px); background: linear-gradient(135deg, #19A06E 0%, #158a5a 100%); color: white; border: none; border-radius: 12px; font-size: clamp(1em, 3vw, 1.2em); font-weight: bold; cursor: pointer; box-shadow: 0 6px 20px rgba(25,160,110,0.4); transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(25,160,110,0.5)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 20px rgba(25,160,110,0.4)';">Descargar Examen Completo (PDF)</button>
+                            </div>
+                        </div>
+                    `;
+
+                    // Mostrar la sección de práctica con el nuevo contenido
+                    document.getElementById('practice').style.display = 'block';
+
+                    // Marcar como finalizado y agregar funcionalidad al botón
+                    localStorage.setItem("examFinalizado", "true");
+                    document.getElementById('btnDescargarFinal').onclick = () => {
+                        document.getElementById('btnGenerarPDF').click();
+                        setTimeout(() => {
+                            document.getElementById('btnDescargarFinal').textContent = 'Examen Finalizado - Solo Descarga Disponible';
+                        }, 1000);
+                    };
+                }
+            });
         }
     });
 }
@@ -3160,7 +3233,7 @@ function finalizarPractica() {
 function savePracticeData() {
     // Obtener datos existentes para preservar crucigramaPalabras
     const existingData = JSON.parse(localStorage.getItem("practiceData")) || {};
-    
+
     const practiceData = {
         currentSection: currentPracticeSection,
         pareoMatches,
@@ -3196,6 +3269,7 @@ function finalizarDesarrollo() {
         initPracticePart();
         showPracticeSection(1);
         updatePracticeProgress();
+        window.scrollTo(0, 0);
     });
 }
 /////////////////////////////////
