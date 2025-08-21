@@ -1999,6 +1999,90 @@ button:hover {
   }
 }
 
+/* Pantalla finalizada */
+.mostrarPantallaFinalizada {
+  display: none;
+}
+
+.mostrarPantallaFinalizada .section-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.pantalla-finalizada-content {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 150px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.pantalla-finalizada-title {
+  color: #19A06E;
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.pantalla-finalizada-text {
+  font-size: 1.2em;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.btn-descargar-final {
+  background: linear-gradient(135deg, #19A06E 0%, #158a5a 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(25, 160, 110, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-descargar-final:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(25, 160, 110, 0.4);
+}
+
+/* Responsive para pantalla finalizada */
+@media (max-width: 600px) {
+  .pantalla-finalizada-content {
+    padding: 25px 20px;
+    margin-top: 200px;
+    border-radius: 12px;
+  }
+  
+  .pantalla-finalizada-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+  
+  .pantalla-finalizada-text {
+    font-size: 1em;
+    margin-bottom: 25px;
+  }
+  
+  .btn-descargar-final {
+    padding: 12px 20px;
+    font-size: 1em;
+    width: 100%;
+  }
+}
+
 /* Extra: mejora el scroll en móviles */
 body,
 html {

@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -415,7 +415,67 @@ window.onload = function () {
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
     examData.intentosRestantes = intentosActuales;
     localStorage.setItem("examData", JSON.stringify(examData));
+
+    // Agregar event listeners
+    setupEventListeners();
 };
+
+// CONFIGURACIÓN DE EVENT LISTENERS
+function setupEventListeners() {
+    // Botón ingresar
+    const btnIngresar = document.getElementById("btnIngresar");
+    if (btnIngresar) {
+        btnIngresar.addEventListener("click", validateAccess);
+    }
+
+    // Botón reset admin
+    const adminResetBtn = document.getElementById("adminResetBtn");
+    if (adminResetBtn) {
+        adminResetBtn.addEventListener("click", resetAccess);
+    }
+
+    // Menú hamburguesa
+    const navBar = document.getElementById("nav-bar");
+    if (navBar) {
+        navBar.addEventListener("click", showHideMenu);
+    }
+
+    // Botón siguiente selección única
+    const nextBtn = document.getElementById("nextBtn");
+    if (nextBtn) {
+        nextBtn.addEventListener("click", nextQuestion);
+    }
+
+    // Botón siguiente desarrollo
+    const nextBtnDesarrollo = document.getElementById("nextBtnDesarrollo");
+    if (nextBtnDesarrollo) {
+        nextBtnDesarrollo.addEventListener("click", nextQuestion);
+    }
+
+    // Botones práctica
+    const btnSiguientePractica1 = document.getElementById("btnSiguientePractica1");
+    if (btnSiguientePractica1) {
+        btnSiguientePractica1.addEventListener("click", nextPracticeSection);
+    }
+
+    const btnSiguientePractica2 = document.getElementById("btnSiguientePractica2");
+    if (btnSiguientePractica2) {
+        btnSiguientePractica2.addEventListener("click", nextPracticeSection);
+    }
+
+    const btnFinalizarPractica = document.getElementById("btnFinalizarPractica");
+    if (btnFinalizarPractica) {
+        btnFinalizarPractica.addEventListener("click", finalizarPractica);
+    }
+
+    // Botón descargar final
+    const btnDescargarFinal = document.getElementById("btnDescargarFinal");
+    if (btnDescargarFinal) {
+        btnDescargarFinal.addEventListener("click", function() {
+            document.getElementById('btnGenerarPDF').click();
+        });
+    }
+}
 
 // Función para mostrar instrucciones importantes
 function mostrarInstruccionesImportantes() {
@@ -720,6 +780,10 @@ function validateAccess() {
     } else {
         document.getElementById("accessError").style.display = "block";
     }
+}
+
+function resetAccess() {
+    console.log("Reset access function called");
 }
 ////////////////////////////////////////
 

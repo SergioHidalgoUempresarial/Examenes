@@ -109,16 +109,16 @@
                 botón azul, deben aceptarlas!</h2>
             <label for="accessInput">Ingrese el código de acceso generado por el docente:</label>
             <input type="password" id="accessInput" placeholder="Código de acceso" />
-            <button onclick="validateAccess()">Ingresar</button>
+            <button id="btnIngresar">Ingresar</button>
             <p id="accessError" style="color:red; display:none;">Código incorrecto. Intente de nuevo.</p>
-            <button onclick="resetAccess()" style="display:none;" id="adminResetBtn">Reset Access</button>
+            <button style="display:none;" id="adminResetBtn">Reset Access</button>
         </div>
     </section>
     <!-- menu -->
     <section id="start" class="start" style="display: none;">
         <div class="section-container">
             <header>
-                <div class="nav-bar" id="nav-bar" style="display: none;" onclick="showHideMenu()"></div>
+                <div class="nav-bar" id="nav-bar" style="display: none;"></div>
                 <nav id="nav" class="nav">
                     <!-- <a href="#practice">Práctica</a> -->
                     <button id="btnGenerarPDF">Descargar resumen del exámen</button>
@@ -158,7 +158,7 @@
                 <h2>Parte 1: Marque con X (Selección única)</h2>
                 <br>
                 <div id="question-content" class="question-content"></div>
-                <button onclick="nextQuestion()" id="nextBtn" class="nextBtn">Siguiente</button>
+                <button id="nextBtn" class="nextBtn">Siguiente</button>
             </div>
         </div>
     </section>
@@ -173,7 +173,7 @@
             <div id="essay-container" class="essay-container">
                 <div id="contenedor-desarrollo"></div>
                 <div class="essay-navigation">
-                    <button onclick="nextQuestion()" id="nextBtnDesarrollo">Siguiente</button>
+                    <button id="nextBtnDesarrollo">Siguiente</button>
                 </div>
             </div>
         </div>
@@ -196,14 +196,14 @@
                     <h2>3.1 Pareo de palabras y definiciones</h2>
                     <p>Conecte cada palabra con su definición correspondiente:</p>
                     <div id="pareo-container" class="pareo-container"></div>
-                    <button onclick="nextPracticeSection()" class="practice-btn">Siguiente</button>
+                    <button id="btnSiguientePractica1" class="practice-btn">Siguiente</button>
                 </div>
                 <!-- Crucigrama -->
                 <div id="crucigrama-section" class="practice-section" style="display: none;">
                     <h2>3.2 Crucigrama</h2>
                     <p>Complete el crucigrama con las palabras correctas:</p>
                     <div id="crucigrama-container" class="crucigrama-container"></div>
-                    <button onclick="nextPracticeSection()" class="practice-btn">Siguiente</button>
+                    <button id="btnSiguientePractica2" class="practice-btn">Siguiente</button>
                 </div>
                 <!-- Sopa de letras -->
                 <div id="sopa-section" class="practice-section" style="display: none;">
@@ -236,31 +236,18 @@
                         <h4>Palabras a encontrar:</h4>
                         <div id="lista-palabras"></div>
                     </div>
-                    <button onclick="finalizarPractica()" class="practice-btn">Finalizar Práctica</button>
+                    <button id="btnFinalizarPractica" class="practice-btn">Finalizar Práctica</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="mostrarPantallaFinalizada" class="mostrarPantallaFinalizada" style="display: none;">
+    <section id="mostrarPantallaFinalizada" class="mostrarPantallaFinalizada">
         <div class="section-container">
-            <div style="text-align: center; padding: 40px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); margin-top: 150px;">
-                <h2 style="color: #19A06E; font-size: 2em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);">Examen Finalizado con éxito</h2>
-                <p style="font-size: 1.2em; color: #2c3e50; margin-bottom: 30px; line-height: 1.6;">Dale al botón descargar para obtener el archivo PDF que debes subir al cloud campus, tienes 5 minutos.</p>
-                <button id="btnDescargarFinal" onclick="document.getElementById('btnGenerarPDF').click()" style="
-                    background: linear-gradient(135deg, #19A06E 0%, #158a5a 100%);
-                    color: white;
-                    border: none;
-                    padding: 15px 30px;
-                    font-size: 1.2em;
-                    font-weight: bold;
-                    border-radius: 12px;
-                    cursor: pointer;
-                    box-shadow: 0 6px 20px rgba(25, 160, 110, 0.3);
-                    transition: all 0.3s ease;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(25, 160, 110, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 20px rgba(25, 160, 110, 0.3)'">
+            <div class="pantalla-finalizada-content">
+                <h2 class="pantalla-finalizada-title">Examen Finalizado con éxito</h2>
+                <p class="pantalla-finalizada-text">Dale al botón descargar para obtener el archivo PDF que debes subir al cloud campus, tienes 5 minutos.</p>
+                <button id="btnDescargarFinal" class="btn-descargar-final">
                     Descargar Resumen PDF
                 </button>
             </div>
