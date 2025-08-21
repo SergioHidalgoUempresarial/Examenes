@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -76,12 +76,12 @@ function restarIntentoYGuardar() {
     let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || { intentosRestantes: MAX_ATTEMPTS };
     data.intentosRestantes = Math.max(0, (data.intentosRestantes ?? MAX_ATTEMPTS) - 1);
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
-    
+
     // Sincronizar con examData para el PDF
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
     examData.intentosRestantes = data.intentosRestantes;
     localStorage.setItem("examData", JSON.stringify(examData));
-    
+
     intentoYaRestado = true;
 }
 
@@ -403,7 +403,7 @@ window.onload = function () {
     mostrarIntentosRestantes();
     actualizarAccesoPorIntentos();
     controlarAccesoPorIntentos();
-    
+
     // Sincronizar intentos con examData
     const intentosActuales = obtenerIntentosRestantes();
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
@@ -526,7 +526,7 @@ window.addEventListener("DOMContentLoaded", function () {
             indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
             mostrarPreguntaDesarrollo(indiceDesarrollo);
             cargarPanelLateralDesarrollo();
-            
+
 
         } else {
             document.getElementById("uniqueSelection").style.display = "block";
@@ -534,7 +534,7 @@ window.addEventListener("DOMContentLoaded", function () {
             document.getElementById("practice").style.display = "none";
             initUniqueSelection(); //Para que cargue
             renderProgressBar();
-            
+
 
         }
     } else {
@@ -590,7 +590,7 @@ function detectDevTools() {
     const threshold = 160;
     const widthThreshold = window.outerWidth - window.innerWidth > threshold;
     const heightThreshold = window.outerHeight - window.innerHeight > threshold;
-    
+
     if (widthThreshold || heightThreshold) {
         if (!devToolsDetected) {
             devToolsDetected = true;
@@ -607,7 +607,7 @@ window.addEventListener('load', detectDevTools);
 window.addEventListener('resize', detectDevTools);
 
 // Detección de cambio de pestaña
-document.addEventListener('visibilitychange', function() {
+document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
         const examData = JSON.parse(localStorage.getItem("examData")) || {};
         examData.tabSwitched = true;
@@ -683,7 +683,7 @@ function validateAccess() {
                 // document.getElementById("nav-bar").style.display = "block";
                 document.getElementById("begin-timer").style.display = "block";
                 document.getElementById("name-section").style.display = "block";
-                
+
                 // Mostrar mensaje de bienvenida al exámen
                 setTimeout(() => {
                     Swal.fire({
@@ -2366,7 +2366,7 @@ const crucigramaData = {
         { word: "TROYANOS", clue: "Se disfrazan de software legítimo para engañar a los usuarios y dar acceso a atacantes.", row: 6, col: 7, direction: "vertical" },
         { word: "RANSOMWARE", clue: "Secuestra datos o sistemas, los bloquea y exige un rescate para liberarlos y restaurar el acceso.", row: 1, col: 9, direction: "vertical" },
         { word: "ADWARE", clue: "Muestra anuncios no deseados y recopila datos de navegación, para el marketing malicioso.", row: 8, col: 11, direction: "vertical" },
-        { word: "SEGURIDAD", clue: "Conjunto de medidas y técnicas para proteger sistemas, redes y datos de amenazas digitales.", row: 2, col: 13, direction: "vertical" },        
+        { word: "SEGURIDAD", clue: "Conjunto de medidas y técnicas para proteger sistemas, redes y datos de amenazas digitales.", row: 2, col: 13, direction: "vertical" },
     ],
     gridSize: 15
 };
@@ -2582,7 +2582,7 @@ function selectPareoItem(element) {
     if (element.classList.contains('matched')) {
         const elementIndex = element.dataset.index;
         const elementType = element.dataset.type;
-        
+
         // Encontrar y deshacer el emparejamiento
         if (elementType === 'palabra') {
             const defIndex = pareoMatches[elementIndex];
@@ -2600,7 +2600,7 @@ function selectPareoItem(element) {
                 delete pareoMatches[palabraIndex];
             }
         }
-        
+
         element.classList.remove('matched');
         savePracticeData();
         return;
@@ -2690,7 +2690,7 @@ function initCrucigrama() {
         const input = document.getElementById(cellId);
         if (input) input.value = value;
     });
-    
+
     // Capturar palabras completas al cargar
     capturarPalabrasCompletas();
 }
@@ -2726,7 +2726,7 @@ function saveCrucigramaAnswer(cellId, value) {
 
 function capturarPalabrasCompletas() {
     const palabrasCompletas = {};
-    
+
     crucigramaData.words.forEach((wordData, index) => {
         let palabra = '';
         for (let i = 0; i < wordData.word.length; i++) {
@@ -2738,7 +2738,7 @@ function capturarPalabrasCompletas() {
             }
             palabra += crucigramaAnswers[cellId] || '';
         }
-        
+
         const tipo = wordData.direction === 'horizontal' ? 'H' : 'V';
         const numero = crucigramaData.words.filter(w => w.direction === wordData.direction).indexOf(wordData) + 1;
         palabrasCompletas[`${tipo}${numero}`] = {
@@ -2748,12 +2748,12 @@ function capturarPalabrasCompletas() {
             pista: wordData.clue
         };
     });
-    
+
     // Guardar las palabras completas en practiceData
     const practiceData = JSON.parse(localStorage.getItem("practiceData")) || {};
     practiceData.crucigramaPalabras = palabrasCompletas;
     localStorage.setItem("practiceData", JSON.stringify(practiceData));
-    
+
     // También guardar en examData
     let examData = JSON.parse(localStorage.getItem("examData")) || {};
     if (!examData.respuestasPractica) examData.respuestasPractica = {};
@@ -3072,17 +3072,17 @@ function restoreFoundWordsInGrid() {
         const wordPosition = sopaData.wordPositions.find(pos => pos.word === foundWord);
         if (wordPosition) {
             const { row, col, direction, word } = wordPosition;
-            
+
             for (let i = 0; i < word.length; i++) {
                 let cellRow = row;
                 let cellCol = col;
-                
+
                 if (direction === 'horizontal') {
                     cellCol = col + i;
                 } else {
                     cellRow = row + i;
                 }
-                
+
                 const cell = document.getElementById(`sopa-${cellRow}-${cellCol}`);
                 if (cell) {
                     cell.classList.add('found');
@@ -3112,43 +3112,33 @@ function nextPracticeSection() {
                 showPracticeSection(currentPracticeSection + 1);
             }
         });
+    } else {
+        finalizarPractica();
     }
 }
 
-// Función para finalizar la práctica
+
+function mostrarPantallaFinalizada() {
+    document.getElementById('practice').style.display = 'none';
+    document.getElementById('mostrarPantallaFinalizada').style.display = 'block';
+}
+
 function finalizarPractica() {
     Swal.fire({
-        title: '¡Práctica finalizada!',
-        text: 'Has completado todas las actividades prácticas. Ahora puedes descargar tu examen completo.',
-        icon: 'success',
-        confirmButtonText: 'Continuar'
-    }).then(() => {
-        // Mostrar botón de descarga
-        const btnFinalizar = document.querySelector('.practice-btn[onclick="finalizarPractica()"]');
-        if (btnFinalizar) {
-            btnFinalizar.style.display = 'none';
-            const btnDescargar = document.createElement('button');
-            btnDescargar.className = 'practice-btn';
-            btnDescargar.style.backgroundColor = '#19A06E';
-            btnDescargar.style.marginTop = '15px';
-            btnDescargar.textContent = 'Descargar Examen Completo (PDF)';
-            btnDescargar.onclick = () => {
-                document.getElementById('btnGenerarPDF').click();
-                // Desactivar todo después de descargar
-                setTimeout(() => {
-                    document.querySelectorAll('input, button, textarea').forEach(el => {
-                        if (el.id !== 'btnGenerarPDF' && !el.closest('#nav')) {
-                            el.disabled = true;
-                        }
-                    });
-                    document.querySelectorAll('.pareo-item, .sopa-cell, .crucigrama-cell input').forEach(el => {
-                        el.style.pointerEvents = 'none';
-                    });
-                    btnDescargar.textContent = 'Examen Finalizado - Solo Descarga Disponible';
-                    btnDescargar.onclick = () => document.getElementById('btnGenerarPDF').click();
-                }, 1000);
-            };
-            btnFinalizar.parentNode.appendChild(btnDescargar);
+        title: '¿Deseas finalizar la práctica?',
+        text: 'Ya has completado todas las actividades prácticas. Ahora puedes descargar tu examen completo si das a continuar.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, continuar',
+        confirmButtonColor: '#004080',
+        cancelButtonColor: '#d33',
+        customClass: {
+            popup: 'swal-wide-low'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.setItem("practicaFinalizada", "true");
+            mostrarPantallaFinalizada();
         }
     });
 }
@@ -3157,7 +3147,7 @@ function finalizarPractica() {
 function savePracticeData() {
     // Obtener datos existentes para preservar crucigramaPalabras
     const existingData = JSON.parse(localStorage.getItem("practiceData")) || {};
-    
+
     const practiceData = {
         currentSection: currentPracticeSection,
         pareoMatches,

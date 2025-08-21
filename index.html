@@ -87,9 +87,12 @@
                 <li>Deberá subir el archivo descargado(pdf) en un máximo de 5 minutos, en el espacio designado para esta
                     actividad
                     en el Cloud Campus de la Universidad Empresarial.</li>
-                <li><strong>No se aceptarán entregas fuera del tiempo asignado ni por medios alternos al sistema oficial.</strong></li>
-                <li>El incumplimiento de cualquiera de estas reglas será considerado una falta grave y tendrá consecuencias conforme a la normativa institucional.</li>
-                <li>Este examen se rige por las políticas y reglamentos establecidos por la Universidad Empresarial.</li>
+                <li><strong>No se aceptarán entregas fuera del tiempo asignado ni por medios alternos al sistema
+                        oficial.</strong></li>
+                <li>El incumplimiento de cualquiera de estas reglas será considerado una falta grave y tendrá
+                    consecuencias conforme a la normativa institucional.</li>
+                <li>Este examen se rige por las políticas y reglamentos establecidos por la Universidad Empresarial.
+                </li>
                 <li>Una vez aceptadas estas clausulas, no podrá revertir esta opción</li>
 
             </ul>
@@ -208,16 +211,22 @@
                         <h2>3.3 Bienvenido al reto de conocimientos en Ciberseguridad</h2>
                     </div>
                     <div class="instructions-card">
-                        <p class="intro-text">A continuación, se te presentarán definiciones relacionadas con conceptos clave del área. Tu tarea consiste en:</p>
+                        <p class="intro-text">A continuación, se te presentarán definiciones relacionadas con conceptos
+                            clave del área. Tu tarea consiste en:</p>
                         <ul class="task-list">
                             <li>Identificar las palabras clave que corresponden a cada definición.</li>
                             <li>Localizar estas palabras en la sopa de letras que se te proporcionará.</li>
-                            <li>Se deben encontrar las palabras y tomarlas desde la primera letra y la última para que se complete la palabra.</li>
-                            <li class="example-item">Las palabras deben completarse en los espacios indicados mediante rayas bajas por ejemplo: 
+                            <li>Se deben encontrar las palabras y tomarlas desde la primera letra y la última para que
+                                se complete la palabra.</li>
+                            <li class="example-item">Las palabras deben completarse en los espacios indicados mediante
+                                rayas bajas por ejemplo:
                                 <div class="example-box">
-                                    <strong>CIBERSEGURIDAD</strong> - combinación de métodos, procesos, herramientas y comportamientos que protegen los sistemas informáticos, las redes y los datos de los ciberataques y del acceso no autorizado: 
+                                    <strong>CIBERSEGURIDAD</strong> - combinación de métodos, procesos, herramientas y
+                                    comportamientos que protegen los sistemas informáticos, las redes y los datos de los
+                                    ciberataques y del acceso no autorizado:
                                     <span class="word-spaces">_ _ _ _ _ _ _ _ _ _ _ _ _ _</span>
-                                    <p>Notamos que la cantidad de rayas bajas son la cantidad de letras que tiene la palabra Ciberseguridad.</p>
+                                    <p>Notamos que la cantidad de rayas bajas son la cantidad de letras que tiene la
+                                        palabra Ciberseguridad.</p>
                                 </div>
                             </li>
                         </ul>
@@ -232,6 +241,32 @@
             </div>
         </div>
     </section>
+
+    <section id="mostrarPantallaFinalizada" class="mostrarPantallaFinalizada" style="display: none;">
+        <div class="section-container">
+            <div style="text-align: center; padding: 40px; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); margin-top: 150px;">
+                <h2 style="color: #19A06E; font-size: 2em; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);">Examen Finalizado con éxito</h2>
+                <p style="font-size: 1.2em; color: #2c3e50; margin-bottom: 30px; line-height: 1.6;">Dale al botón descargar para obtener el archivo PDF que debes subir al cloud campus, tienes 5 minutos.</p>
+                <button id="btnDescargarFinal" onclick="document.getElementById('btnGenerarPDF').click()" style="
+                    background: linear-gradient(135deg, #19A06E 0%, #158a5a 100%);
+                    color: white;
+                    border: none;
+                    padding: 15px 30px;
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    box-shadow: 0 6px 20px rgba(25, 160, 110, 0.3);
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(25, 160, 110, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 20px rgba(25, 160, 110, 0.3)'">
+                    Descargar Resumen PDF
+                </button>
+            </div>
+        </div>
+    </section>
+
     <button id="admin-clear" style="display: none; position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
         🧹 Limpiar almacenamiento
     </button>
