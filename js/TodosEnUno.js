@@ -420,6 +420,29 @@ window.onload = function () {
     setupEventListeners();
 };
 
+// FUNCIÓN PARA SCROLL HACIA ARRIBA
+function scrollToTop() {
+    setTimeout(() => {
+        // Múltiples métodos para máxima compatibilidad
+        window.scrollTo({ top: 0 });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        // Para dispositivos móviles iOS/Android
+        const scrollableElement = document.scrollingElement || document.documentElement;
+        scrollableElement.scrollTop = 0;
+
+        // Método adicional para móviles
+        if (window.pageYOffset !== undefined) {
+            try {
+                window.scroll(0, 0);
+            } catch (e) {
+                // Fallback silencioso
+            }
+        }
+    }, 150);
+}
+
 // CONFIGURACIÓN DE EVENT LISTENERS
 function setupEventListeners() {
     // Botón ingresar
@@ -443,35 +466,55 @@ function setupEventListeners() {
     // Botón siguiente selección única
     const nextBtn = document.getElementById("nextBtn");
     if (nextBtn) {
-        nextBtn.addEventListener("click", nextQuestion);
+        nextBtn.addEventListener("click", function () {
+            nextQuestion();
+            scrollToTop();
+            window.scrollTo(top, 0); // Asegurar que se suba al inicio
+        });
     }
 
     // Botón siguiente desarrollo
     const nextBtnDesarrollo = document.getElementById("nextBtnDesarrollo");
     if (nextBtnDesarrollo) {
-        nextBtnDesarrollo.addEventListener("click", nextQuestion);
+        nextBtnDesarrollo.addEventListener("click", function () {
+            nextQuestion();
+            scrollToTop();
+            window.scrollTo(top, 0);
+        });
     }
 
     // Botones práctica
     const btnSiguientePractica1 = document.getElementById("btnSiguientePractica1");
     if (btnSiguientePractica1) {
-        btnSiguientePractica1.addEventListener("click", nextPracticeSection);
+        btnSiguientePractica1.addEventListener("click", function () {
+            nextPracticeSection();
+            scrollToTop();
+            window.scrollTo(top, 0);
+        });
     }
 
     const btnSiguientePractica2 = document.getElementById("btnSiguientePractica2");
     if (btnSiguientePractica2) {
-        btnSiguientePractica2.addEventListener("click", nextPracticeSection);
+        btnSiguientePractica2.addEventListener("click", function () {
+            nextPracticeSection();
+            scrollToTop();
+            window.scrollTo(top, 0);
+        });
     }
 
     const btnFinalizarPractica = document.getElementById("btnFinalizarPractica");
     if (btnFinalizarPractica) {
-        btnFinalizarPractica.addEventListener("click", finalizarPractica);
+        btnFinalizarPractica.addEventListener("click", function () {
+            finalizarPractica();
+            scrollToTop();
+            window.scrollTo(top, 0);
+        });
     }
 
     // Botón descargar final
     const btnDescargarFinal = document.getElementById("btnDescargarFinal");
     if (btnDescargarFinal) {
-        btnDescargarFinal.addEventListener("click", function() {
+        btnDescargarFinal.addEventListener("click", function () {
             document.getElementById('btnGenerarPDF').click();
         });
     }
@@ -1274,6 +1317,17 @@ function mostrarPreguntaDesarrollo(index) {
                 localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el nuevo índice
                 mostrarPreguntaDesarrollo(indiceDesarrollo);
                 cargarPanelLateralDesarrollo(); // Actualiza el panel lateral
+                
+                // Scroll hacia arriba inmediato para móviles
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+                // Timeout adicional para asegurar en móviles
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                }, 100);
             }
         }
     });
@@ -2630,6 +2684,7 @@ function updatePracticeProgress() {
 
 // Inicializar pareo
 function initPareo() {
+
     const container = document.getElementById('pareo-container');
     container.innerHTML = `
         <div class="pareo-column">
@@ -2655,6 +2710,8 @@ function initPareo() {
             defEl.classList.add('matched');
         }
     });
+    scrollToTop();
+    window.scrollTo(top, 0);
 }
 
 let selectedPareoItem = null;
@@ -2712,6 +2769,7 @@ function selectPareoItem(element) {
 
 // Inicializar crucigrama
 function initCrucigrama() {
+    
     const container = document.getElementById('crucigrama-container');
     const gridSize = crucigramaData.gridSize;
 
@@ -2774,6 +2832,8 @@ function initCrucigrama() {
     });
 
     // Capturar palabras completas al cargar
+    scrollToTop();
+    window.scrollTo(top, 0);
     capturarPalabrasCompletas();
 }
 
@@ -3010,6 +3070,7 @@ function isPositionInWord(row, col, word) {
 
 // Inicializar sopa de letras
 function initSopaLetras() {
+    
     const container = document.getElementById('sopa-container');
     const gridSize = sopaData.grid.length;
     let grid = '';
@@ -3036,6 +3097,8 @@ function initSopaLetras() {
             <div class="word-spaces">${encontrada ? item.word : guiones}</div>
         </div>`;
     }).join('');
+    scrollToTop();
+    window.scrollTo(top, 0);
 }
 
 let sopaSelection = [];
@@ -3201,6 +3264,8 @@ function nextPracticeSection() {
 
 
 function mostrarPantallaFinalizada() {
+    scrollToTop();
+    window.scrollTo(top, 0);
     localStorage.setItem("pantallaFinalizadaActiva", "true");
     document.getElementById('practice').style.display = 'none';
     document.getElementById('mostrarPantallaFinalizada').style.display = 'block';
