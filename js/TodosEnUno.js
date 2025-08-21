@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "3"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -1414,8 +1414,6 @@ document.addEventListener("DOMContentLoaded", function () {
         idInput.disabled = true;
         validarBtn.disabled = true;
         validarBtn.style.display = "none";
-        document.getElementById("uniqueSelection").style.display = "block";
-
         checkIfDevelopmentShouldShow();
 
         Swal.fire({
@@ -1425,6 +1423,9 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmButtonText: "Comenzar Parte 1",
             confirmButtonColor: '#004080'
         }).then(() => {
+            // Ocultar sección de datos del estudiante
+            document.getElementById("name-section").style.display = "none";
+            document.getElementById("uniqueSelection").style.display = "block";
             // Asegurar que se inicialice la selección única y se muestre el mensaje
             initUniqueSelection();
             renderProgressBar();
