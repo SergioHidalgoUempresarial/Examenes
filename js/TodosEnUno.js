@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -33,6 +33,7 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
         localStorage.removeItem("practiceData");
         localStorage.removeItem("questionTimes");
         localStorage.removeItem("paginaRecargada"); // Remover el flag de recarga
+        localStorage.removeItem("pantallaFinalizadaActiva"); // Remover estado de pantalla finalizada
         localStorage.setItem("codigoCambiado", "true"); // Marcar que el código cambió
     }
     // Si el código cambió, inicia objeto vacío
@@ -194,6 +195,10 @@ function manejarSalidaExamen(tipo, evento = null) {
 }
 
 window.addEventListener("beforeunload", function (e) {
+    // Si está en pantalla finalizada, no manejar como salida de examen
+    if (localStorage.getItem("pantallaFinalizadaActiva") === "true") {
+        return;
+    }
     // Marcar que se va a recargar para detectarlo después
     localStorage.setItem("paginaRecargada", "true");
     manejarSalidaExamen("recarga", e);
@@ -368,6 +373,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 let usedCount = parseInt(localStorage.getItem("clearButtonUses") || "0", 10);
                 usedCount++;
                 localStorage.setItem("clearButtonUses", usedCount.toString());
+                localStorage.removeItem("pantallaFinalizadaActiva"); // Asegurar que se limpia
                 adminBtn.style.display = "none";
 
                 Swal.fire({
@@ -485,6 +491,17 @@ window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("access-section").style.display = "block";
         document.getElementById("uniqueSelection").style.display = "none";
         document.getElementById("essay").style.display = "none";
+        return;
+    }
+
+    // Verificar si está en pantalla finalizada
+    if (localStorage.getItem("pantallaFinalizadaActiva") === "true") {
+        document.getElementById("access-section").style.display = "none";
+        document.getElementById("name-section").style.display = "none";
+        document.getElementById("uniqueSelection").style.display = "none";
+        document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "none";
+        document.getElementById("mostrarPantallaFinalizada").style.display = "block";
         return;
     }
 
@@ -3119,6 +3136,7 @@ function nextPracticeSection() {
 
 
 function mostrarPantallaFinalizada() {
+    localStorage.setItem("pantallaFinalizadaActiva", "true");
     document.getElementById('practice').style.display = 'none';
     document.getElementById('mostrarPantallaFinalizada').style.display = 'block';
 }
