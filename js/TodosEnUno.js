@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -2589,13 +2589,15 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
         y = doc.lastAutoTable.finalY + 10;
     }
 
-    // Desarrollo
+    // Desarrollo - incluir las preguntas
+    const preguntasDesarrolloSeleccionadas = JSON.parse(localStorage.getItem("preguntasDesarrolloSeleccionadas")) || [];
     const datosDesarrollo = Object.entries(respuestasDesarrollo).map(([key, value], index) => {
         const tiempo = tiemposGuardados.desarrollo?.[index] ? formatTime(tiemposGuardados.desarrollo[index]) : "N/A";
+        const pregunta = preguntasDesarrolloSeleccionadas[index] || `Pregunta ${index + 1}`;
         // Convertir HTML a texto plano para el PDF
         const textoPlano = value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
         return [
-            `Pregunta ${index + 1}`,
+            pregunta,
             textoPlano || 'Sin respuesta',
             tiempo
         ];
@@ -2608,6 +2610,11 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
             startY: y,
             head: [["Pregunta", "Respuesta", "Tiempo"]],
             body: datosDesarrollo,
+            columnStyles: {
+                0: { cellWidth: 80 },
+                1: { cellWidth: 80 },
+                2: { cellWidth: 20 }
+            }
         });
         y = doc.lastAutoTable.finalY + 10;
     }
