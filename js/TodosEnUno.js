@@ -2591,34 +2591,80 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
 
     // Desarrollo - incluir las preguntas
     const preguntasDesarrolloSeleccionadas = JSON.parse(localStorage.getItem("preguntasDesarrolloSeleccionadas")) || [];
-    const datosDesarrollo = Object.entries(respuestasDesarrollo).map(([key, value], index) => {
-        const tiempo = tiemposGuardados.desarrollo?.[index] ? formatTime(tiemposGuardados.desarrollo[index]) : "N/A";
-        const pregunta = preguntasDesarrolloSeleccionadas[index] || `Pregunta ${index + 1}`;
-        // Convertir HTML a texto plano para el PDF y decodificar entidades HTML
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = value;
-        const textoPlano = tempDiv.textContent || tempDiv.innerText || '';
-        return [
-            pregunta,
-            textoPlano || 'Sin respuesta',
-            tiempo
-        ];
-    });
-
-    if (datosDesarrollo.length > 0) {
+    
+    if (Object.keys(respuestasDesarrollo).length > 0) {
         doc.text("Respuestas de desarrollo:", 20, y);
-        y += 5;
-        doc.autoTable({
-            startY: y,
-            head: [["Pregunta", "Respuesta", "Tiempo"]],
-            body: datosDesarrollo,
-            columnStyles: {
-                0: { cellWidth: 80 },
-                1: { cellWidth: 80 },
-                2: { cellWidth: 20 }
+        y += 10;
+        
+        Object.entries(respuestasDesarrollo).forEach(([key, value], index) => {
+            const tiempo = tiemposGuardados.desarrollo?.[index] ? formatTime(tiemposGuardados.desarrollo[index]) : "N/A";
+            const pregunta = preguntasDesarrolloSeleccionadas[index] || `Pregunta ${index + 1}`;
+            
+            // Mostrar pregunta
+            doc.setFontSize(12);
+            doc.text(`${index + 1}. ${pregunta}`, 20, y);
+            y += 8;
+            doc.text(`Tiempo: ${tiempo}`, 20, y);
+            y += 8;
+            
+            // Procesar HTML para extraer tablas
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = value;
+            const tables = tempDiv.querySelectorAll('table');
+            
+            if (tables.length > 0) {
+                // Procesar cada tabla
+                tables.forEach((table, tableIndex) => {
+                    const rows = table.querySelectorAll('tr');
+                    const tableData = [];
+                    let headers = [];
+                    
+                    rows.forEach((row, rowIndex) => {
+                        const cells = row.querySelectorAll('td, th');
+                        const cellTexts = Array.from(cells).map(cell => cell.textContent.trim());
+                        
+                        if (rowIndex === 0 && row.querySelectorAll('th').length > 0) {
+                            headers = cellTexts;
+                        } else {
+                            tableData.push(cellTexts);
+                        }
+                    });
+                    
+                    // Agregar tabla al PDF
+                    doc.autoTable({
+                        startY: y,
+                        head: headers.length > 0 ? [headers] : undefined,
+                        body: tableData,
+                        margin: { left: 20 },
+                        styles: { fontSize: 10 },
+                        headStyles: { fillColor: [200, 200, 200] }
+                    });
+                    y = doc.lastAutoTable.finalY + 5;
+                });
+                
+                // Mostrar texto después de las tablas
+                tables.forEach(table => table.remove());
+                const remainingText = tempDiv.textContent || tempDiv.innerText || '';
+                if (remainingText.trim()) {
+                    const lines = doc.splitTextToSize(remainingText.trim(), 170);
+                    doc.text(lines, 20, y);
+                    y += lines.length * 5;
+                }
+            } else {
+                // Si no hay tablas, mostrar texto normal
+                const textoPlano = tempDiv.textContent || tempDiv.innerText || 'Sin respuesta';
+                const lines = doc.splitTextToSize(textoPlano, 170);
+                doc.text(lines, 20, y);
+                y += lines.length * 5;
+            }
+            
+            y += 10;
+            
+            if (y > 250) {
+                doc.addPage();
+                y = 20;
             }
         });
-        y = doc.lastAutoTable.finalY + 10;
     }
 
     // Práctica
