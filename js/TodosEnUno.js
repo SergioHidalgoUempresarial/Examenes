@@ -150,7 +150,7 @@ function actualizarAccesoPorIntentos() {
         accessSection.innerHTML = `
             <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
                 botón azul, deben aceptarlas!</h2>
-            <label for="accessInput">Ingrese el código de acceso generado por el docente:</label>
+            <label for="accessInput">Ingrese el código de acceso generado y compartido por el docente del curso:</label>
             <input type="password" id="accessInput" placeholder="Código de acceso" />
             <button onclick="validateAccess()">Ingresar</button>
             <p id="accessError" style="color:red; display:none; margin-top:10px "><Strong>Código incorrecto. Intente de nuevo.</Strong></p>
@@ -690,7 +690,7 @@ function mostrarInstruccionesImportantes() {
         <li>No recargue la página</li>
         <li>No cambie de pestaña o ventana</li>
         <li>Evite cerrar el navegador</li>
-        <li>El siguiente código debe memorizarlo o apuntarlo, es para iniciar su exámen: <strong>${ACCESS_CODE}</strong> </li>
+        <li>El código de acceso debe consultarlo al docente del curso, es para iniciar su exámen</li>
       </ul>
       <br>
       <b>¿Esta de acuerdo?</b>
@@ -727,8 +727,6 @@ function mostrarInstruccionesImportantes() {
     });
 }
 
-//Mostrar el código de acceso en las instrucciones
-document.getElementById('code-display').textContent = ACCESS_CODE;
 
 //Para que no lo vuelva a pedir el código a menos que sea necesario
 window.addEventListener("DOMContentLoaded", function () {
