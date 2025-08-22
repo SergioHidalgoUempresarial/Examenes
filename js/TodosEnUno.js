@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -103,7 +103,7 @@ function verificarIntentos() {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -207,7 +207,7 @@ function manejarSalidaExamen(tipo, evento = null) {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -231,7 +231,7 @@ function manejarSalidaExamen(tipo, evento = null) {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -288,7 +288,7 @@ function detectarDevtoolsConTiempo() {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -337,7 +337,7 @@ document.addEventListener("click", function (e) {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -444,7 +444,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         htmlContainer: 'swal-instrucciones-text'
                     },
                     didOpen: () => {
-                        const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                        const popup = document.querySelector('swal-instrucciones');
                         if (popup) {
                             popup.scrollTop = 0; // Forzar scroll arriba
                         }
@@ -472,7 +472,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 cancelButton: 'swal-instrucciones-cancel',
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -508,7 +508,7 @@ window.addEventListener("DOMContentLoaded", () => {
                         confirmButton: 'swal-instrucciones-confirm',
                     },
                     didOpen: () => {
-                        const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                        const popup = document.querySelector('swal-instrucciones');
                         if (popup) {
                             popup.scrollTop = 0; // Forzar scroll arriba
                         }
@@ -544,7 +544,7 @@ window.onload = function () {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -712,7 +712,7 @@ function mostrarInstruccionesImportantes() {
             image: 'swal-instrucciones-image'
         },
         didOpen: () => {
-            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            const popup = document.querySelector('swal-instrucciones');
             if (popup) {
                 popup.scrollTop = 0; // Forzar scroll arriba
             }
@@ -926,7 +926,7 @@ function validateAccess() {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -972,7 +972,7 @@ function validateAccess() {
                 image: 'swal-instrucciones-image'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -1008,7 +1008,7 @@ function validateAccess() {
                             htmlContainer: 'swal-instrucciones-text'
                         },
                         didOpen: () => {
-                            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                            const popup = document.querySelector('swal-instrucciones');
                             if (popup) {
                                 popup.scrollTop = 0; // Forzar scroll arriba
                             }
@@ -1079,7 +1079,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -1113,7 +1113,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             htmlContainer: 'swal-instrucciones-text'
                         },
                         didOpen: () => {
-                            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                            const popup = document.querySelector('swal-instrucciones');
                             if (popup) {
                                 popup.scrollTop = 0; // Forzar scroll arriba
                             }
@@ -1157,7 +1157,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -1237,7 +1237,7 @@ function finishExam() {
             htmlContainer: 'swal-instrucciones-text'
         },
         didOpen: () => {
-            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            const popup = document.querySelector('swal-instrucciones');
             if (popup) {
                 popup.scrollTop = 0; // Forzar scroll arriba
             }
@@ -1332,7 +1332,7 @@ function initDevelopmentPart() {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -1361,7 +1361,7 @@ function mostrarPreguntaDesarrollo(index) {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -1517,7 +1517,7 @@ function mostrarPreguntaDesarrollo(index) {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -1677,7 +1677,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -1702,7 +1702,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -1738,7 +1738,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -2077,7 +2077,7 @@ function loadQuestion(index) {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -2197,7 +2197,7 @@ function nextQuestion() {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -2219,7 +2219,7 @@ function nextQuestion() {
                     htmlContainer: 'swal-instrucciones-text'
                 },
                 didOpen: () => {
-                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    const popup = document.querySelector('swal-instrucciones');
                     if (popup) {
                         popup.scrollTop = 0; // Forzar scroll arriba
                     }
@@ -2358,7 +2358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>No recargue la página</li>
         <li>No cambie de pestaña o ventana</li>
         <li>Evite cerrar el navegador</li>
-        <li>El código para empezar a realizar el exámen es: <strong>${ACCESS_CODE}</strong> </li>
+        <li>El código para empezar a realizar el exámen es: <strong>${ACCESS_CODE}</strong></li>
       </ul>
       <br>
       <b>¿Esta de acuerdo?</b>
@@ -2380,7 +2380,7 @@ document.addEventListener('DOMContentLoaded', () => {
             image: 'swal-instrucciones-image'
         },
         didOpen: () => {
-            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            const popup = document.querySelector('swal-instrucciones');
             if (popup) {
                 popup.scrollTop = 0; // Forzar scroll arriba
             }
@@ -3480,7 +3480,7 @@ function nextPracticeSection() {
                 htmlContainer: 'swal-instrucciones-text'
             },
             didOpen: () => {
-                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                const popup = document.querySelector('swal-instrucciones');
                 if (popup) {
                     popup.scrollTop = 0; // Forzar scroll arriba
                 }
@@ -3521,7 +3521,7 @@ function finalizarPractica() {
             htmlContainer: 'swal-instrucciones-text'
         },
         didOpen: () => {
-            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            const popup = document.querySelector('swal-instrucciones');
             if (popup) {
                 popup.scrollTop = 0; // Forzar scroll arriba
             }
@@ -3577,7 +3577,7 @@ function finalizarDesarrollo() {
             htmlContainer: 'swal-instrucciones-text'
         },
         didOpen: () => {
-            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            const popup = document.querySelector('swal-instrucciones');
             if (popup) {
                 popup.scrollTop = 0; // Forzar scroll arriba
             }
