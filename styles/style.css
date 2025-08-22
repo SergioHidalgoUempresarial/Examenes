@@ -769,11 +769,11 @@ label[for="agreeCheck"] {
 }
 
 #btnFinalizarDesarrollo {
-  background-color: #19A06E;
+  background-color: #004080;
 }
 
 #btnFinalizarDesarrollo:hover {
-  background-color: #158a5a;
+  background-color: #0066cc;
 }
 
 .essay-question-button {
@@ -1485,7 +1485,7 @@ label[for="agreeCheck"] {
 
 button {
   padding: 10px 20px;
-  background: #0066cc;
+  background: #004080;
   color: white;
   border: none;
   border-radius: 5px;
@@ -1495,8 +1495,9 @@ button {
 }
 
 button:hover {
-  background: #004d99;
+  background: #0066cc;
 }
+
 
 
 

@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "123"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -51,8 +51,6 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
 })();
 ///////////////////////////////////////
 
-
-
 //////////////////////////////////
 //Main_Intentos.js
 /////////////////////////////////
@@ -93,6 +91,10 @@ function verificarIntentos() {
             icon: 'error',
             title: 'Exámen bloqueado',
             text: 'Has agotado todos tus intentos.',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => window.location.href = "bloqueado.html");
     }
 }
@@ -181,7 +183,10 @@ function manejarSalidaExamen(tipo, evento = null) {
             icon: 'warning',
             title: 'Atención',
             text: 'Has salido del exámen. Perdiste un intento.',
-            confirmButtonText: 'Entendido'
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => location.reload());
     }
 
@@ -190,6 +195,10 @@ function manejarSalidaExamen(tipo, evento = null) {
             icon: 'error',
             title: 'Acción no permitida',
             text: 'Se detectó manipulación (DevTools). Has perdido un intento.',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => location.reload());
     }
 }
@@ -232,6 +241,7 @@ function detectarDevtoolsConTiempo() {
                 <p><strong>Se perderá un intento</strong> por esta acción.</p>
             `,
             confirmButtonText: 'Entendido',
+            confirmButtonColor: '#004080',
             allowOutsideClick: false,
             allowEscapeKey: false
         }).then(() => {
@@ -267,7 +277,10 @@ document.addEventListener("click", function (e) {
             icon: 'info',
             title: 'Instrucciones ocultas',
             text: 'Se han ocultado automáticamente al interactuar fuera.',
-            confirmButtonText: 'Entendido'
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         });
         instructions.style.display = "none";
         btn.innerText = "Ver Instrucciones";
@@ -297,8 +310,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: 'Aceptaste las instrucciones. No se puede deshacer.',
                 confirmButtonText: 'Aceptar',
                 confirmButtonColor: '#004080',
-                allowOutsideClick: true,
-                allowEscapeKey: true
+                allowOutsideClick: false,
+                allowEscapeKey: false
             }).then((result) => {
                 if (result.isConfirmed || result.dismiss) {
                     checkbox.disabled = true;
@@ -319,7 +332,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
 
 // BOTÓN SECRETO PARA ADMINISTRADOR
 window.addEventListener("DOMContentLoaded", () => {
@@ -348,6 +360,10 @@ window.addEventListener("DOMContentLoaded", () => {
                     icon: "info",
                     title: "Espera requerida",
                     text: "Este botón solo se puede usar cada 2 días.",
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#004080',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
                 });
                 return;
             }
@@ -360,6 +376,11 @@ window.addEventListener("DOMContentLoaded", () => {
             inputPlaceholder: "Contraseña",
             showCancelButton: true,
             confirmButtonText: "Borrar todo",
+            cancelButtonText: "Cancelar",
+            confirmButtonColor: '#004080',
+            cancelButtonColor: '#F8C21A',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             preConfirm: (password) => {
                 if (password !== ADMIN_PASSWORD) {
                     Swal.showValidationMessage("❌ Contraseña incorrecta");
@@ -380,12 +401,15 @@ window.addEventListener("DOMContentLoaded", () => {
                     icon: "success",
                     title: "Datos borrados",
                     text: "Todo el progreso del exámen fue eliminado.",
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#004080',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                 }).then(() => location.reload());
             }
         });
     });
 });
-
 
 // INICIALIZACIÓN
 window.onload = function () {
@@ -401,7 +425,8 @@ window.onload = function () {
             icon: 'warning',
             title: 'Página recargada',
             text: 'Has recargado la página. Perdiste un intento.',
-            confirmButtonText: 'Entendido'
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#004080'
         });
     }
 
@@ -539,11 +564,12 @@ function mostrarInstruccionesImportantes() {
     `,
         imageUrl: 'images/question.png',
         confirmButtonText: 'Sí estoy de acuerdo',
-        confirmButtonColor: '#0a691aff',
+        confirmButtonColor: '#004080',
         cancelButtonText: 'Cancelar',
-        cancelButtonColor: '#004080',
+        cancelButtonColor: '#F8C21A',
         showCancelButton: true,
         allowOutsideClick: false,
+        allowEscapeKey: false,
         customClass: {
             popup: 'swal-wide-low'
         }
@@ -556,6 +582,9 @@ function mostrarInstruccionesImportantes() {
         }
     });
 }
+
+//Mostrar el código de acceso en las instrucciones
+document.getElementById('code-display').textContent = ACCESS_CODE;
 
 //Para que no lo vuelva a pedir el código a menos que sea necesario
 window.addEventListener("DOMContentLoaded", function () {
@@ -646,16 +675,12 @@ window.addEventListener("DOMContentLoaded", function () {
             indiceDesarrollo = savedEssayIndex !== null ? parseInt(savedEssayIndex, 10) : 0;
             mostrarPreguntaDesarrollo(indiceDesarrollo);
             cargarPanelLateralDesarrollo();
-
-
         } else {
             document.getElementById("uniqueSelection").style.display = "block";
             document.getElementById("essay").style.display = "none";
             document.getElementById("practice").style.display = "none";
             initUniqueSelection(); //Para que cargue
             renderProgressBar();
-
-
         }
     } else {
         // Si no ha validado datos, muestra el acceso
@@ -667,9 +692,6 @@ window.addEventListener("DOMContentLoaded", function () {
     }
 });
 ///////////////////////////////////////
-
-
-
 
 
 //////////////////////////////////
@@ -688,8 +710,9 @@ document.addEventListener("keydown", function (e) {
         (e.ctrlKey && e.shiftKey && key === "i") ||   // DevTools
         (e.ctrlKey && key === "u") ||                 // Ver código fuente
         (e.ctrlKey && key === "s") ||                 // Guardar página
-        (e.ctrlKey && key === "p");                   // Imprimir
-
+        (e.ctrlKey && key === "p") ||                 // Imprimir 
+        (e.ctrlKey && key === "v") ||                 // Pegar     
+        (e.ctrlKey && key === "c");                   // Copiar
     if (bloqueado) {
         e.preventDefault();
         e.stopPropagation();
@@ -736,15 +759,6 @@ document.addEventListener('visibilitychange', function () {
 });
 ////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
 //////////////////////////////////
 //ValidarAcceso.js
 /////////////////////////////////
@@ -759,6 +773,8 @@ function validateAccess() {
             text: 'Por favor lea y acepte las instrucciones antes de comenzar el exámen.',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         });
         return; // Detiene la ejecución
     }
@@ -782,11 +798,12 @@ function validateAccess() {
                 `,
             imageUrl: 'images/BestWishes.png',
             confirmButtonText: 'Sí estoy de acuerdo',
-            confirmButtonColor: '#0a691aff',
+            confirmButtonColor: '#004080',
             cancelButtonText: 'Cancelar',
-            cancelButtonColor: '#004080',
+            cancelButtonColor: '#F8C21A',
             showCancelButton: true,
             allowOutsideClick: false,
+            allowEscapeKey: false,
             customClass: {
                 popup: 'swal-wide-low'
             }
@@ -811,10 +828,11 @@ function validateAccess() {
                         title: 'Bienvenido al Exámen',
                         text: 'Complete sus datos personales y luego podrá comenzar con la Parte 1: Selección Única.',
                         confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#004080'
+                        confirmButtonColor: '#004080',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
                     });
                 }, 500);
-
             } else if (result.isDismissed) {
                 // El usuario presionó cancelar o cerró el cuadro
                 window.location.href = "https://www.google.com";
@@ -829,13 +847,6 @@ function resetAccess() {
     console.log("Reset access function called");
 }
 ////////////////////////////////////////
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //VerInstrucciones.js
@@ -874,11 +885,11 @@ document.addEventListener("DOMContentLoaded", function () {
             Swal.fire({
                 icon: 'info',
                 title: 'Consentimiento registrado',
-                text: 'Usted ha aceptado las instrucciones del exámen. Esta acción no se puede deshacer.',
+                text: 'Usted va a aceptar las instrucciones del exámen. Esta acción no se puede deshacer.',
                 confirmButtonText: 'Aceptar',
                 confirmButtonColor: '#004080',
-                allowOutsideClick: true,
-                allowEscapeKey: true
+                allowOutsideClick: false,
+                allowEscapeKey: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     checkbox.checked = true;
@@ -896,10 +907,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     Swal.fire({
                         icon: 'warning',
                         title: 'Instrucciones no aceptadas',
-                        text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas.',
+                        text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas dando clic en el botón llamado: "Aceptar".',
                         confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#c0392b',
-                        allowOutsideClick: false
+                        confirmButtonColor: '#004080',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
                     });
                 }
             });
@@ -929,8 +941,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: 'Instrucciones no aceptadas',
                 text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas.',
                 confirmButtonText: 'Entendido',
-                confirmButtonColor: '#c0392b',
-                allowOutsideClick: false
+                confirmButtonColor: '#004080',
+                allowOutsideClick: false,
+                allowEscapeKey: false
             });
         }
     });
@@ -948,28 +961,11 @@ btnAcceptInstructions.addEventListener("click", () => {
 });
 /////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////////////////////
 //IniciarCuentaRegresiva.js
 /////////////////////////////////
 let timerInterval;
-
 function startTimer() {
-
     if (localStorage.getItem("examStarted") !== "true") {
         return;
     }
@@ -1012,24 +1008,15 @@ function finishExam() {
         icon: 'info',
         title: 'Exámen finalizado',
         text: 'Tu temporizador ha terminado.',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#004080',
+        allowOutsideClick: false,
+        allowEscapeKey: false
     }).then(() => {
         window.location.href = "resumen.html"; // O página de resumen
     });
 }
 ////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //MostrarFechaActual.js
@@ -1041,17 +1028,6 @@ const formattedDate = now.toLocaleDateString("es-CR", {
 });
 dateElement.textContent = `Fecha: ${formattedDate}`;
 ////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //PreguntasDesarrollo.js
@@ -1091,9 +1067,7 @@ function getRandomDevelopmentQuestions() {
 }
 
 let preguntasDesarrollo = [];
-
 let indiceDesarrollo = 0;
-
 function initDevelopmentPart() {
     loadQuestionTimes(); // Cargar tiempos guardados
 
@@ -1117,7 +1091,10 @@ function initDevelopmentPart() {
             title: "Parte de desarrollo finalizada",
             text: "Has respondido todas las preguntas abiertas. Se generará el resumen.",
             icon: "success",
-            confirmButtonText: "Generar resumen"
+            confirmButtonText: "Continuar a descargar resumen",
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => {
             window.location.href = "resumen.html"; // Cambia esto si usas otra ruta
         });
@@ -1133,7 +1110,8 @@ function mostrarPreguntaDesarrollo(index) {
             text: 'Una vez que avanza a la siguiente pregunta no podrá regresar a la anterior, deberá decidir con cuidado esta opción',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#004080',
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            allowEscapeKey: false
         });
         localStorage.setItem("developmentWarningShown", "true");
     }
@@ -1148,7 +1126,6 @@ function mostrarPreguntaDesarrollo(index) {
 
     // Iniciar tiempo para nueva pregunta
     questionStartTime = Date.now();
-
     const contenedor = document.getElementById("essay-container");
     const pregunta = preguntasDesarrollo[index];
 
@@ -1204,8 +1181,7 @@ function mostrarPreguntaDesarrollo(index) {
                 padding: 20px;
                 max-width: none;
                 background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            }
-            
+            }         
             p { margin-bottom: 14px; }
             
             h1, h2, h3 { 
@@ -1213,14 +1189,11 @@ function mostrarPreguntaDesarrollo(index) {
                 margin-top: 20px; 
                 margin-bottom: 12px;
                 font-weight: 600;
-            }
-            
+            }            
             ul, ol { padding-left: 25px; }
-            li { margin-bottom: 6px; }
-            
+            li { margin-bottom: 6px; }            
             strong { color: #004080; font-weight: 600; }
-            em { color: #19A06E; }
-            
+            em { color: #19A06E; }          
             blockquote {
                 border-left: 4px solid #19A06E;
                 background: rgba(25, 160, 110, 0.1);
@@ -1279,8 +1252,10 @@ function mostrarPreguntaDesarrollo(index) {
                 showCancelButton: true,
                 confirmButtonText: 'Continuar',
                 cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33'
+                confirmButtonColor: '#004080',
+                cancelButtonColor: '#F8C21A',
+                allowOutsideClick: false,
+                allowEscapeKey: false
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Usuario eligió continuar
@@ -1317,7 +1292,7 @@ function mostrarPreguntaDesarrollo(index) {
                 localStorage.setItem("currentEssayIndex", indiceDesarrollo); // Guarda el nuevo índice
                 mostrarPreguntaDesarrollo(indiceDesarrollo);
                 cargarPanelLateralDesarrollo(); // Actualiza el panel lateral
-                
+
                 // Scroll hacia arriba inmediato para móviles
                 window.scrollTo({ top: 0, behavior: 'instant' });
                 document.documentElement.scrollTop = 0;
@@ -1388,26 +1363,6 @@ function cargarPanelLateralDesarrollo() {
 }
 ////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////////////////////
 //ValidarDatosDelEstudiante.js
 /////////////////////////////////
@@ -1445,6 +1400,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: "error",
                 title: "Nombre inválido",
                 text: "El nombre debe tener exactamente 3 palabras, cada una con mínimo 4 letras y máximo 18 letras.",
+                confirmButtonText: "Entendido",
+                confirmButtonColor: '#004080',
+                allowOutsideClick: false,
+                allowEscapeKey: false
             });
             return;
         }
@@ -1454,6 +1413,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: "error",
                 title: "Cédula inválida",
                 text: "La cédula debe tener al menos 9 dígitos y máximo 12.",
+                confirmButtonText: "Entendido",
+                confirmButtonColor: '#004080',
+                allowOutsideClick: false,
+                allowEscapeKey: false
             });
             return;
         }
@@ -1475,7 +1438,9 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "Datos validados",
             text: "Nombre y cédula han sido guardados correctamente. Ahora puede comenzar con la Parte 1: Selección Única.",
             confirmButtonText: "Comenzar Parte 1",
-            confirmButtonColor: '#004080'
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => {
             // Ocultar sección de datos del estudiante
             document.getElementById("name-section").style.display = "none";
@@ -1512,26 +1477,6 @@ const datos = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY));
 console.log(datos?.nombre);
 console.log(datos?.cedula);
 //////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //PreguntasSeleccionUnica.js
@@ -1821,7 +1766,8 @@ function loadQuestion(index) {
             text: 'Seleccione la respuesta correcta haciendo clic en la opción de su preferencia. Una vez seleccionada, podrá avanzar a la siguiente pregunta. Recuerde que no podrá regresar a preguntas anteriores.',
             confirmButtonText: 'Comenzar',
             confirmButtonColor: '#004080',
-            allowOutsideClick: false
+            allowOutsideClick: false,
+            allowEscapeKey: false
         });
         localStorage.setItem("selectionWarningShown", "true");
     }
@@ -1870,7 +1816,7 @@ function loadQuestion(index) {
     }
 
     updateProgress();
-    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar Parte 1 del exámen Selección Única y Pasar a Desarrollo" : "Siguiente";
+    nextBtn.innerText = (index === window.uniqueQuestions.length - 1) ? "Finalizar selección única" : "Siguiente";
 }
 
 function guardarDatosEstudiante() {
@@ -1878,10 +1824,8 @@ function guardarDatosEstudiante() {
     const cedula = document.getElementById("studentID").value.trim();
 
     let data = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
-
     data.nombreEstudiante = nombre;
     data.cedulaEstudiante = cedula;
-
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(data));
 }
 
@@ -1892,7 +1836,6 @@ function saveAnswer(index, value) {
     updateProgress();
 
     let examData = JSON.parse(localStorage.getItem(EXAM_STORAGE_KEY)) || {};
-
     const q = window.uniqueQuestions[index];
     if (!examData.respuestasSeleccionUnica) {
         examData.respuestasSeleccionUnica = [];
@@ -1903,7 +1846,6 @@ function saveAnswer(index, value) {
     };
 
     localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify(examData));
-
     const nextBtn = document.getElementById("nextBtn");
     nextBtn.disabled = false;
     nextBtn.style.opacity = 1;
@@ -1930,16 +1872,20 @@ function nextQuestion() {
             title: "¡Parte #1 finalizada!",
             text: "Ahora continúa con la parte #2 de desarrollo.",
             icon: "success",
-            confirmButtonText: "Continuar"
+            confirmButtonText: "Entendido",
+            confirmButtonColor: '#004080',
+            allowOutsideClick: false,
+            allowEscapeKey: false
         }).then(() => {
             // Mostrar mensaje de transición a desarrollo
             Swal.fire({
                 icon: 'info',
                 title: 'Parte 2: Desarrollo',
                 text: 'Ahora responderá preguntas de desarrollo. Una vez que avance a la siguiente pregunta no podrá regresar a la anterior.',
-                confirmButtonText: 'Comenzar Desarrollo',
+                confirmButtonText: 'Entendido',
                 confirmButtonColor: '#004080',
-                allowOutsideClick: false
+                allowOutsideClick: false,
+                allowEscapeKey: false
             }).then(() => {
                 localStorage.setItem("parte1Finalizada", "true");  // <-- guardamos la bandera
                 document.getElementById("uniqueSelection").style.display = "none"; // Ocultar sección de selección única
@@ -1973,25 +1919,12 @@ function renderProgressBar() {
         box.classList.add("progress-box");
         box.textContent = i + 1;
 
-
-        // box.style.width = "3em"
-        // box.style.padding = "10px";
-        // box.style.backgroundColor = "#e6e6e6ff"
-        // box.style.borderRadius = "4px";
-        // box.style.textAlign = "center";
-        // box.style.cursor = "pointer";
-        // box.style.marginBottom = "8px";
-        // box.style.border = "1px solid #ccc";
-
         // Colorea si ya respondió
         box.style.background = studentAnswers[i] ? "rgba(248, 194, 26, 1)" : "#f1f1f1";
 
         // Si es la pregunta actual, resaltarla
         if (i === currentQuestion) {
             box.classList.add("active-question");
-            // box.style.backgroundColor = "#d6d092ff"
-            // box.style.width = "3.5em"
-            // box.style.border = "2px solid #e8e19aff";
         }
 
         box.style.cursor = "default";
@@ -2067,24 +2000,6 @@ function initUniqueSelection() {
 initUniqueSelection();
 ////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //////////////////////////////////
 //CuandoIngresen.js
 /////////////////////////////////
@@ -2112,11 +2027,12 @@ document.addEventListener('DOMContentLoaded', () => {
     `,
         imageUrl: 'images/question.png',
         confirmButtonText: 'Sí estoy de acuerdo',
-        confirmButtonColor: '#0a691aff',
-        cancelButtonText: 'Cancelar',
-        cancelButtonColor: '#004080',
+        confirmButtonColor: '#004080',
+        cancelButtonText: 'No estoy de acuerdo',
+        cancelButtonColor: '#F8C21A',
         showCancelButton: true,
         allowOutsideClick: false,
+        allowEscapeKey: false,
         customClass: {
             popup: 'swal-wide-low'
         }
@@ -2132,20 +2048,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 ////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //MenuHamburguesa.js
@@ -2183,23 +2085,6 @@ function showHideMenu() {
     });
 }
 ///////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //ResumenRespuestas.js
@@ -2262,22 +2147,6 @@ function guardarRespuestaDesarrollo(index, texto) {
     cargarPanelLateralDesarrollo(); // Actualiza visualmente los botones
 }
 ///////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////
 //GenerarPDF.js
@@ -2684,7 +2553,7 @@ function updatePracticeProgress() {
 
 // Inicializar pareo
 function initPareo() {
-
+    document.getElementById("name-section").style.display = "none";
     const container = document.getElementById('pareo-container');
     container.innerHTML = `
         <div class="pareo-column">
@@ -2769,7 +2638,7 @@ function selectPareoItem(element) {
 
 // Inicializar crucigrama
 function initCrucigrama() {
-    
+    document.getElementById("name-section").style.display = "none";
     const container = document.getElementById('crucigrama-container');
     const gridSize = crucigramaData.gridSize;
 
@@ -3070,7 +2939,7 @@ function isPositionInWord(row, col, word) {
 
 // Inicializar sopa de letras
 function initSopaLetras() {
-    
+    document.getElementById("name-section").style.display = "none";
     const container = document.getElementById('sopa-container');
     const gridSize = sopaData.grid.length;
     let grid = '';
@@ -3102,7 +2971,6 @@ function initSopaLetras() {
 }
 
 let sopaSelection = [];
-
 function selectSopaCell(row, col) {
     const cellId = `sopa-${row}-${col}`;
     const cell = document.getElementById(cellId);
@@ -3323,7 +3191,8 @@ function finalizarDesarrollo() {
         title: "Parte de desarrollo finalizada",
         text: "Ahora continúa con la parte 3: Práctica.",
         icon: "success",
-        confirmButtonText: "Continuar a Práctica"
+        confirmButtonText: "Entendido",
+        confirmButtonColor: "#004080",
     }).then(() => {
         localStorage.setItem("parte2Finalizada", "true");
         document.getElementById("essay").style.display = "none";
