@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -2594,8 +2594,10 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     const datosDesarrollo = Object.entries(respuestasDesarrollo).map(([key, value], index) => {
         const tiempo = tiemposGuardados.desarrollo?.[index] ? formatTime(tiemposGuardados.desarrollo[index]) : "N/A";
         const pregunta = preguntasDesarrolloSeleccionadas[index] || `Pregunta ${index + 1}`;
-        // Convertir HTML a texto plano para el PDF
-        const textoPlano = value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+        // Convertir HTML a texto plano para el PDF y decodificar entidades HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = value;
+        const textoPlano = tempDiv.textContent || tempDiv.innerText || '';
         return [
             pregunta,
             textoPlano || 'Sin respuesta',
