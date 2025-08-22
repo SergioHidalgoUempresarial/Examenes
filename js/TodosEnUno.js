@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "1"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -34,6 +34,7 @@ const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar lo
         localStorage.removeItem("questionTimes");
         localStorage.removeItem("paginaRecargada"); // Remover el flag de recarga
         localStorage.removeItem("pantallaFinalizadaActiva"); // Remover estado de pantalla finalizada
+        localStorage.removeItem("pdfDescargado"); // Remover marca de PDF descargado
         localStorage.setItem("codigoCambiado", "true"); // Marcar que el código cambió
     }
     // Si el código cambió, inicia objeto vacío
@@ -92,9 +93,21 @@ function verificarIntentos() {
             title: 'Exámen bloqueado',
             text: 'Has agotado todos tus intentos.',
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => window.location.href = "bloqueado.html");
     }
 }
@@ -140,7 +153,7 @@ function actualizarAccesoPorIntentos() {
             <label for="accessInput">Ingrese el código de acceso generado por el docente:</label>
             <input type="password" id="accessInput" placeholder="Código de acceso" />
             <button onclick="validateAccess()">Ingresar</button>
-            <p id="accessError" style="color:red; display:none;">Código incorrecto. Intente de nuevo.</p>
+            <p id="accessError" style="color:red; display:none; margin-top:10px "><Strong>Código incorrecto. Intente de nuevo.</Strong></p>
             <button onclick="resetAccess()" style="display:none;" id="adminResetBtn">Reset Access</button>
         `;
     }
@@ -184,9 +197,21 @@ function manejarSalidaExamen(tipo, evento = null) {
             title: 'Atención',
             text: 'Has salido del exámen. Perdiste un intento.',
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => location.reload());
     }
 
@@ -196,16 +221,28 @@ function manejarSalidaExamen(tipo, evento = null) {
             title: 'Acción no permitida',
             text: 'Se detectó manipulación (DevTools). Has perdido un intento.',
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => location.reload());
     }
 }
 
 window.addEventListener("beforeunload", function (e) {
-    // Si está en pantalla finalizada, no manejar como salida de examen
-    if (localStorage.getItem("pantallaFinalizadaActiva") === "true") {
+    // Si está en pantalla finalizada Y ya descargó el PDF, no restar intento
+    if (localStorage.getItem("pantallaFinalizadaActiva") === "true" && localStorage.getItem("pdfDescargado") === "true") {
         return;
     }
     // Marcar que se va a recargar para detectarlo después
@@ -241,9 +278,21 @@ function detectarDevtoolsConTiempo() {
                 <p><strong>Se perderá un intento</strong> por esta acción.</p>
             `,
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => {
             manejarSalidaExamen("devtools"); // restar intento
             location.reload(); // recarga para bloquear el intento
@@ -278,9 +327,21 @@ document.addEventListener("click", function (e) {
             title: 'Instrucciones ocultas',
             text: 'Se han ocultado automáticamente al interactuar fuera.',
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         });
         instructions.style.display = "none";
         btn.innerText = "Ver Instrucciones";
@@ -309,9 +370,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: 'Consentimiento registrado',
                 text: 'Aceptaste las instrucciones. No se puede deshacer.',
                 confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#004080',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             }).then((result) => {
                 if (result.isConfirmed || result.dismiss) {
                     checkbox.disabled = true;
@@ -361,9 +434,21 @@ window.addEventListener("DOMContentLoaded", () => {
                     title: "Espera requerida",
                     text: "Este botón solo se puede usar cada 2 días.",
                     confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#004080',
                     allowOutsideClick: false,
-                    allowEscapeKey: false
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'swal-instrucciones',
+                        title: 'swal-instrucciones-title',
+                        confirmButton: 'swal-instrucciones-confirm',
+                        icon: 'swal-instrucciones-icon',
+                        htmlContainer: 'swal-instrucciones-text'
+                    },
+                    didOpen: () => {
+                        const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                        if (popup) {
+                            popup.scrollTop = 0; // Forzar scroll arriba
+                        }
+                    }
                 });
                 return;
             }
@@ -377,10 +462,22 @@ window.addEventListener("DOMContentLoaded", () => {
             showCancelButton: true,
             confirmButtonText: "Borrar todo",
             cancelButtonText: "Cancelar",
-            confirmButtonColor: '#004080',
-            cancelButtonColor: '#F8C21A',
             allowOutsideClick: false,
             allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                input: 'swal-instrucciones-input',
+                confirmButton: 'swal-instrucciones-confirm',
+                cancelButton: 'swal-instrucciones-cancel',
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            },
+
             preConfirm: (password) => {
                 if (password !== ADMIN_PASSWORD) {
                     Swal.showValidationMessage("❌ Contraseña incorrecta");
@@ -395,6 +492,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 usedCount++;
                 localStorage.setItem("clearButtonUses", usedCount.toString());
                 localStorage.removeItem("pantallaFinalizadaActiva"); // Asegurar que se limpia
+                localStorage.removeItem("pdfDescargado"); // Asegurar que se limpia
                 adminBtn.style.display = "none";
 
                 Swal.fire({
@@ -402,9 +500,19 @@ window.addEventListener("DOMContentLoaded", () => {
                     title: "Datos borrados",
                     text: "Todo el progreso del exámen fue eliminado.",
                     confirmButtonText: 'Entendido',
-                    confirmButtonColor: '#004080',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
+                    customClass: {
+                        popup: 'swal-instrucciones',
+                        title: 'swal-instrucciones-title',
+                        confirmButton: 'swal-instrucciones-confirm',
+                    },
+                    didOpen: () => {
+                        const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                        if (popup) {
+                            popup.scrollTop = 0; // Forzar scroll arriba
+                        }
+                    }
                 }).then(() => location.reload());
             }
         });
@@ -426,7 +534,21 @@ window.onload = function () {
             title: 'Página recargada',
             text: 'Has recargado la página. Perdiste un intento.',
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080'
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         });
     }
 
@@ -540,7 +662,18 @@ function setupEventListeners() {
     const btnDescargarFinal = document.getElementById("btnDescargarFinal");
     if (btnDescargarFinal) {
         btnDescargarFinal.addEventListener("click", function () {
+            // Marcar que el PDF se descargó
+            localStorage.setItem("pdfDescargado", "true");
             document.getElementById('btnGenerarPDF').click();
+        });
+    }
+
+    // Botón generar PDF del menú
+    const btnGenerarPDF = document.getElementById("btnGenerarPDF");
+    if (btnGenerarPDF) {
+        btnGenerarPDF.addEventListener("click", function () {
+            // Marcar que el PDF se descargó
+            localStorage.setItem("pdfDescargado", "true");
         });
     }
 }
@@ -562,16 +695,27 @@ function mostrarInstruccionesImportantes() {
       <br>
       <b>¿Esta de acuerdo?</b>
     `,
+        position: 'top',
         imageUrl: 'images/question.png',
         confirmButtonText: 'Sí estoy de acuerdo',
-        confirmButtonColor: '#004080',
         cancelButtonText: 'Cancelar',
-        cancelButtonColor: '#F8C21A',
         showCancelButton: true,
         allowOutsideClick: false,
         allowEscapeKey: false,
         customClass: {
-            popup: 'swal-wide-low'
+            popup: 'swal-instrucciones',
+            title: 'swal-instrucciones-title',
+            confirmButton: 'swal-instrucciones-confirm',
+            cancelButton: 'swal-instrucciones-cancel',
+            icon: 'swal-instrucciones-icon',
+            htmlContainer: 'swal-instrucciones-text',
+            image: 'swal-instrucciones-image'
+        },
+        didOpen: () => {
+            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            if (popup) {
+                popup.scrollTop = 0; // Forzar scroll arriba
+            }
         }
     }).then((result) => {
         if (result.isConfirmed) {
@@ -772,9 +916,21 @@ function validateAccess() {
             title: 'Debe aceptar las instrucciones',
             text: 'Por favor lea y acepte las instrucciones antes de comenzar el exámen.',
             confirmButtonText: 'Aceptar',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         });
         return; // Detiene la ejecución
     }
@@ -782,30 +938,44 @@ function validateAccess() {
     if (inputCode === ACCESS_CODE) {
         Swal.fire({
             title: '¡Recuerde!',
-            html: `
-                <p>Le doy mis mejores deseos en la evaluación.</p>
-                <br>
+            html: `                
                 <ul style="text-align:left;">
-                    <li>No recargue la página</li>
-                    <li>No cambie de pestaña o ventana</li>
-                    <li>Evite cerrar el navegador</li>
+                    <li>Le doy mis mejores deseos en la evaluación.</li>
+                    <li>No recargue la página.</li>
+                    <li>No cambie de pestaña o ventana.</li>
+                    <li>Evite cerrar el navegador.</li>
                     <br>
-                    <br>
-                    <li>El exámen podría anularse</li>
+                    <li><Strong>Si no cumple con esto el exámen podría anularse</Strong></li>
                 </ul>
                 <br>
-                <b>¡"Porque Jehová da la sabiduría, y de su boca viene el conocimiento y la inteligencia."Proverbios 2:6!</b>
+                <ul style="text-align:left;">
+                    <li><b>¡"Porque Jehová da la sabiduría, y de su boca viene el conocimiento y la inteligencia."</b></li>
+                </ul>
+                <ul style="text-align:right;">
+                    <li><b>¡Proverbios 2:6!</b></li>
+                </ul>
                 `,
+            position: 'top',
             imageUrl: 'images/BestWishes.png',
             confirmButtonText: 'Sí estoy de acuerdo',
-            confirmButtonColor: '#004080',
             cancelButtonText: 'Cancelar',
-            cancelButtonColor: '#F8C21A',
             showCancelButton: true,
             allowOutsideClick: false,
             allowEscapeKey: false,
             customClass: {
-                popup: 'swal-wide-low'
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                cancelButton: 'swal-instrucciones-cancel',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text',
+                image: 'swal-instrucciones-image'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
             }
         }).then((result) => {
             if (result.isConfirmed) {
@@ -828,9 +998,21 @@ function validateAccess() {
                         title: 'Bienvenido al Exámen',
                         text: 'Complete sus datos personales y luego podrá comenzar con la Parte 1: Selección Única.',
                         confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#004080',
                         allowOutsideClick: false,
-                        allowEscapeKey: false
+                        allowEscapeKey: false,
+                        customClass: {
+                            popup: 'swal-instrucciones',
+                            title: 'swal-instrucciones-title',
+                            confirmButton: 'swal-instrucciones-confirm',
+                            icon: 'swal-instrucciones-icon',
+                            htmlContainer: 'swal-instrucciones-text'
+                        },
+                        didOpen: () => {
+                            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                            if (popup) {
+                                popup.scrollTop = 0; // Forzar scroll arriba
+                            }
+                        }
                     });
                 }, 500);
             } else if (result.isDismissed) {
@@ -885,11 +1067,23 @@ document.addEventListener("DOMContentLoaded", function () {
             Swal.fire({
                 icon: 'info',
                 title: 'Consentimiento registrado',
-                text: 'Usted va a aceptar las instrucciones del exámen. Esta acción no se puede deshacer.',
+                text: 'Usted va a aceptar las instrucciones del exámen cuando de clic en el botón. Esta acción no se puede deshacer.',
                 confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#004080',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     checkbox.checked = true;
@@ -909,9 +1103,21 @@ document.addEventListener("DOMContentLoaded", function () {
                         title: 'Instrucciones no aceptadas',
                         text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas dando clic en el botón llamado: "Aceptar".',
                         confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#004080',
                         allowOutsideClick: false,
-                        allowEscapeKey: false
+                        allowEscapeKey: false,
+                        customClass: {
+                            popup: 'swal-instrucciones',
+                            title: 'swal-instrucciones-title',
+                            confirmButton: 'swal-instrucciones-confirm',
+                            icon: 'swal-instrucciones-icon',
+                            htmlContainer: 'swal-instrucciones-text'
+                        },
+                        didOpen: () => {
+                            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                            if (popup) {
+                                popup.scrollTop = 0; // Forzar scroll arriba
+                            }
+                        }
                     });
                 }
             });
@@ -941,9 +1147,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: 'Instrucciones no aceptadas',
                 text: 'No se han aceptado las instrucciones y para poder iniciar el exámen es necesario aceptarlas.',
                 confirmButtonText: 'Entendido',
-                confirmButtonColor: '#004080',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             });
         }
     });
@@ -1009,9 +1227,21 @@ function finishExam() {
         title: 'Exámen finalizado',
         text: 'Tu temporizador ha terminado.',
         confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#004080',
         allowOutsideClick: false,
-        allowEscapeKey: false
+        allowEscapeKey: false,
+        customClass: {
+            popup: 'swal-instrucciones',
+            title: 'swal-instrucciones-title',
+            confirmButton: 'swal-instrucciones-confirm',
+            icon: 'swal-instrucciones-icon',
+            htmlContainer: 'swal-instrucciones-text'
+        },
+        didOpen: () => {
+            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            if (popup) {
+                popup.scrollTop = 0; // Forzar scroll arriba
+            }
+        }
     }).then(() => {
         window.location.href = "resumen.html"; // O página de resumen
     });
@@ -1092,9 +1322,21 @@ function initDevelopmentPart() {
             text: "Has respondido todas las preguntas abiertas. Se generará el resumen.",
             icon: "success",
             confirmButtonText: "Continuar a descargar resumen",
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => {
             window.location.href = "resumen.html"; // Cambia esto si usas otra ruta
         });
@@ -1109,9 +1351,21 @@ function mostrarPreguntaDesarrollo(index) {
             title: 'Importante',
             text: 'Una vez que avanza a la siguiente pregunta no podrá regresar a la anterior, deberá decidir con cuidado esta opción',
             confirmButtonText: 'Entendido',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         });
         localStorage.setItem("developmentWarningShown", "true");
     }
@@ -1252,10 +1506,22 @@ function mostrarPreguntaDesarrollo(index) {
                 showCancelButton: true,
                 confirmButtonText: 'Continuar',
                 cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#004080',
-                cancelButtonColor: '#F8C21A',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    cancelButton: 'swal-instrucciones-cancel',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Usuario eligió continuar
@@ -1401,9 +1667,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: "Nombre inválido",
                 text: "El nombre debe tener exactamente 3 palabras, cada una con mínimo 4 letras y máximo 18 letras.",
                 confirmButtonText: "Entendido",
-                confirmButtonColor: '#004080',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             });
             return;
         }
@@ -1414,9 +1692,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 title: "Cédula inválida",
                 text: "La cédula debe tener al menos 9 dígitos y máximo 12.",
                 confirmButtonText: "Entendido",
-                confirmButtonColor: '#004080',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             });
             return;
         }
@@ -1438,9 +1728,21 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "Datos validados",
             text: "Nombre y cédula han sido guardados correctamente. Ahora puede comenzar con la Parte 1: Selección Única.",
             confirmButtonText: "Comenzar Parte 1",
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => {
             // Ocultar sección de datos del estudiante
             document.getElementById("name-section").style.display = "none";
@@ -1765,9 +2067,21 @@ function loadQuestion(index) {
             title: 'Parte 1: Selección Única',
             text: 'Seleccione la respuesta correcta haciendo clic en la opción de su preferencia. Una vez seleccionada, podrá avanzar a la siguiente pregunta. Recuerde que no podrá regresar a preguntas anteriores.',
             confirmButtonText: 'Comenzar',
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         });
         localStorage.setItem("selectionWarningShown", "true");
     }
@@ -1873,9 +2187,21 @@ function nextQuestion() {
             text: "Ahora continúa con la parte #2 de desarrollo.",
             icon: "success",
             confirmButtonText: "Entendido",
-            confirmButtonColor: '#004080',
             allowOutsideClick: false,
-            allowEscapeKey: false
+            allowEscapeKey: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
+            }
         }).then(() => {
             // Mostrar mensaje de transición a desarrollo
             Swal.fire({
@@ -1883,9 +2209,21 @@ function nextQuestion() {
                 title: 'Parte 2: Desarrollo',
                 text: 'Ahora responderá preguntas de desarrollo. Una vez que avance a la siguiente pregunta no podrá regresar a la anterior.',
                 confirmButtonText: 'Entendido',
-                confirmButtonColor: '#004080',
                 allowOutsideClick: false,
-                allowEscapeKey: false
+                allowEscapeKey: false,
+                customClass: {
+                    popup: 'swal-instrucciones',
+                    title: 'swal-instrucciones-title',
+                    confirmButton: 'swal-instrucciones-confirm',
+                    icon: 'swal-instrucciones-icon',
+                    htmlContainer: 'swal-instrucciones-text'
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                    if (popup) {
+                        popup.scrollTop = 0; // Forzar scroll arriba
+                    }
+                }
             }).then(() => {
                 localStorage.setItem("parte1Finalizada", "true");  // <-- guardamos la bandera
                 document.getElementById("uniqueSelection").style.display = "none"; // Ocultar sección de selección única
@@ -2025,18 +2363,28 @@ document.addEventListener('DOMContentLoaded', () => {
       <br>
       <b>¿Esta de acuerdo?</b>
     `,
+        position: 'top',
         imageUrl: 'images/question.png',
         confirmButtonText: 'Sí estoy de acuerdo',
-        confirmButtonColor: '#004080',
         cancelButtonText: 'No estoy de acuerdo',
-        cancelButtonColor: '#F8C21A',
         showCancelButton: true,
         allowOutsideClick: false,
         allowEscapeKey: false,
         customClass: {
-            popup: 'swal-wide-low'
+            popup: 'swal-instrucciones',
+            title: 'swal-instrucciones-title',
+            confirmButton: 'swal-instrucciones-confirm',
+            cancelButton: 'swal-instrucciones-cancel',
+            icon: 'swal-instrucciones-icon',
+            htmlContainer: 'swal-instrucciones-text',
+            image: 'swal-instrucciones-image'
+        },
+        didOpen: () => {
+            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            if (popup) {
+                popup.scrollTop = 0; // Forzar scroll arriba
+            }
         }
-
     }).then((result) => {
         if (result.isConfirmed) {
             console.log("Usuario aceptó estas instrucciones");
@@ -3035,8 +3383,14 @@ function checkSopaWord() {
             icon: 'success',
             title: '¡Palabra encontrada!',
             text: `Has encontrado: ${foundWord}`,
-            timer: 1500,
-            showConfirmButton: false
+            timer: 2000,
+            showConfirmButton: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            }
         });
     }
 
@@ -3115,10 +3469,21 @@ function nextPracticeSection() {
             showCancelButton: true,
             confirmButtonText: 'Sí, continuar',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#004080',
-            cancelButtonColor: '#d33',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             customClass: {
-                popup: 'swal-wide-low'
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                cancelButton: 'swal-instrucciones-cancel',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text'
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+                if (popup) {
+                    popup.scrollTop = 0; // Forzar scroll arriba
+                }
             }
         }).then((result) => {
             if (result.isConfirmed) {
@@ -3146,10 +3511,20 @@ function finalizarPractica() {
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Sí, continuar',
-        confirmButtonColor: '#004080',
-        cancelButtonColor: '#d33',
+        cancelButtonText: 'No continuar',
         customClass: {
-            popup: 'swal-wide-low'
+            popup: 'swal-instrucciones',
+            title: 'swal-instrucciones-title',
+            confirmButton: 'swal-instrucciones-confirm',
+            cancelButton: 'swal-instrucciones-cancel',
+            icon: 'swal-instrucciones-icon',
+            htmlContainer: 'swal-instrucciones-text'
+        },
+        didOpen: () => {
+            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            if (popup) {
+                popup.scrollTop = 0; // Forzar scroll arriba
+            }
         }
     }).then((result) => {
         if (result.isConfirmed) {
@@ -3192,7 +3567,21 @@ function finalizarDesarrollo() {
         text: "Ahora continúa con la parte 3: Práctica.",
         icon: "success",
         confirmButtonText: "Entendido",
-        confirmButtonColor: "#004080",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        customClass: {
+            popup: 'swal-instrucciones',
+            title: 'swal-instrucciones-title',
+            confirmButton: 'swal-instrucciones-confirm',
+            icon: 'swal-instrucciones-icon',
+            htmlContainer: 'swal-instrucciones-text'
+        },
+        didOpen: () => {
+            const popup = document.querySelector('.swal2-popup.swal-instrucciones');
+            if (popup) {
+                popup.scrollTop = 0; // Forzar scroll arriba
+            }
+        }
     }).then(() => {
         localStorage.setItem("parte2Finalizada", "true");
         document.getElementById("essay").style.display = "none";

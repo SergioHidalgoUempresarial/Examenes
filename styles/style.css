@@ -17,92 +17,105 @@ body {
 
 /* Swall-Small --------------------------------------------------------------------------------------------*/
 
-.swal-wide-low {
+.swal-instrucciones {
   max-width: 700px !important;
+  max-height: 80vh !important;
+  overflow: auto !important;
+  box-sizing: border-box !important;
   padding: 20px !important;
   font-size: 0.95rem;
+  scroll-behavior: auto;
+  overflow-anchor: none;
 }
 
-.swal-wide-low .swal2-title {
+.swal-instrucciones-title {
   font-size: 1.5rem !important;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
-.swal-wide-low .swal2-html-container {
+.swal-instrucciones-confirm {
+  background: #004080 !important;
+  box-shadow: 6px 6px 12px #c5c9d1, -6px -6px 12px #ffffff !important;
+  color: white !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.swal-instrucciones-confirm:hover {
+  box-shadow: 2px 2px 6px #0066cc, -2px -2px 6px #ffffff;
+  filter: brightness(1.05);
+}
+
+.swal-instrucciones-confirm:active {
+  box-shadow: inset 4px 4px 8px #c5c9d1, inset -4px -4px 8px #ffffff;
+  transform: translateY(2px);
+}
+
+.swal-instrucciones-cancel {
+  background-color: #F8C21A !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  font-size: 1rem !important;
+}
+
+.swal-instrucciones-icon {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.swal-instrucciones-text {
   font-size: 1rem;
-  text-align: left;
+  text-align: center;
   padding: 0 10px;
   line-height: 1.4;
   max-height: 300px;
   overflow-y: auto;
 }
 
-.swal-wide-low .swal2-image {
-  max-width: 120px;
-  margin-bottom: 10px;
+.swal-instrucciones-image {
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
+  height: auto;
+  margin-bottom: 0px;
 }
 
 /* Responsive para SweetAlert en pantallas pequeñas */
 @media (max-width: 600px) {
-  .swal2-popup {
+  .swal-instrucciones {
     width: 95vw !important;
     max-width: 95vw !important;
     margin: 0 auto !important;
     padding: 15px !important;
     font-size: 0.9rem !important;
   }
-  
-  .swal-wide-low {
-    width: 95vw !important;
-    max-width: 95vw !important;
-    padding: 15px !important;
-    font-size: 0.85rem !important;
-  }
-  
-  .swal2-title {
+
+  .swal-instrucciones-title {
     font-size: 1.2rem !important;
     margin-bottom: 8px !important;
   }
-  
-  .swal-wide-low .swal2-title {
-    font-size: 1.2rem !important;
-    margin-bottom: 8px !important;
-  }
-  
+
   .swal2-html-container {
     font-size: 0.9rem !important;
     padding: 0 5px !important;
     max-height: 250px !important;
   }
-  
-  .swal-wide-low .swal2-html-container {
-    font-size: 0.9rem !important;
-    padding: 0 5px !important;
-    max-height: 250px !important;
-  }
-  
+
   .swal2-actions {
     flex-direction: column !important;
     gap: 8px !important;
     width: 100% !important;
   }
-  
+
   .swal2-confirm,
   .swal2-cancel {
     width: 100% !important;
     margin: 0 !important;
     padding: 12px !important;
     font-size: 0.9rem !important;
-  }
-  
-  .swal2-image {
-    max-width: 80px !important;
-    margin-bottom: 8px !important;
-  }
-  
-  .swal-wide-low .swal2-image {
-    max-width: 80px !important;
-    margin-bottom: 8px !important;
   }
 }
 
@@ -437,7 +450,9 @@ label[for="agreeCheck"] {
 }
 
 .access-section button {
-  background: linear-gradient(90deg, #004080 60%, #19A06E 100%);
+  background: #004080;
+  box-shadow: 6px 6px 12px #c5c9d1, -6px -6px 12px #ffffff;
+  transition: all 0.2s ease-in-out;
   color: white;
   border: none;
   cursor: pointer;
@@ -446,7 +461,13 @@ label[for="agreeCheck"] {
 }
 
 .access-section button:hover {
-  background: linear-gradient(90deg, #19A06E 60%, #004080 100%);
+  box-shadow: 2px 2px 6px #0066cc, -2px -2px 6px #ffffff;
+  filter: brightness(1.05);
+}
+
+.access-section button:active {
+  box-shadow: inset 4px 4px 8px #c5c9d1, inset -4px -4px 8px #ffffff;
+  transform: translateY(2px);
 }
 
 /* ---------------------------------------------------------------------------------- */
@@ -628,18 +649,24 @@ label[for="agreeCheck"] {
 }
 
 .nextBtn {
-  padding: 10px 20px;
-  background-color: #004080;
+  background: #004080;
+  box-shadow: 6px 6px 12px #c5c9d1, -6px -6px 12px #ffffff;
+  transition: all 0.2s ease-in-out;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
 .nextBtn:hover {
-  background-color: #0066cc;
+  box-shadow: 2px 2px 6px #0066cc, -2px -2px 6px #ffffff;
+  filter: brightness(1.05);
+}
+
+.nextBtn:active {
+  box-shadow: inset 4px 4px 8px #c5c9d1, inset -4px -4px 8px #ffffff;
+  transform: translateY(2px);
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------------------------- */
@@ -1124,9 +1151,17 @@ label[for="agreeCheck"] {
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 8px 25px rgba(0, 64, 128, 0.4); }
-  50% { box-shadow: 0 8px 25px rgba(0, 64, 128, 0.7); }
-  100% { box-shadow: 0 8px 25px rgba(0, 64, 128, 0.4); }
+  0% {
+    box-shadow: 0 8px 25px rgba(0, 64, 128, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 8px 25px rgba(0, 64, 128, 0.7);
+  }
+
+  100% {
+    box-shadow: 0 8px 25px rgba(0, 64, 128, 0.4);
+  }
 }
 
 .pareo-item.matched {
@@ -1391,9 +1426,17 @@ label[for="agreeCheck"] {
 }
 
 @keyframes foundPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .palabras-encontradas {
@@ -1471,9 +1514,17 @@ label[for="agreeCheck"] {
 }
 
 @keyframes encontradaAnimation {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1.05); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1.05);
+  }
 }
 
 .practice-upload {
@@ -1507,26 +1558,11 @@ button:hover {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* RESPONSIVE DESIGN GENERAL */
 
 /* Tablets y pantallas medianas */
 @media (max-width: 1024px) and (min-width: 601px) {
+
   .uniqueSelection .section-container,
   .essay .section-container,
   .practice .section-container {
@@ -1693,7 +1729,7 @@ button:hover {
     width: 100%;
     margin-bottom: 10%;
   }
-  
+
   .logo-top-left {
     height: 30px;
     margin-left: 10px;
@@ -1874,24 +1910,24 @@ button:hover {
     margin: 20px 0;
     min-height: 600px;
   }
-  
+
   .pareo-column h4 {
     font-size: 1.2em;
     padding: 12px;
     margin-bottom: 15px;
   }
-  
+
   .pareo-item {
     padding: 10px 8px;
     font-size: 0.9em;
     min-height: 50px;
     border-width: 2px;
   }
-  
+
   .pareo-item:hover {
     transform: translateY(-2px);
   }
-  
+
   .pareo-item.selected {
     transform: scale(1.03);
   }
@@ -1899,7 +1935,7 @@ button:hover {
   .crucigrama-container {
     gap: 20px;
   }
-  
+
   .crucigrama-grid {
     grid-template-columns: repeat(15, 20px);
     grid-template-rows: repeat(15, 20px);
@@ -1911,29 +1947,29 @@ button:hover {
     height: 20px;
     font-size: 10px;
   }
-  
+
   .crucigrama-cell input {
     font-size: 12px;
   }
-  
+
   .word-number {
     font-size: 8px;
   }
-  
+
   .crucigrama-clues {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .clues-column {
     padding: 15px;
   }
-  
+
   .clues-column h4 {
     font-size: 1em;
     padding: 8px;
   }
-  
+
   .clues-column p {
     font-size: 0.9em;
   }
@@ -1949,35 +1985,35 @@ button:hover {
     height: 18px;
     font-size: 10px;
   }
-  
+
   .sopa-cell:hover {
     transform: scale(1.05);
   }
-  
+
   .sopa-cell.selected {
     transform: scale(1.05);
   }
-  
+
   .palabras-encontradas {
     padding: 15px;
   }
-  
+
   .palabras-encontradas h4 {
     font-size: 1em;
     padding: 10px;
   }
-  
+
   .palabra-item {
     padding: 10px 12px;
     font-size: 0.85em;
     margin-bottom: 6px;
   }
-  
+
   .palabra-item .definition {
     font-size: 0.8em;
     margin-bottom: 3px;
   }
-  
+
   .palabra-item .word-spaces {
     font-size: 0.9em;
     letter-spacing: 1px;
@@ -1992,6 +2028,7 @@ button:hover {
 
 /* Pantallas muy grandes */
 @media (min-width: 1400px) {
+
   .uniqueSelection .section-container,
   .essay .section-container,
   .practice .section-container {
@@ -2052,7 +2089,7 @@ button:hover {
 }
 
 .btn-descargar-final {
-  background: linear-gradient(135deg, #19A06E 0%, #158a5a 100%);
+  background: linear-gradient(90deg, #004080 60%, #19A06E 100%);
   color: white;
   border: none;
   padding: 15px 30px;
@@ -2068,7 +2105,7 @@ button:hover {
 
 .btn-descargar-final:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(25, 160, 110, 0.4);
+  background: linear-gradient(90deg, #19A06E 60%, #004080 100%);
 }
 
 /* Responsive para pantalla finalizada */
@@ -2078,17 +2115,17 @@ button:hover {
     margin-top: 250px;
     border-radius: 12px;
   }
-  
+
   .pantalla-finalizada-title {
     font-size: 1.5em;
     margin-bottom: 15px;
   }
-  
+
   .pantalla-finalizada-text {
     font-size: 1em;
     margin-bottom: 25px;
   }
-  
+
   .btn-descargar-final {
     padding: 12px 20px;
     font-size: 1em;
