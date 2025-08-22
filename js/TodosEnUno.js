@@ -2505,6 +2505,120 @@ function formatTime(milliseconds) {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
+// Función para renderizar HTML con formato real en PDF
+function renderHTMLToPDF(doc, htmlContent, startY, maxWidth = 170) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    let currentY = startY;
+    
+    function processElement(element, currentStyle = {}) {
+        for (let node of element.childNodes) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const text = node.textContent.trim();
+                if (text) {
+                    doc.setFont(undefined, currentStyle.bold ? 'bold' : currentStyle.italic ? 'italic' : 'normal');
+                    doc.setFontSize(currentStyle.fontSize || 12);
+                    
+                    const lines = doc.splitTextToSize(text, maxWidth);
+                    doc.text(lines, 20, currentY);
+                    currentY += lines.length * 5;
+                }
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                const tagName = node.tagName.toLowerCase();
+                let newStyle = { ...currentStyle };
+                
+                if (tagName === 'table') {
+                    const rows = node.querySelectorAll('tr');
+                    const tableData = [];
+                    let headers = [];
+                    
+                    rows.forEach((row, rowIndex) => {
+                        const cells = row.querySelectorAll('td, th');
+                        const cellTexts = Array.from(cells).map(cell => cell.textContent.trim());
+                        
+                        if (rowIndex === 0 && row.querySelectorAll('th').length > 0) {
+                            headers = cellTexts;
+                        } else {
+                            tableData.push(cellTexts);
+                        }
+                    });
+                    
+                    doc.autoTable({
+                        startY: currentY,
+                        head: headers.length > 0 ? [headers] : undefined,
+                        body: tableData,
+                        margin: { left: 20 },
+                        styles: { fontSize: 10 },
+                        headStyles: { fillColor: [200, 200, 200] }
+                    });
+                    currentY = doc.lastAutoTable.finalY + 5;
+                    continue;
+                }
+                
+                switch (tagName) {
+                    case 'strong':
+                    case 'b':
+                        newStyle.bold = true;
+                        break;
+                    case 'em':
+                    case 'i':
+                        newStyle.italic = true;
+                        break;
+                    case 'u':
+                        // Para subrayado, usar texto normal pero agregar indicador
+                        processElement(node, newStyle);
+                        continue;
+                    case 'h1':
+                        newStyle.fontSize = 16;
+                        newStyle.bold = true;
+                        currentY += 5;
+                        break;
+                    case 'h2':
+                        newStyle.fontSize = 14;
+                        newStyle.bold = true;
+                        currentY += 5;
+                        break;
+                    case 'h3':
+                        newStyle.fontSize = 13;
+                        newStyle.bold = true;
+                        currentY += 3;
+                        break;
+                    case 'p':
+                        currentY += 3;
+                        break;
+                    case 'br':
+                        currentY += 5;
+                        continue;
+                    case 'ul':
+                    case 'ol':
+                        currentY += 3;
+                        break;
+                    case 'li':
+                        doc.setFont(undefined, 'normal');
+                        doc.setFontSize(12);
+                        doc.text('• ', 20, currentY);
+                        const liContent = node.textContent.trim();
+                        if (liContent) {
+                            const lines = doc.splitTextToSize(liContent, maxWidth - 10);
+                            doc.text(lines, 30, currentY);
+                            currentY += lines.length * 5;
+                        }
+                        continue;
+                }
+                
+                processElement(node, newStyle);
+                
+                if (['p', 'h1', 'h2', 'h3', 'div', 'ul', 'ol'].includes(tagName)) {
+                    currentY += 3;
+                }
+            }
+        }
+    }
+    
+    processElement(tempDiv);
+    return currentY;
+}
+
 document.getElementById("btnGenerarPDF").addEventListener("click", function () {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -2607,56 +2721,8 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
             doc.text(`Tiempo: ${tiempo}`, 20, y);
             y += 8;
             
-            // Procesar HTML para extraer tablas
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = value;
-            const tables = tempDiv.querySelectorAll('table');
-            
-            if (tables.length > 0) {
-                // Procesar cada tabla
-                tables.forEach((table, tableIndex) => {
-                    const rows = table.querySelectorAll('tr');
-                    const tableData = [];
-                    let headers = [];
-                    
-                    rows.forEach((row, rowIndex) => {
-                        const cells = row.querySelectorAll('td, th');
-                        const cellTexts = Array.from(cells).map(cell => cell.textContent.trim());
-                        
-                        if (rowIndex === 0 && row.querySelectorAll('th').length > 0) {
-                            headers = cellTexts;
-                        } else {
-                            tableData.push(cellTexts);
-                        }
-                    });
-                    
-                    // Agregar tabla al PDF
-                    doc.autoTable({
-                        startY: y,
-                        head: headers.length > 0 ? [headers] : undefined,
-                        body: tableData,
-                        margin: { left: 20 },
-                        styles: { fontSize: 10 },
-                        headStyles: { fillColor: [200, 200, 200] }
-                    });
-                    y = doc.lastAutoTable.finalY + 5;
-                });
-                
-                // Mostrar texto después de las tablas
-                tables.forEach(table => table.remove());
-                const remainingText = tempDiv.textContent || tempDiv.innerText || '';
-                if (remainingText.trim()) {
-                    const lines = doc.splitTextToSize(remainingText.trim(), 170);
-                    doc.text(lines, 20, y);
-                    y += lines.length * 5;
-                }
-            } else {
-                // Si no hay tablas, mostrar texto normal
-                const textoPlano = tempDiv.textContent || tempDiv.innerText || 'Sin respuesta';
-                const lines = doc.splitTextToSize(textoPlano, 170);
-                doc.text(lines, 20, y);
-                y += lines.length * 5;
-            }
+            // Renderizar contenido HTML respetando el orden original
+            y = renderHTMLToPDF(doc, value, y);
             
             y += 10;
             
