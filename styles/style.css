@@ -1059,6 +1059,19 @@ label[for="agreeCheck"] {
   overflow: hidden !important;
 }
 
+.tinymce-container {
+  border: 3px solid #004080;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 64, 128, 0.2);
+  transition: all 0.3s ease;
+}
+
+.tinymce-container.tinymce-focused {
+  border-color: #19A06E;
+  box-shadow: 0 12px 30px rgba(25, 160, 110, 0.3);
+  transform: translateY(-2px);
+}
+
 .tox .tox-toolbar {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
   border-bottom: 2px solid #e9ecef !important;
@@ -2236,6 +2249,18 @@ button:hover {
 /* Pantalla finalizada */
 .mostrarPantallaFinalizada {
   display: none;
+}
+
+/* Estados de acceso por intentos */
+.access-section.no-attempts {
+  text-align: center;
+}
+
+.access-section .no-attempts-message {
+  color: red;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: auto;
 }
 
 .mostrarPantallaFinalizada .section-container {

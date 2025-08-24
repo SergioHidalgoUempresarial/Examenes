@@ -3,7 +3,7 @@
 /////////////////////////////////
 const EXAM_NAME = "Exámen de Fundamentos de TI - TCS1003";
 document.getElementById("title").textContent = EXAM_NAME;
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "4"; // 12345 Código que se valida en script.js
 const EXAM_DURATION_MINUTES = 165; // Cambiar a 180 u otro valor si se desea
 const EXAM_STORAGE_KEY = "examData"; //Variable para guardar datos en el localStorage
 const EXAM_STATE_KEY = "examState"; //Variable para reanudar el examen donde estaba
@@ -135,27 +135,21 @@ function mostrarIntentosRestantes() {
 function actualizarAccesoPorIntentos() {
     const restantes = obtenerIntentosRestantes();
     const accessSection = document.getElementById("access-section");
+    const accessContent = document.getElementById("access-content");
+    const noAttemptsContent = document.getElementById("no-attempts-content");
 
     if (!accessSection) return;
 
     if (restantes <= 0) {
-        accessSection.innerHTML = `
-            <p style="color: red; font-weight: bold; font-size: 1.2em; margin-top: auto; margin-bottom: auto;">
-                Sus intentos se acabaron, por favor póngase en contacto con su docente.
-            </p>
-        `;
+        accessSection.classList.add("no-attempts");
+        accessContent.style.display = "none";
+        noAttemptsContent.style.display = "block";
         document.getElementById("uniqueSelection").style.display = "none";
         document.getElementById("essay").style.display = "none";
     } else {
-        accessSection.innerHTML = `
-            <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
-                botón azul, deben aceptarlas!</h2>
-            <label for="accessInput">Ingrese el código de acceso generado y compartido por el docente del curso:</label>
-            <input type="password" id="accessInput" placeholder="Código de acceso" />
-            <button onclick="validateAccess()">Ingresar</button>
-            <p id="accessError" style="color:red; display:none; margin-top:10px "><Strong>Código incorrecto. Intente de nuevo.</Strong></p>
-            <button onclick="resetAccess()" style="display:none;" id="adminResetBtn">Reset Access</button>
-        `;
+        accessSection.classList.remove("no-attempts");
+        accessContent.style.display = "block";
+        noAttemptsContent.style.display = "none";
     }
 }
 
@@ -1389,18 +1383,15 @@ function mostrarPreguntaDesarrollo(index) {
         tinymce.get(`respuesta-${index}`).destroy();
     }
 
-    // Limpiar
-    contenedor.innerHTML = `
-    <h2>Parte 2: Preguntas de desarrollo</h2>
-    <div class="essay-question">
-        <label for="respuesta-${index}"><strong>${index + 1}.</strong> ${pregunta}</label><br>
-        <textarea id="respuesta-${index}" placeholder="Escribe tu respuesta aquí...">${obtenerRespuestaDesarrollo(index)}</textarea>
-    </div>
-    <div class="essay-navigation">
-        <button id="btnSiguienteDesarrollo">Siguiente</button>
-        <button id="btnFinalizarDesarrollo" style="display: none;">Finalizar Parte de Desarrollo</button>
-    </div>
-  `;
+    // Actualizar contenido dinámico
+    const questionLabel = contenedor.querySelector('.essay-question label');
+    const textarea = contenedor.querySelector('.essay-question textarea');
+    const btnSiguiente = contenedor.querySelector('#btnSiguienteDesarrollo');
+    const btnFinalizar = contenedor.querySelector('#btnFinalizarDesarrollo');
+    
+    questionLabel.innerHTML = `<strong>${index + 1}.</strong> ${pregunta}`;
+    textarea.id = `respuesta-${index}`;
+    textarea.value = obtenerRespuestaDesarrollo(index);
 
     // Inicializar TinyMCE
     const isMobile = window.innerWidth <= 600;
@@ -1463,10 +1454,7 @@ function mostrarPreguntaDesarrollo(index) {
         setup: function (editor) {
             editor.on('init', function () {
                 const container = editor.getContainer();
-                container.style.border = '3px solid #004080';
-                container.style.borderRadius = '12px';
-                container.style.boxShadow = '0 8px 25px rgba(0, 64, 128, 0.2)';
-                container.style.transition = 'all 0.3s ease';
+                container.classList.add('tinymce-container');
             });
 
             editor.on('change keyup', function () {
@@ -1476,16 +1464,12 @@ function mostrarPreguntaDesarrollo(index) {
 
             editor.on('focus', function () {
                 const container = editor.getContainer();
-                container.style.borderColor = '#19A06E';
-                container.style.boxShadow = '0 12px 30px rgba(25, 160, 110, 0.3)';
-                container.style.transform = 'translateY(-2px)';
+                container.classList.add('tinymce-focused');
             });
 
             editor.on('blur', function () {
                 const container = editor.getContainer();
-                container.style.borderColor = '#004080';
-                container.style.boxShadow = '0 8px 25px rgba(0, 64, 128, 0.2)';
-                container.style.transform = 'translateY(0)';
+                container.classList.remove('tinymce-focused');
             });
         }
     });
