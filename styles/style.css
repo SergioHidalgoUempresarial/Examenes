@@ -238,8 +238,8 @@ button[style*="background:#004080"]:active {
   }
 
   .swal-instrucciones-icon {
-    width: 50px !important;
-    height: 50px !important;
+    width: 75px !important;
+    height: 75px !important;
     margin: 10px auto !important;
   }
 
@@ -293,8 +293,8 @@ button[style*="background:#004080"]:active {
   }
 
   .swal-instrucciones-icon {
-    width: 40px !important;
-    height: 40px !important;
+    width: 75px !important;
+    height: 75px !important;
   }
 
   .swal-instrucciones-image {
