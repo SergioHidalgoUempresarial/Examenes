@@ -10,9 +10,9 @@ const MAX_ATTEMPTS = 500; //Cantidad de intentos si los estudiantes recargan o h
 const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
 const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
-const UNIQUE_QUESTIONS_COUNT = 1; // Cantidad de preguntas de selección única
-const DEVELOPMENT_QUESTIONS_COUNT = 1; // Cantidad de preguntas de desarrollo
-const ACCESS_CODE = "5"; // 12345 Código que se valida en script.js
+const UNIQUE_QUESTIONS_COUNT = 27; // Cantidad de preguntas de selección única
+const DEVELOPMENT_QUESTIONS_COUNT = 8; // Cantidad de preguntas de desarrollo
+const ACCESS_CODE = "FundamentosTI_2026"; // 12345 Código que se valida en script.js
 /////////////////////////////////
 
 //////////////////////////////////
@@ -525,6 +525,7 @@ window.onload = function () {
     }
     // Detectar si hubo recarga y mostrar mensaje
     else if (localStorage.getItem("paginaRecargada") === "true") {
+        document.getElementById("name-section").style.display = "none";
         localStorage.removeItem("paginaRecargada");
         Swal.fire({
             icon: 'warning',
