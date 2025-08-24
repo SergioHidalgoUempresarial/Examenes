@@ -536,8 +536,8 @@ button[style*="background:#004080"]:active {
 }
 
 .instructions {
-  width: 40%;
-  max-height: 80vh;
+  width: 60%;
+  max-height: 80%;
   position: fixed;
   top: 25px;
   right: 1%;
@@ -554,7 +554,7 @@ button[style*="background:#004080"]:active {
 .instructions h2 {
   color: #004080;
   margin-bottom: 10px;
-  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-size: clamp(1.5rem, 5vw, 2rem);
 }
 
 .instructions ul {
@@ -566,8 +566,6 @@ button[style*="background:#004080"]:active {
   list-style: circle;
   margin-left: 20px;
 }
-
-
 
 .intructions .checkIntructions {
   margin-top: 20px;
@@ -603,9 +601,14 @@ label[for="agreeCheck"] {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 400px;
+  max-width: 40%;
   width: 90vw;
   z-index: 10;
+}
+
+.accessError {
+  color:red; 
+  margin-top: 10px;
 }
 
 .access-section h2 {
@@ -1981,7 +1984,7 @@ button:hover {
   .access-section {
     margin: 250px auto 0 auto;
     padding: 18px 16px;
-    max-width: 80vw;
+    max-width: 90%;
     width: 95vw;
     border-radius: 14px;
     box-shadow: 0 2px 12px rgba(0, 64, 128, 0.10);
