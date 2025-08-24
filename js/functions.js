@@ -10,9 +10,9 @@ const MAX_ATTEMPTS = 500; //Cantidad de intentos si los estudiantes recargan o h
 const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
 const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
-const UNIQUE_QUESTIONS_COUNT = 2; // Cantidad de preguntas de selección única
-const DEVELOPMENT_QUESTIONS_COUNT = 2; // Cantidad de preguntas de desarrollo
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const UNIQUE_QUESTIONS_COUNT = 1; // Cantidad de preguntas de selección única
+const DEVELOPMENT_QUESTIONS_COUNT = 1; // Cantidad de preguntas de desarrollo
+const ACCESS_CODE = "5"; // 12345 Código que se valida en script.js
 /////////////////////////////////
 
 //////////////////////////////////
@@ -3024,13 +3024,14 @@ function initPareo() {
         </div>
     `;
 
-    // Restaurar matches guardados
-    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex]) => {
+    // Restaurar matches guardados con colores
+    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex], matchIndex) => {
         const palabraEl = container.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
         const defEl = container.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
         if (palabraEl && defEl) {
-            palabraEl.classList.add('matched');
-            defEl.classList.add('matched');
+            const colorClass = `color-${(matchIndex % 8) + 1}`;
+            palabraEl.classList.add('matched', colorClass);
+            defEl.classList.add('matched', colorClass);
         }
     });
     scrollToTop();
@@ -3050,7 +3051,13 @@ function selectPareoItem(element) {
             const defIndex = pareoMatches[elementIndex];
             if (defIndex !== undefined) {
                 const defElement = document.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
-                if (defElement) defElement.classList.remove('matched');
+                if (defElement) {
+                    // Remover todas las clases de color y matched
+                    defElement.classList.remove('matched');
+                    for (let i = 1; i <= 8; i++) {
+                        defElement.classList.remove(`color-${i}`);
+                    }
+                }
                 delete pareoMatches[elementIndex];
             }
         } else {
@@ -3058,12 +3065,22 @@ function selectPareoItem(element) {
             const palabraIndex = Object.keys(pareoMatches).find(key => pareoMatches[key] == elementIndex);
             if (palabraIndex !== undefined) {
                 const palabraElement = document.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
-                if (palabraElement) palabraElement.classList.remove('matched');
+                if (palabraElement) {
+                    // Remover todas las clases de color y matched
+                    palabraElement.classList.remove('matched');
+                    for (let i = 1; i <= 8; i++) {
+                        palabraElement.classList.remove(`color-${i}`);
+                    }
+                }
                 delete pareoMatches[palabraIndex];
             }
         }
 
+        // Remover todas las clases de color y matched del elemento actual
         element.classList.remove('matched');
+        for (let i = 1; i <= 8; i++) {
+            element.classList.remove(`color-${i}`);
+        }
         savePracticeData();
         return;
     }
@@ -3078,9 +3095,13 @@ function selectPareoItem(element) {
             const defIndex = selectedPareoItem.dataset.type === 'definicion' ?
                 selectedPareoItem.dataset.index : element.dataset.index;
 
+            // Determinar el color para esta nueva pareja
+            const matchCount = Object.keys(pareoMatches).length;
+            const colorClass = `color-${(matchCount % 8) + 1}`;
+
             pareoMatches[palabraIndex] = defIndex;
-            selectedPareoItem.classList.add('matched');
-            element.classList.add('matched');
+            selectedPareoItem.classList.add('matched', colorClass);
+            element.classList.add('matched', colorClass);
             savePracticeData();
         }
         selectedPareoItem = null;
