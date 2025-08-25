@@ -607,7 +607,7 @@ label[for="agreeCheck"] {
 }
 
 .accessError {
-  color:red; 
+  color: red;
   margin-top: 10px;
 }
 
@@ -655,6 +655,27 @@ label[for="agreeCheck"] {
 .access-section button:active {
   box-shadow: inset 4px 4px 8px #c5c9d1, inset -4px -4px 8px #ffffff;
   transform: translateY(2px);
+}
+
+.password-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px;
+  /* espacio para el ícono */
+}
+
+.password-container .toggle-password {
+  position: absolute;
+  top: 60%;
+  right: 20px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #8e8e8e;
 }
 
 /* ---------------------------------------------------------------------------------- */

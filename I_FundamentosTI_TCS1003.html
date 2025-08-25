@@ -6,12 +6,13 @@
     <meta name="theme-color" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/TCS1003.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>UEmpresarial</title>
     <link rel="shortcut icon" href="images/Logo.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"
@@ -83,12 +84,18 @@
 
                     </ul>
                 </li>
-                <li>Al finalizar, asegúrese de que sus respuestas se hayan guardado correctamente al descargar el archivo .PDF.</li>
-                <li>Deberá subir el archivo descargado(pdf) en un máximo de 5 minutos, en el espacio designado para esta actividad en el Cloud Campus de la Universidad Empresarial.</li>
-                <li><strong>No se aceptarán entregas fuera del tiempo asignado ni por medios alternos al sistema oficial.</strong></li>
-                <li>El incumplimiento de cualquiera de estas reglas será considerado una falta grave y tendrá consecuencias conforme a la normativa institucional.</li>
-                <li>Este examen se rige por las políticas y reglamentos establecidos por la Universidad Empresarial.</li>
-                <li>Se debe poner el nombre completo y la cédula o identificación del estudiante, de lo contrario no se podrá calificar</li>
+                <li>Al finalizar, asegúrese de que sus respuestas se hayan guardado correctamente al descargar el
+                    archivo .PDF.</li>
+                <li>Deberá subir el archivo descargado(pdf) en un máximo de 5 minutos, en el espacio designado para esta
+                    actividad en el Cloud Campus de la Universidad Empresarial.</li>
+                <li><strong>No se aceptarán entregas fuera del tiempo asignado ni por medios alternos al sistema
+                        oficial.</strong></li>
+                <li>El incumplimiento de cualquiera de estas reglas será considerado una falta grave y tendrá
+                    consecuencias conforme a la normativa institucional.</li>
+                <li>Este examen se rige por las políticas y reglamentos establecidos por la Universidad Empresarial.
+                </li>
+                <li>Se debe poner el nombre completo y la cédula o identificación del estudiante, de lo contrario no se
+                    podrá calificar</li>
                 <li>El examen es individual, no se permite la colaboración entre estudiantes.</li>
                 <li>El código de acceso para realizar la evaluación debe consultarlo a su docente</li>
                 <li>Una vez aceptadas estas clausulas, no podrá revertir esta opción</li>
@@ -103,10 +110,15 @@
     <section id="access" class="access">
         <div id="access-section" class="access-section">
             <div id="access-content">
-                <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es un
+                <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es
+                    un
                     botón azul, deben aceptarlas!</h2>
-                <label for="accessInput">Ingrese el código de acceso generado y compartido por el docente del curso:</label>
-                <input type="password" id="accessInput" placeholder="Código de acceso" />
+                <label for="accessInput">Ingrese el código de acceso generado y compartido por el docente del
+                    curso:</label>
+                <div class="password-container">
+                    <input type="password" id="accessInput" placeholder="Código de acceso" />
+                    <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
+                </div>
                 <button id="btnIngresar">Ingresar</button>
                 <p id="accessError" class="accessError" style="display: none;">Código incorrecto. Intente de nuevo.</p>
                 <button style="display:none;" id="adminResetBtn">Reset Access</button>
@@ -266,7 +278,7 @@
         Limpiar almacenamiento
     </button>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/functions.js"></script>
+    <script src="js/TCS1003.js"></script>
 </body>
 
 </html>

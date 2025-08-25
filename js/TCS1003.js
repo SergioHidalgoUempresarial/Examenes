@@ -10,9 +10,9 @@ const MAX_ATTEMPTS = 500; //Cantidad de intentos si los estudiantes recargan o h
 const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
 const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
-const UNIQUE_QUESTIONS_COUNT = 27; // Cantidad de preguntas de selección única
-const DEVELOPMENT_QUESTIONS_COUNT = 8; // Cantidad de preguntas de desarrollo
-const ACCESS_CODE = "FundamentosTI_2026"; // 12345 Código que se valida en script.js
+const UNIQUE_QUESTIONS_COUNT = 1; // Cantidad de preguntas de selección única
+const DEVELOPMENT_QUESTIONS_COUNT = 2; // Cantidad de preguntas de desarrollo
+const ACCESS_CODE = "5"; // 12345 Código que se valida en script.js
 /////////////////////////////////
 
 //////////////////////////////////
@@ -399,6 +399,25 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         } else {
             checkbox.checked = true;
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("accessInput");
+
+    togglePassword.addEventListener("click", function () {
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+
+        // Cambiar el icono correctamente
+        if (this.classList.contains("fa-eye")) {
+            this.classList.remove("fa-eye");
+            this.classList.add("fa-eye-slash");
+        } else {
+            this.classList.remove("fa-eye-slash");
+            this.classList.add("fa-eye");
         }
     });
 });
@@ -1392,7 +1411,7 @@ function mostrarPreguntaDesarrollo(index) {
     const textarea = contenedor.querySelector('.essay-question textarea');
     const btnSiguiente = contenedor.querySelector('#btnSiguienteDesarrollo');
     const btnFinalizar = contenedor.querySelector('#btnFinalizarDesarrollo');
-    
+
     questionLabel.innerHTML = `<strong>${index + 1}.</strong> ${pregunta}`;
     textarea.id = `respuesta-${index}`;
     textarea.value = obtenerRespuestaDesarrollo(index);
@@ -2498,7 +2517,7 @@ function renderHTMLToPDF(doc, htmlContent, startY, maxWidth = 170) {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
     let currentY = startY;
-    
+
     function processElement(element, currentStyle = {}) {
         for (let node of element.childNodes) {
             if (node.nodeType === Node.TEXT_NODE) {
@@ -2506,7 +2525,7 @@ function renderHTMLToPDF(doc, htmlContent, startY, maxWidth = 170) {
                 if (text) {
                     doc.setFont(undefined, currentStyle.bold ? 'bold' : currentStyle.italic ? 'italic' : 'normal');
                     doc.setFontSize(currentStyle.fontSize || 12);
-                    
+
                     const lines = doc.splitTextToSize(text, maxWidth);
                     doc.text(lines, 20, currentY);
                     currentY += lines.length * 5;
@@ -2514,23 +2533,23 @@ function renderHTMLToPDF(doc, htmlContent, startY, maxWidth = 170) {
             } else if (node.nodeType === Node.ELEMENT_NODE) {
                 const tagName = node.tagName.toLowerCase();
                 let newStyle = { ...currentStyle };
-                
+
                 if (tagName === 'table') {
                     const rows = node.querySelectorAll('tr');
                     const tableData = [];
                     let headers = [];
-                    
+
                     rows.forEach((row, rowIndex) => {
                         const cells = row.querySelectorAll('td, th');
                         const cellTexts = Array.from(cells).map(cell => cell.textContent.trim());
-                        
+
                         if (rowIndex === 0 && row.querySelectorAll('th').length > 0) {
                             headers = cellTexts;
                         } else {
                             tableData.push(cellTexts);
                         }
                     });
-                    
+
                     doc.autoTable({
                         startY: currentY,
                         head: headers.length > 0 ? [headers] : undefined,
@@ -2542,7 +2561,7 @@ function renderHTMLToPDF(doc, htmlContent, startY, maxWidth = 170) {
                     currentY = doc.lastAutoTable.finalY + 5;
                     continue;
                 }
-                
+
                 switch (tagName) {
                     case 'strong':
                     case 'b':
@@ -2593,16 +2612,16 @@ function renderHTMLToPDF(doc, htmlContent, startY, maxWidth = 170) {
                         }
                         continue;
                 }
-                
+
                 processElement(node, newStyle);
-                
+
                 if (['p', 'h1', 'h2', 'h3', 'div', 'ul', 'ol'].includes(tagName)) {
                     currentY += 3;
                 }
             }
         }
     }
-    
+
     processElement(tempDiv);
     return currentY;
 }
@@ -2693,27 +2712,27 @@ document.getElementById("btnGenerarPDF").addEventListener("click", function () {
 
     // Desarrollo - incluir las preguntas
     const preguntasDesarrolloSeleccionadas = JSON.parse(localStorage.getItem("preguntasDesarrolloSeleccionadas")) || [];
-    
+
     if (Object.keys(respuestasDesarrollo).length > 0) {
         doc.text("Respuestas de desarrollo:", 20, y);
         y += 10;
-        
+
         Object.entries(respuestasDesarrollo).forEach(([key, value], index) => {
             const tiempo = tiemposGuardados.desarrollo?.[index] ? formatTime(tiemposGuardados.desarrollo[index]) : "N/A";
             const pregunta = preguntasDesarrolloSeleccionadas[index] || `Pregunta ${index + 1}`;
-            
+
             // Mostrar pregunta
             doc.setFontSize(12);
             doc.text(`${index + 1}. ${pregunta}`, 20, y);
             y += 8;
             doc.text(`Tiempo: ${tiempo}`, 20, y);
             y += 8;
-            
+
             // Renderizar contenido HTML respetando el orden original
             y = renderHTMLToPDF(doc, value, y);
-            
+
             y += 10;
-            
+
             if (y > 250) {
                 doc.addPage();
                 y = 20;
