@@ -10,7 +10,7 @@ const MAX_ATTEMPTS = 500; //Cantidad de intentos si los estudiantes recargan o h
 const ADMIN_PASSWORD = "Shoudymella1986*"; //Contraseña para borrar los datos de la página con Ctrl + Alt + P
 const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
-const UNIQUE_QUESTIONS_COUNT = 1; // Cantidad de preguntas de selección única
+const UNIQUE_QUESTIONS_COUNT = 2; // Cantidad de preguntas de selección única
 const DEVELOPMENT_QUESTIONS_COUNT = 2; // Cantidad de preguntas de desarrollo
 const ACCESS_CODE = "5"; // 12345 Código que se valida en script.js
 /////////////////////////////////
@@ -403,6 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// MOSTRAR/OCULTAR CONTRASEÑA
 document.addEventListener("DOMContentLoaded", function () {
     const togglePassword = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("accessInput");
@@ -421,6 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
 
 // BOTÓN SECRETO PARA ADMINISTRADOR
 window.addEventListener("DOMContentLoaded", () => {
@@ -864,17 +866,60 @@ document.addEventListener("keydown", function (e) {
     if (!seguridadActiva) return;
 
     const key = (e.key || "").toLowerCase();
-    const bloqueado =
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && key === "i") ||   // DevTools
-        (e.ctrlKey && key === "u") ||                 // Ver código fuente
-        (e.ctrlKey && key === "s") ||                 // Guardar página
-        (e.ctrlKey && key === "p") ||                 // Imprimir 
-        (e.ctrlKey && key === "v") ||                 // Pegar     
-        (e.ctrlKey && key === "c");                   // Copiar
-    if (bloqueado) {
+    let mensaje = "";
+    let segundos = 5; // Duración en segundos
+
+    if (e.key === "F12") {
+        mensaje = "F12 (Herramientas para desarrolladores)";
+    } else if (e.ctrlKey && e.shiftKey && key === "i") {
+        mensaje = "Ctrl+Shift+I (Inspeccionar elementos)";
+    } else if (e.ctrlKey && key === "u") {
+        mensaje = "Ctrl+U (Ver código fuente)";
+    } else if (e.ctrlKey && key === "s") {
+        mensaje = "Ctrl+S (Guardar página)";
+    } else if (e.ctrlKey && key === "p") {
+        mensaje = "Ctrl+P (Imprimir página)";
+    } else if (e.ctrlKey && key === "v") {
+        mensaje = "Ctrl+V (Pegar contenido)";
+    } else if (e.ctrlKey && key === "c") {
+        mensaje = "Ctrl+C (Copiar contenido)";
+    }
+    if (mensaje !== "") {
         e.preventDefault();
         e.stopPropagation();
+
+        // Mostrar alerta con cuenta regresiva
+        Swal.fire({
+            icon: "warning",
+            title: "Acción bloqueada",
+            html:   `
+                    <div style="text-align: center;">
+                        <div>El atajo <b>${mensaje}</b></div>
+                        <div style="margin-top: 5px;">Está deshabilitado</div>
+                        <div style="margin-top: 10px;">Cerrando en <b><span id="swal-timer">${segundos}</span></b> segundos</div>
+                    </div>
+                    `,
+            timer: segundos * 1000,
+            showConfirmButton: false,
+            customClass: {
+                popup: 'swal-instrucciones',
+                title: 'swal-instrucciones-title',
+                confirmButton: 'swal-instrucciones-confirm',
+                cancelButton: 'swal-instrucciones-cancel',
+                icon: 'swal-instrucciones-icon',
+                htmlContainer: 'swal-instrucciones-text',
+                image: 'swal-instrucciones-image'
+            },
+            didOpen: () => {
+                const timerSpan = Swal.getHtmlContainer().querySelector('#swal-timer');
+                const interval = setInterval(() => {
+                    segundos--;
+                    if (timerSpan) timerSpan.textContent = segundos;
+                    if (segundos <= 0) clearInterval(interval);
+                }, 1000);
+            }
+        });
+
         return false;
     }
 });
@@ -1493,6 +1538,100 @@ function mostrarPreguntaDesarrollo(index) {
             editor.on('blur', function () {
                 const container = editor.getContainer();
                 container.classList.remove('tinymce-focused');
+            });
+
+            // Bloquear copiar
+            editor.on('copy', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acción bloqueada',
+                    text: 'No está permitido copiar contenido.',
+                    showCancelButton: false,
+                    confirmButtonText: 'Entendido',
+                    cancelButtonText: '',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'swal-instrucciones',
+                        title: 'swal-instrucciones-title',
+                        confirmButton: 'swal-instrucciones-confirm',
+                        cancelButton: 'swal-instrucciones-cancel',
+                        icon: 'swal-instrucciones-icon',
+                        htmlContainer: 'swal-instrucciones-text'
+                    },
+                });
+            });
+
+            // Bloquear cortar
+            editor.on('cut', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acción bloqueada',
+                    text: 'No está permitido cortar contenido.',
+                    showCancelButton: false,
+                    confirmButtonText: 'Entendido',
+                    cancelButtonText: '',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'swal-instrucciones',
+                        title: 'swal-instrucciones-title',
+                        confirmButton: 'swal-instrucciones-confirm',
+                        cancelButton: 'swal-instrucciones-cancel',
+                        icon: 'swal-instrucciones-icon',
+                        htmlContainer: 'swal-instrucciones-text'
+                    },
+                });
+            });
+
+            // Bloquear pegar
+            editor.on('paste', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acción bloqueada',
+                    text: 'No está permitido pegar contenido.',
+                    showCancelButton: false,
+                    confirmButtonText: 'Entendido',
+                    cancelButtonText: '',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    customClass: {
+                        popup: 'swal-instrucciones',
+                        title: 'swal-instrucciones-title',
+                        confirmButton: 'swal-instrucciones-confirm',
+                        cancelButton: 'swal-instrucciones-cancel',
+                        icon: 'swal-instrucciones-icon',
+                        htmlContainer: 'swal-instrucciones-text'
+                    },
+                });
+            });
+
+            // Bloquear atajos de teclado (Ctrl+C, Ctrl+X, Ctrl+V)
+            editor.on('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'v'].includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Atajo bloqueado',
+                        text: `El atajo Ctrl+${e.key.toUpperCase()} no está permitido.`,
+                        showCancelButton: false,
+                        confirmButtonText: 'Entendido',
+                        cancelButtonText: '',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        customClass: {
+                            popup: 'swal-instrucciones',
+                            title: 'swal-instrucciones-title',
+                            confirmButton: 'swal-instrucciones-confirm',
+                            cancelButton: 'swal-instrucciones-cancel',
+                            icon: 'swal-instrucciones-icon',
+                            htmlContainer: 'swal-instrucciones-text'
+                        },
+                    });
+                }
             });
         }
     });
@@ -3044,14 +3183,13 @@ function initPareo() {
         </div>
     `;
 
-    // Restaurar matches guardados con colores
-    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex], matchIndex) => {
+    // Restaurar matches guardados
+    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex]) => {
         const palabraEl = container.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
         const defEl = container.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
         if (palabraEl && defEl) {
-            const colorClass = `color-${(matchIndex % 8) + 1}`;
-            palabraEl.classList.add('matched', colorClass);
-            defEl.classList.add('matched', colorClass);
+            palabraEl.classList.add('matched');
+            defEl.classList.add('matched');
         }
     });
     scrollToTop();
@@ -3071,13 +3209,7 @@ function selectPareoItem(element) {
             const defIndex = pareoMatches[elementIndex];
             if (defIndex !== undefined) {
                 const defElement = document.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
-                if (defElement) {
-                    // Remover todas las clases de color y matched
-                    defElement.classList.remove('matched');
-                    for (let i = 1; i <= 8; i++) {
-                        defElement.classList.remove(`color-${i}`);
-                    }
-                }
+                if (defElement) defElement.classList.remove('matched');
                 delete pareoMatches[elementIndex];
             }
         } else {
@@ -3085,22 +3217,12 @@ function selectPareoItem(element) {
             const palabraIndex = Object.keys(pareoMatches).find(key => pareoMatches[key] == elementIndex);
             if (palabraIndex !== undefined) {
                 const palabraElement = document.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
-                if (palabraElement) {
-                    // Remover todas las clases de color y matched
-                    palabraElement.classList.remove('matched');
-                    for (let i = 1; i <= 8; i++) {
-                        palabraElement.classList.remove(`color-${i}`);
-                    }
-                }
+                if (palabraElement) palabraElement.classList.remove('matched');
                 delete pareoMatches[palabraIndex];
             }
         }
 
-        // Remover todas las clases de color y matched del elemento actual
         element.classList.remove('matched');
-        for (let i = 1; i <= 8; i++) {
-            element.classList.remove(`color-${i}`);
-        }
         savePracticeData();
         return;
     }
@@ -3115,13 +3237,9 @@ function selectPareoItem(element) {
             const defIndex = selectedPareoItem.dataset.type === 'definicion' ?
                 selectedPareoItem.dataset.index : element.dataset.index;
 
-            // Determinar el color para esta nueva pareja
-            const matchCount = Object.keys(pareoMatches).length;
-            const colorClass = `color-${(matchCount % 8) + 1}`;
-
             pareoMatches[palabraIndex] = defIndex;
-            selectedPareoItem.classList.add('matched', colorClass);
-            element.classList.add('matched', colorClass);
+            selectedPareoItem.classList.add('matched');
+            element.classList.add('matched');
             savePracticeData();
         }
         selectedPareoItem = null;
