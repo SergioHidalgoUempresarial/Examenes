@@ -12,7 +12,7 @@ const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
 const UNIQUE_QUESTIONS_COUNT = 2; // Cantidad de preguntas de selección única
 const DEVELOPMENT_QUESTIONS_COUNT = 2; // Cantidad de preguntas de desarrollo
-const ACCESS_CODE = "5"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
 /////////////////////////////////
 
 //////////////////////////////////
@@ -892,7 +892,7 @@ document.addEventListener("keydown", function (e) {
         Swal.fire({
             icon: "warning",
             title: "Acción bloqueada",
-            html:   `
+            html: `
                     <div style="text-align: center;">
                         <div>El atajo <b>${mensaje}</b></div>
                         <div style="margin-top: 5px;">Está deshabilitado</div>
@@ -1379,9 +1379,9 @@ function initDevelopmentPart() {
     document.getElementById("btnFinalizarDesarrollo").addEventListener("click", () => {
         Swal.fire({
             title: "Parte de desarrollo finalizada",
-            text: "Has respondido todas las preguntas abiertas. Se generará el resumen.",
+            text: "Ahora continúa con la parte 3: Práctica.",
             icon: "success",
-            confirmButtonText: "Continuar a descargar resumen",
+            confirmButtonText: "Entendido",
             allowOutsideClick: false,
             allowEscapeKey: false,
             customClass: {
@@ -1398,7 +1398,12 @@ function initDevelopmentPart() {
                 }
             }
         }).then(() => {
-            window.location.href = "resumen.html"; // Cambia esto si usas otra ruta
+            localStorage.setItem("parte2Finalizada", "true");
+            document.getElementById("essay").style.display = "none";
+            document.getElementById("practice").style.display = "block";
+            initPracticePart();
+            showPracticeSection(1);
+            updatePracticeProgress();
         });
     });
 }
@@ -3824,36 +3829,3 @@ function savePracticeData() {
 }
 
 
-
-// Función para finalizar desarrollo y pasar a práctica
-function finalizarDesarrollo() {
-    Swal.fire({
-        title: "Parte de desarrollo finalizada",
-        text: "Ahora continúa con la parte 3: Práctica.",
-        icon: "success",
-        confirmButtonText: "Entendido",
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        customClass: {
-            popup: 'swal-instrucciones',
-            title: 'swal-instrucciones-title',
-            confirmButton: 'swal-instrucciones-confirm',
-            icon: 'swal-instrucciones-icon',
-            htmlContainer: 'swal-instrucciones-text'
-        },
-        didOpen: () => {
-            const popup = document.querySelector('swal-instrucciones');
-            if (popup) {
-                popup.scrollTop = 0; // Forzar scroll arriba
-            }
-        }
-    }).then(() => {
-        localStorage.setItem("parte2Finalizada", "true");
-        document.getElementById("essay").style.display = "none";
-        document.getElementById("practice").style.display = "block";
-        initPracticePart();
-        showPracticeSection(1);
-        updatePracticeProgress();
-    });
-}
-/////////////////////////////////
