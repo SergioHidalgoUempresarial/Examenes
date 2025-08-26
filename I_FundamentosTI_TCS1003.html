@@ -110,14 +110,10 @@
         <div id="access-section" class="access-section">
             <div id="access-content">
                 <h2>Debemos leer las instrucciones para poder realizar la prueba, están arriba a la derecha el cual es
-                    un
-                    botón azul, deben aceptarlas!</h2>
+                    un botón azul, deben aceptarlas!</h2>
                 <label for="accessInput">Ingrese el código de acceso generado y compartido por el docente del
                     curso:</label>
-                <div class="password-container">
-                    <input type="password" id="accessInput" placeholder="Código de acceso" />
-                    <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
-                </div>
+                <input type="password" id="accessInput" placeholder="Código de acceso" />
                 <button id="btnIngresar">Ingresar</button>
                 <p id="accessError" class="accessError" style="display: none;">Código incorrecto. Intente de nuevo.</p>
                 <button style="display:none;" id="adminResetBtn">Reset Access</button>
@@ -184,16 +180,10 @@
             </div>
             <!-- Pregunta actual y navegación -->
             <div id="essay-container" class="essay-container">
-                <h2>Parte 2: Preguntas de desarrollo</h2>
-                <div class="essay-question">
-                    <label for="respuesta-0"><strong>1.</strong> Pregunta de desarrollo</label><br>
-                    <textarea id="respuesta-0" placeholder="Escribe tu respuesta aquí..."></textarea>
-                </div>
-                <div class="essay-navigation">
-                    <button id="btnSiguienteDesarrollo">Siguiente</button>
-                    <button id="btnFinalizarDesarrollo" style="display: none;">Finalizar Parte de Desarrollo</button>
-                </div>
                 <div id="contenedor-desarrollo"></div>
+                <div class="essay-navigation">
+                    <button id="nextBtnDesarrollo">Siguiente</button>
+                </div>
             </div>
         </div>
     </section>

@@ -12,7 +12,7 @@ const MAX_CLEAR_USES = 1; // Cambia a 2 o 3 si deseas permitir más usos
 const CLEAR_INTERVAL_DAYS = 1; // Tiempo en días de espera para poder borrar los datos
 const UNIQUE_QUESTIONS_COUNT = 2; // Cantidad de preguntas de selección única
 const DEVELOPMENT_QUESTIONS_COUNT = 2; // Cantidad de preguntas de desarrollo
-const ACCESS_CODE = "2"; // 12345 Código que se valida en script.js
+const ACCESS_CODE = "3"; // 12345 Código que se valida en script.js
 /////////////////////////////////
 
 //////////////////////////////////
@@ -403,27 +403,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// MOSTRAR/OCULTAR CONTRASEÑA
-document.addEventListener("DOMContentLoaded", function () {
-    const togglePassword = document.getElementById("togglePassword");
-    const passwordInput = document.getElementById("accessInput");
-
-    togglePassword.addEventListener("click", function () {
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
-
-        // Cambiar el icono correctamente
-        if (this.classList.contains("fa-eye")) {
-            this.classList.remove("fa-eye");
-            this.classList.add("fa-eye-slash");
-        } else {
-            this.classList.remove("fa-eye-slash");
-            this.classList.add("fa-eye");
-        }
-    });
-});
-
-
 // BOTÓN SECRETO PARA ADMINISTRADOR
 window.addEventListener("DOMContentLoaded", () => {
     const adminBtn = document.getElementById("admin-clear");
@@ -546,8 +525,8 @@ window.onload = function () {
     }
     // Detectar si hubo recarga y mostrar mensaje
     else if (localStorage.getItem("paginaRecargada") === "true") {
-        document.getElementById("name-section").style.display = "none";
         localStorage.removeItem("paginaRecargada");
+        document.getElementById("name-section").style.display = "none";
         Swal.fire({
             icon: 'warning',
             title: 'Página recargada',
@@ -866,60 +845,17 @@ document.addEventListener("keydown", function (e) {
     if (!seguridadActiva) return;
 
     const key = (e.key || "").toLowerCase();
-    let mensaje = "";
-    let segundos = 5; // Duración en segundos
-
-    if (e.key === "F12") {
-        mensaje = "F12 (Herramientas para desarrolladores)";
-    } else if (e.ctrlKey && e.shiftKey && key === "i") {
-        mensaje = "Ctrl+Shift+I (Inspeccionar elementos)";
-    } else if (e.ctrlKey && key === "u") {
-        mensaje = "Ctrl+U (Ver código fuente)";
-    } else if (e.ctrlKey && key === "s") {
-        mensaje = "Ctrl+S (Guardar página)";
-    } else if (e.ctrlKey && key === "p") {
-        mensaje = "Ctrl+P (Imprimir página)";
-    } else if (e.ctrlKey && key === "v") {
-        mensaje = "Ctrl+V (Pegar contenido)";
-    } else if (e.ctrlKey && key === "c") {
-        mensaje = "Ctrl+C (Copiar contenido)";
-    }
-    if (mensaje !== "") {
+    const bloqueado =
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && key === "i") ||   // DevTools
+        (e.ctrlKey && key === "u") ||                 // Ver código fuente
+        (e.ctrlKey && key === "s") ||                 // Guardar página
+        (e.ctrlKey && key === "p") ||                 // Imprimir 
+        (e.ctrlKey && key === "v") ||                 // Pegar     
+        (e.ctrlKey && key === "c");                   // Copiar
+    if (bloqueado) {
         e.preventDefault();
         e.stopPropagation();
-
-        // Mostrar alerta con cuenta regresiva
-        Swal.fire({
-            icon: "warning",
-            title: "Acción bloqueada",
-            html: `
-                    <div style="text-align: center;">
-                        <div>El atajo <b>${mensaje}</b></div>
-                        <div style="margin-top: 5px;">Está deshabilitado</div>
-                        <div style="margin-top: 10px;">Cerrando en <b><span id="swal-timer">${segundos}</span></b> segundos</div>
-                    </div>
-                    `,
-            timer: segundos * 1000,
-            showConfirmButton: false,
-            customClass: {
-                popup: 'swal-instrucciones',
-                title: 'swal-instrucciones-title',
-                confirmButton: 'swal-instrucciones-confirm',
-                cancelButton: 'swal-instrucciones-cancel',
-                icon: 'swal-instrucciones-icon',
-                htmlContainer: 'swal-instrucciones-text',
-                image: 'swal-instrucciones-image'
-            },
-            didOpen: () => {
-                const timerSpan = Swal.getHtmlContainer().querySelector('#swal-timer');
-                const interval = setInterval(() => {
-                    segundos--;
-                    if (timerSpan) timerSpan.textContent = segundos;
-                    if (segundos <= 0) clearInterval(interval);
-                }, 1000);
-            }
-        });
-
         return false;
     }
 });
@@ -1341,13 +1277,13 @@ const preguntasDesarrolloCompletas = [
     "Explica el concepto de virtualización y cómo se utiliza en la computación moderna. (3pts)"
 ];
 
-// Función para seleccionar preguntas aleatorias únicas
+// Función para seleccionar preguntas únicas aleatorias 
 function getRandomDevelopmentQuestions() {
     // Crear una copia del array original
     const available = [...preguntasDesarrolloCompletas];
     const selected = [];
 
-    // Seleccionar preguntas únicas aleatoriamente
+    // Seleccionar preguntas según la variable DEVELOPMENT_QUESTIONS_COUNT aleatoriamente
     for (let i = 0; i < DEVELOPMENT_QUESTIONS_COUNT && available.length > 0; i++) {
         const randomIndex = Math.floor(Math.random() * available.length);
         selected.push(available[randomIndex]);
@@ -1379,9 +1315,9 @@ function initDevelopmentPart() {
     document.getElementById("btnFinalizarDesarrollo").addEventListener("click", () => {
         Swal.fire({
             title: "Parte de desarrollo finalizada",
-            text: "Ahora continúa con la parte 3: Práctica.",
+            text: "Has respondido todas las preguntas abiertas. Se generará el resumen.",
             icon: "success",
-            confirmButtonText: "Entendido",
+            confirmButtonText: "Continuar a descargar resumen",
             allowOutsideClick: false,
             allowEscapeKey: false,
             customClass: {
@@ -1398,12 +1334,7 @@ function initDevelopmentPart() {
                 }
             }
         }).then(() => {
-            localStorage.setItem("parte2Finalizada", "true");
-            document.getElementById("essay").style.display = "none";
-            document.getElementById("practice").style.display = "block";
-            initPracticePart();
-            showPracticeSection(1);
-            updatePracticeProgress();
+            window.location.href = "resumen.html"; // Cambia esto si usas otra ruta
         });
     });
 }
@@ -1456,15 +1387,18 @@ function mostrarPreguntaDesarrollo(index) {
         tinymce.get(`respuesta-${index}`).destroy();
     }
 
-    // Actualizar contenido dinámico
-    const questionLabel = contenedor.querySelector('.essay-question label');
-    const textarea = contenedor.querySelector('.essay-question textarea');
-    const btnSiguiente = contenedor.querySelector('#btnSiguienteDesarrollo');
-    const btnFinalizar = contenedor.querySelector('#btnFinalizarDesarrollo');
-
-    questionLabel.innerHTML = `<strong>${index + 1}.</strong> ${pregunta}`;
-    textarea.id = `respuesta-${index}`;
-    textarea.value = obtenerRespuestaDesarrollo(index);
+    // Limpiar
+    contenedor.innerHTML = `
+    <h2>Parte 2: Preguntas de desarrollo</h2>
+    <div class="essay-question">
+        <label for="respuesta-${index}"><strong>${index + 1}.</strong> ${pregunta}</label><br>
+        <textarea id="respuesta-${index}" placeholder="Escribe tu respuesta aquí...">${obtenerRespuestaDesarrollo(index)}</textarea>
+    </div>
+    <div class="essay-navigation">
+        <button id="btnSiguienteDesarrollo">Siguiente</button>
+        <button id="btnFinalizarDesarrollo" style="display: none;">Finalizar Parte de Desarrollo</button>
+    </div>
+  `;
 
     // Inicializar TinyMCE
     const isMobile = window.innerWidth <= 600;
@@ -1543,100 +1477,6 @@ function mostrarPreguntaDesarrollo(index) {
             editor.on('blur', function () {
                 const container = editor.getContainer();
                 container.classList.remove('tinymce-focused');
-            });
-
-            // Bloquear copiar
-            editor.on('copy', function (e) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Acción bloqueada',
-                    text: 'No está permitido copiar contenido.',
-                    showCancelButton: false,
-                    confirmButtonText: 'Entendido',
-                    cancelButtonText: '',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    customClass: {
-                        popup: 'swal-instrucciones',
-                        title: 'swal-instrucciones-title',
-                        confirmButton: 'swal-instrucciones-confirm',
-                        cancelButton: 'swal-instrucciones-cancel',
-                        icon: 'swal-instrucciones-icon',
-                        htmlContainer: 'swal-instrucciones-text'
-                    },
-                });
-            });
-
-            // Bloquear cortar
-            editor.on('cut', function (e) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Acción bloqueada',
-                    text: 'No está permitido cortar contenido.',
-                    showCancelButton: false,
-                    confirmButtonText: 'Entendido',
-                    cancelButtonText: '',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    customClass: {
-                        popup: 'swal-instrucciones',
-                        title: 'swal-instrucciones-title',
-                        confirmButton: 'swal-instrucciones-confirm',
-                        cancelButton: 'swal-instrucciones-cancel',
-                        icon: 'swal-instrucciones-icon',
-                        htmlContainer: 'swal-instrucciones-text'
-                    },
-                });
-            });
-
-            // Bloquear pegar
-            editor.on('paste', function (e) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Acción bloqueada',
-                    text: 'No está permitido pegar contenido.',
-                    showCancelButton: false,
-                    confirmButtonText: 'Entendido',
-                    cancelButtonText: '',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    customClass: {
-                        popup: 'swal-instrucciones',
-                        title: 'swal-instrucciones-title',
-                        confirmButton: 'swal-instrucciones-confirm',
-                        cancelButton: 'swal-instrucciones-cancel',
-                        icon: 'swal-instrucciones-icon',
-                        htmlContainer: 'swal-instrucciones-text'
-                    },
-                });
-            });
-
-            // Bloquear atajos de teclado (Ctrl+C, Ctrl+X, Ctrl+V)
-            editor.on('keydown', function (e) {
-                if ((e.ctrlKey || e.metaKey) && ['c', 'x', 'v'].includes(e.key.toLowerCase())) {
-                    e.preventDefault();
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Atajo bloqueado',
-                        text: `El atajo Ctrl+${e.key.toUpperCase()} no está permitido.`,
-                        showCancelButton: false,
-                        confirmButtonText: 'Entendido',
-                        cancelButtonText: '',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        customClass: {
-                            popup: 'swal-instrucciones',
-                            title: 'swal-instrucciones-title',
-                            confirmButton: 'swal-instrucciones-confirm',
-                            cancelButton: 'swal-instrucciones-cancel',
-                            icon: 'swal-instrucciones-icon',
-                            htmlContainer: 'swal-instrucciones-text'
-                        },
-                    });
-                }
             });
         }
     });
@@ -1956,256 +1796,256 @@ const uniqueQuestions = [
         ],
         correct: "El software depende del hardware para ejecutarse"
     },
-    {
-        question: "¿Cuál de las siguientes opciones NO es un dispositivo de entrada? (2 pts)",
-        options: [
-            "Teclado",
-            "Mouse",
-            "Monitor",
-            "Escáner"
-        ],
-        correct: "Monitor"
-    },
-    {
-        question: "¿Qué componente se encarga de ejecutar las instrucciones en una computadora? (2 pts)",
-        options: [
-            "Memoria RAM",
-            "Tarjeta gráfica",
-            "Unidad central de proceso (CPU)",
-            "Disco duro"
-        ],
-        correct: "Unidad central de proceso (CPU)"
-    },
-    {
-        question: "¿Cuál es un ejemplo de memoria volátil? (2 pts)",
-        options: [
-            "ROM",
-            "HDD",
-            "RAM",
-            "SSD"
-        ],
-        correct: "RAM"
-    },
-    {
-        question: "¿Para qué se utiliza la memoria caché? (2 pts)",
-        options: [
-            "Para guardar archivos permanentemente",
-            "Para aumentar la velocidad de acceso a datos recurrentes",
-            "Para almacenar copias de seguridad del sistema",
-            "Para ejecutar gráficos de alta calidad"
-        ],
-        correct: "Para aumentar la velocidad de acceso a datos recurrentes"
-    },
-    {
-        question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
-        options: [
-            "La RAM es volátil y la ROM no",
-            "La ROM es más rápida que la RAM",
-            "Ambas pueden ser modificadas libremente por el usuario",
-            "La RAM solo se usa en servidores"
-        ],
-        correct: "La RAM es volátil y la ROM"
-    },
-    {
-        question: "¿Qué memoria almacena los datos más utilizados por el procesador para acelerar el acceso? (2 pts)",
-        options: [
-            "RAM",
-            "Caché",
-            "ROM",
-            "Flash"
-        ],
-        correct: "Caché"
-    },
-    {
-        question: "¿Qué tipo de memoria se encuentra en las tarjetas gráficas y ayuda al procesamiento de imágenes? (2 pts)",
-        options: [
-            "VRAM",
-            "ROM",
-            "HDD",
-            "RAM"
-        ],
-        correct: "VRAM"
-    },
-    {
-        question: "¿Qué es la memoria virtual? (2 pts)",
-        options: [
-            "Un espacio en el disco duro utilizado como extensión de la RAM",
-            "Un tipo de memoria integrada en los procesadores",
-            "Un software que gestiona la memoria de la PC",
-            "Un almacenamiento físico externo"
-        ],
-        correct: "Un espacio en el disco duro utilizado como extensión de la RAM"
-    },
-    {
-        question: "¿Cuál es la función principal de la memoria ROM? (2 pts)",
-        options: [
-            "Almacenar programas temporalmente",
-            "Contener las instrucciones básicas para el arranque del sistema",
-            "Ejecutar videojuegos de alto rendimiento",
-            "Mejorar el rendimiento del procesador"
-        ],
-        correct: "Contener las instrucciones básicas para el arranque del sistema"
-    },
-    {
-        question: "¿Qué es un disco SSD? (2 pts)",
-        options: [
-            "Un disco duro mecánico",
-            "Un tipo de memoria RAM",
-            "Un almacenamiento basado en memoria flash",
-            "Una unidad de almacenamiento óptimo"
-        ],
-        correct: "Un almacenamiento basado en memoria flash"
-    },
-    {
-        question: "¿Cuál es la diferencia entre la memoria RAM DDR3 y DDR5? (2 pts)",
-        options: [
-            "la DDR5 es más rápida y eficiente",
-            "La DDR3 tiene mayor capacidad",
-            "La DDR5 es solo para servidores",
-            "No hay diferencias entre ellas"
-        ],
-        correct: "la DDR5 es más rápida y eficiente"
-    },
-    {
-        question: "¿Que significa M.2 en almacenamiento? (2 pts)",
-        options: [
-            "Un formato compacto para discos SSD",
-            "Un tipo de memoria ROM avanzada",
-            "Una categoría de procesadores",
-            "Un software de administración de archivos"
-        ],
-        correct: "Un formato compacto para discos SSD"
-    },
-    {
-        question: "¿Qué es una máquina virtual(VM)? (2 pts)",
-        options: [
-            "Un software que emula un sistema operativo dentro de otro",
-            "Un hardware físico adicional para aumentar el rendimiento",
-            "Un sistema que reemplaza a la memoria RAM",
-            "Una red de servidores conectados"
-        ],
-        correct: "Un software que emula un sistema operativo dentro de otro"
-    },
-    {
-        question: "¿Cuál es una de las principales ventajas de VirtualBox? (2 pts)",
-        options: [
-            "Es gratuito y permite ejecutar múltiples sistemas operativos",
-            "Solo funciona con Windows",
-            "No permite tomar instantáneas del sistema",
-            "Requiere una licencia de pago"
-        ],
-        correct: "Es gratuito y permite ejecutar múltiples sistemas operativos"
-    },
-    {
-        question: "¿Qué tipo de conexión de red permite que una VM se comunique con Internet y con la red local como si fuera otro dispositivo? (2 pts)",
-        options: [
-            "NAT",
-            "Bridge",
-            "DHCP",
-            "Loopback"
-        ],
-        correct: "Bridge"
-    },
-    {
-        question: "¿Cuál de los siguientes NO es un comando de Windows PowerShell? (2 pts)",
-        options: [
-            "Get-NetAdapter",
-            "ipconfig",
-            "mkdir",
-            "tasklist"
-        ],
-        correct: "mkdir"
-    },
-    {
-        question: "¿Qué atajo de teclado en el sistema operativo Windows abre el Administrador de Tareas directamente? (2 pts)",
-        options: [
-            "Ctrl + Alt + Supr",
-            "Ctrl + Shift + Esc",
-            "Win + R",
-            "Alt + F4"
-        ],
-        correct: "Ctrl + Shift + Esc"
-    },
-    {
-        question: "¿Qué comando en Linux se usa para instalar un programa en sistemas basados en Debian? (2 pts)",
-        options: [
-            "install package",
-            "sudo apt install <paquete>",
-            "run application",
-            "setup software"
-        ],
-        correct: "sudo apt install <paquete>"
-    },
-    {
-        question: "¿Cuál de los siguientes comandos en Linux se usa para listar archivos en un directorio? (2 pts)",
-        options: [
-            "ls",
-            "dir",
-            "showfiles",
-            "list-all"
-        ],
-        correct: "ls"
-    },
-    {
-        question: "¿Qué comando en Linux se usa para cambiar los permisos de un archivo? (2 pts)",
-        options: [
-            "chmod",
-            "ls -l",
-            "mkdir",
-            "rm"
-        ],
-        correct: "chmod"
-    },
-    {
-        question: "¿Qué significa CLI? (2 pts)",
-        options: [
-            "Command Line Interface",
-            "Computer Linux Interaction",
-            "Control Logic Integration",
-            "Cloud Linux Instance"
-        ],
-        correct: "Command Line Interface"
-    },
-    {
-        question: "¿Cuál de los siguientes comandos en Windows se usa para ver la configuración de red? (2 pts)",
-        options: [
-            "netconfig",
-            "ipconfig",
-            "list-network",
-            "configip"
-        ],
-        correct: "ipconfig"
-    },
-    {
-        question: "¿Qué comando en Linux permite ver la dirección IP de la computadora? (2 pts)",
-        options: [
-            "ls /ip",
-            "ip a",
-            "netstat -an",
-            "show-ip"
-        ],
-        correct: "ip a"
-    },
-    {
-        question: "¿Qué comando en Linux se usa para monitorear procesos en tiempo real? (2 pts)",
-        options: [
-            "top",
-            "tasklist",
-            "view-process",
-            "process-check"
-        ],
-        correct: "top"
-    },
-    {
-        question: "¿Cuál de los siguientes comandos de Windows permite cerrar un proceso específico? (2 pts)",
-        options: [
-            "taskkill",
-            "end-process",
-            "stop-app",
-            "shutdown -t 0"
-        ],
-        correct: "taskkill"
-    },
+    // {
+    //     question: "¿Cuál de las siguientes opciones NO es un dispositivo de entrada? (2 pts)",
+    //     options: [
+    //         "Teclado",
+    //         "Mouse",
+    //         "Monitor",
+    //         "Escáner"
+    //     ],
+    //     correct: "Monitor"
+    // },
+    // {
+    //     question: "¿Qué componente se encarga de ejecutar las instrucciones en una computadora? (2 pts)",
+    //     options: [
+    //         "Memoria RAM",
+    //         "Tarjeta gráfica",
+    //         "Unidad central de proceso (CPU)",
+    //         "Disco duro"
+    //     ],
+    //     correct: "Unidad central de proceso (CPU)"
+    // },
+    // {
+    //     question: "¿Cuál es un ejemplo de memoria volátil? (2 pts)",
+    //     options: [
+    //         "ROM",
+    //         "HDD",
+    //         "RAM",
+    //         "SSD"
+    //     ],
+    //     correct: "RAM"
+    // },
+    // {
+    //     question: "¿Para qué se utiliza la memoria caché? (2 pts)",
+    //     options: [
+    //         "Para guardar archivos permanentemente",
+    //         "Para aumentar la velocidad de acceso a datos recurrentes",
+    //         "Para almacenar copias de seguridad del sistema",
+    //         "Para ejecutar gráficos de alta calidad"
+    //     ],
+    //     correct: "Para aumentar la velocidad de acceso a datos recurrentes"
+    // },
+    // {
+    //     question: "¿Qué diferencia principal existe entre la memoria RAM y la ROM? (2 pts)",
+    //     options: [
+    //         "La RAM es volátil y la ROM no",
+    //         "La ROM es más rápida que la RAM",
+    //         "Ambas pueden ser modificadas libremente por el usuario",
+    //         "La RAM solo se usa en servidores"
+    //     ],
+    //     correct: "La RAM es volátil y la ROM"
+    // },
+    // {
+    //     question: "¿Qué memoria almacena los datos más utilizados por el procesador para acelerar el acceso? (2 pts)",
+    //     options: [
+    //         "RAM",
+    //         "Caché",
+    //         "ROM",
+    //         "Flash"
+    //     ],
+    //     correct: "Caché"
+    // },
+    // {
+    //     question: "¿Qué tipo de memoria se encuentra en las tarjetas gráficas y ayuda al procesamiento de imágenes? (2 pts)",
+    //     options: [
+    //         "VRAM",
+    //         "ROM",
+    //         "HDD",
+    //         "RAM"
+    //     ],
+    //     correct: "VRAM"
+    // },
+    // {
+    //     question: "¿Qué es la memoria virtual? (2 pts)",
+    //     options: [
+    //         "Un espacio en el disco duro utilizado como extensión de la RAM",
+    //         "Un tipo de memoria integrada en los procesadores",
+    //         "Un software que gestiona la memoria de la PC",
+    //         "Un almacenamiento físico externo"
+    //     ],
+    //     correct: "Un espacio en el disco duro utilizado como extensión de la RAM"
+    // },
+    // {
+    //     question: "¿Cuál es la función principal de la memoria ROM? (2 pts)",
+    //     options: [
+    //         "Almacenar programas temporalmente",
+    //         "Contener las instrucciones básicas para el arranque del sistema",
+    //         "Ejecutar videojuegos de alto rendimiento",
+    //         "Mejorar el rendimiento del procesador"
+    //     ],
+    //     correct: "Contener las instrucciones básicas para el arranque del sistema"
+    // },
+    // {
+    //     question: "¿Qué es un disco SSD? (2 pts)",
+    //     options: [
+    //         "Un disco duro mecánico",
+    //         "Un tipo de memoria RAM",
+    //         "Un almacenamiento basado en memoria flash",
+    //         "Una unidad de almacenamiento óptimo"
+    //     ],
+    //     correct: "Un almacenamiento basado en memoria flash"
+    // },
+    // {
+    //     question: "¿Cuál es la diferencia entre la memoria RAM DDR3 y DDR5? (2 pts)",
+    //     options: [
+    //         "la DDR5 es más rápida y eficiente",
+    //         "La DDR3 tiene mayor capacidad",
+    //         "La DDR5 es solo para servidores",
+    //         "No hay diferencias entre ellas"
+    //     ],
+    //     correct: "la DDR5 es más rápida y eficiente"
+    // },
+    // {
+    //     question: "¿Que significa M.2 en almacenamiento? (2 pts)",
+    //     options: [
+    //         "Un formato compacto para discos SSD",
+    //         "Un tipo de memoria ROM avanzada",
+    //         "Una categoría de procesadores",
+    //         "Un software de administración de archivos"
+    //     ],
+    //     correct: "Un formato compacto para discos SSD"
+    // },
+    // {
+    //     question: "¿Qué es una máquina virtual(VM)? (2 pts)",
+    //     options: [
+    //         "Un software que emula un sistema operativo dentro de otro",
+    //         "Un hardware físico adicional para aumentar el rendimiento",
+    //         "Un sistema que reemplaza a la memoria RAM",
+    //         "Una red de servidores conectados"
+    //     ],
+    //     correct: "Un software que emula un sistema operativo dentro de otro"
+    // },
+    // {
+    //     question: "¿Cuál es una de las principales ventajas de VirtualBox? (2 pts)",
+    //     options: [
+    //         "Es gratuito y permite ejecutar múltiples sistemas operativos",
+    //         "Solo funciona con Windows",
+    //         "No permite tomar instantáneas del sistema",
+    //         "Requiere una licencia de pago"
+    //     ],
+    //     correct: "Es gratuito y permite ejecutar múltiples sistemas operativos"
+    // },
+    // {
+    //     question: "¿Qué tipo de conexión de red permite que una VM se comunique con Internet y con la red local como si fuera otro dispositivo? (2 pts)",
+    //     options: [
+    //         "NAT",
+    //         "Bridge",
+    //         "DHCP",
+    //         "Loopback"
+    //     ],
+    //     correct: "Bridge"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes NO es un comando de Windows PowerShell? (2 pts)",
+    //     options: [
+    //         "Get-NetAdapter",
+    //         "ipconfig",
+    //         "mkdir",
+    //         "tasklist"
+    //     ],
+    //     correct: "mkdir"
+    // },
+    // {
+    //     question: "¿Qué atajo de teclado en el sistema operativo Windows abre el Administrador de Tareas directamente? (2 pts)",
+    //     options: [
+    //         "Ctrl + Alt + Supr",
+    //         "Ctrl + Shift + Esc",
+    //         "Win + R",
+    //         "Alt + F4"
+    //     ],
+    //     correct: "Ctrl + Shift + Esc"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux se usa para instalar un programa en sistemas basados en Debian? (2 pts)",
+    //     options: [
+    //         "install package",
+    //         "sudo apt install <paquete>",
+    //         "run application",
+    //         "setup software"
+    //     ],
+    //     correct: "sudo apt install <paquete>"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes comandos en Linux se usa para listar archivos en un directorio? (2 pts)",
+    //     options: [
+    //         "ls",
+    //         "dir",
+    //         "showfiles",
+    //         "list-all"
+    //     ],
+    //     correct: "ls"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux se usa para cambiar los permisos de un archivo? (2 pts)",
+    //     options: [
+    //         "chmod",
+    //         "ls -l",
+    //         "mkdir",
+    //         "rm"
+    //     ],
+    //     correct: "chmod"
+    // },
+    // {
+    //     question: "¿Qué significa CLI? (2 pts)",
+    //     options: [
+    //         "Command Line Interface",
+    //         "Computer Linux Interaction",
+    //         "Control Logic Integration",
+    //         "Cloud Linux Instance"
+    //     ],
+    //     correct: "Command Line Interface"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes comandos en Windows se usa para ver la configuración de red? (2 pts)",
+    //     options: [
+    //         "netconfig",
+    //         "ipconfig",
+    //         "list-network",
+    //         "configip"
+    //     ],
+    //     correct: "ipconfig"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux permite ver la dirección IP de la computadora? (2 pts)",
+    //     options: [
+    //         "ls /ip",
+    //         "ip a",
+    //         "netstat -an",
+    //         "show-ip"
+    //     ],
+    //     correct: "ip a"
+    // },
+    // {
+    //     question: "¿Qué comando en Linux se usa para monitorear procesos en tiempo real? (2 pts)",
+    //     options: [
+    //         "top",
+    //         "tasklist",
+    //         "view-process",
+    //         "process-check"
+    //     ],
+    //     correct: "top"
+    // },
+    // {
+    //     question: "¿Cuál de los siguientes comandos de Windows permite cerrar un proceso específico? (2 pts)",
+    //     options: [
+    //         "taskkill",
+    //         "end-process",
+    //         "stop-app",
+    //         "shutdown -t 0"
+    //     ],
+    //     correct: "taskkill"
+    // },
 ];
 
 function loadQuestion(index) {
@@ -3188,13 +3028,14 @@ function initPareo() {
         </div>
     `;
 
-    // Restaurar matches guardados
-    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex]) => {
+    // Restaurar matches guardados con colores
+    Object.entries(pareoMatches).forEach(([palabraIndex, defIndex], matchIndex) => {
         const palabraEl = container.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
         const defEl = container.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
         if (palabraEl && defEl) {
-            palabraEl.classList.add('matched');
-            defEl.classList.add('matched');
+            const colorClass = `color-${(matchIndex % 8) + 1}`;
+            palabraEl.classList.add('matched', colorClass);
+            defEl.classList.add('matched', colorClass);
         }
     });
     scrollToTop();
@@ -3214,7 +3055,13 @@ function selectPareoItem(element) {
             const defIndex = pareoMatches[elementIndex];
             if (defIndex !== undefined) {
                 const defElement = document.querySelector(`[data-type="definicion"][data-index="${defIndex}"]`);
-                if (defElement) defElement.classList.remove('matched');
+                if (defElement) {
+                    // Remover todas las clases de color y matched
+                    defElement.classList.remove('matched');
+                    for (let i = 1; i <= 8; i++) {
+                        defElement.classList.remove(`color-${i}`);
+                    }
+                }
                 delete pareoMatches[elementIndex];
             }
         } else {
@@ -3222,12 +3069,22 @@ function selectPareoItem(element) {
             const palabraIndex = Object.keys(pareoMatches).find(key => pareoMatches[key] == elementIndex);
             if (palabraIndex !== undefined) {
                 const palabraElement = document.querySelector(`[data-type="palabra"][data-index="${palabraIndex}"]`);
-                if (palabraElement) palabraElement.classList.remove('matched');
+                if (palabraElement) {
+                    // Remover todas las clases de color y matched
+                    palabraElement.classList.remove('matched');
+                    for (let i = 1; i <= 8; i++) {
+                        palabraElement.classList.remove(`color-${i}`);
+                    }
+                }
                 delete pareoMatches[palabraIndex];
             }
         }
 
+        // Remover todas las clases de color y matched del elemento actual
         element.classList.remove('matched');
+        for (let i = 1; i <= 8; i++) {
+            element.classList.remove(`color-${i}`);
+        }
         savePracticeData();
         return;
     }
@@ -3242,9 +3099,13 @@ function selectPareoItem(element) {
             const defIndex = selectedPareoItem.dataset.type === 'definicion' ?
                 selectedPareoItem.dataset.index : element.dataset.index;
 
+            // Determinar el color para esta nueva pareja
+            const matchCount = Object.keys(pareoMatches).length;
+            const colorClass = `color-${(matchCount % 8) + 1}`;
+
             pareoMatches[palabraIndex] = defIndex;
-            selectedPareoItem.classList.add('matched');
-            element.classList.add('matched');
+            selectedPareoItem.classList.add('matched', colorClass);
+            element.classList.add('matched', colorClass);
             savePracticeData();
         }
         selectedPareoItem = null;
@@ -3829,3 +3690,36 @@ function savePracticeData() {
 }
 
 
+
+// Función para finalizar desarrollo y pasar a práctica
+function finalizarDesarrollo() {
+    Swal.fire({
+        title: "Parte de desarrollo finalizada",
+        text: "Ahora continúa con la parte 3: Práctica.",
+        icon: "success",
+        confirmButtonText: "Entendido",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        customClass: {
+            popup: 'swal-instrucciones',
+            title: 'swal-instrucciones-title',
+            confirmButton: 'swal-instrucciones-confirm',
+            icon: 'swal-instrucciones-icon',
+            htmlContainer: 'swal-instrucciones-text'
+        },
+        didOpen: () => {
+            const popup = document.querySelector('swal-instrucciones');
+            if (popup) {
+                popup.scrollTop = 0; // Forzar scroll arriba
+            }
+        }
+    }).then(() => {
+        localStorage.setItem("parte2Finalizada", "true");
+        document.getElementById("essay").style.display = "none";
+        document.getElementById("practice").style.display = "block";
+        initPracticePart();
+        showPracticeSection(1);
+        updatePracticeProgress();
+    });
+}
+/////////////////////////////////
